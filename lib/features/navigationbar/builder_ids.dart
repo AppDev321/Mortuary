@@ -1,0 +1,2 @@
+const updatedSplash = 'updatedSplash';
+
