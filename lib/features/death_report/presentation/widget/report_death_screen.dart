@@ -11,6 +11,7 @@ import 'package:mortuary/features/splash/presentation/get/splash_controller.dart
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/animated_widget.dart';
 import '../../../../core/widgets/button_widget.dart';
+import 'death_report_form.dart';
 import 'death_report_list_screen.dart';
 class ReportDeathScreen extends StatelessWidget {
   ReportDeathScreen({Key? key}) : super(key: key);
@@ -36,7 +37,9 @@ class ReportDeathScreen extends StatelessWidget {
         ),
         sizeFieldLargePlaceHolder,
         sizeFieldLargePlaceHolder,
-        SvgPicture.asset(AppAssets.icReportDeathButton),
+        GestureDetector(
+          onTap: ()=>Get.to(()=>DeathReportFormScreen()),
+            child: SvgPicture.asset(AppAssets.icReportDeathButton)),
         sizeFieldLargePlaceHolder,
         ButtonWidget(
           text: AppStrings.viewLiveMap,
