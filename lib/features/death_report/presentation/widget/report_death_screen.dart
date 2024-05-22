@@ -9,6 +9,7 @@ import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/splash/presentation/get/splash_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/animated_widget.dart';
 import '../../../../core/widgets/button_widget.dart';
 import 'death_report_form.dart';
@@ -38,7 +39,9 @@ class ReportDeathScreen extends StatelessWidget {
         sizeFieldLargePlaceHolder,
         sizeFieldLargePlaceHolder,
         GestureDetector(
-          onTap: ()=>Get.to(()=>DeathReportFormScreen()),
+          onTap: (){
+            print("here");
+            Go.to(()=>DeathReportFormScreen());},
             child: SvgPicture.asset(AppAssets.icReportDeathButton)),
         sizeFieldLargePlaceHolder,
         ButtonWidget(
