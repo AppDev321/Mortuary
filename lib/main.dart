@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mortuary/core/styles/color_schemes.dart';
 import 'package:mortuary/core/styles/text_theme.dart';
 import 'package:mortuary/features/authentication/init_auth.dart';
+import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:mortuary/features/splash/presentation/widget/splash_screen.dart';
 import 'package:mortuary/init_core.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         textTheme: lightTextTheme,
       ),
-      home:  ReportDeathScreen()
+      home:  LoginScreen()
     );
   }
 }

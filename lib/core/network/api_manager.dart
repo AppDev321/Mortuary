@@ -6,11 +6,13 @@ import 'package:mortuary/core/network/dio_exception.dart';
 import '../error/errors.dart';
 
 enum RequestMethod { POST, DELETE,PUT,GET }
-class ApiResponse<T> {
-  final T? data;
-  final CustomError? error;
 
-  ApiResponse(this.data, this.error);
+class ApiResponse{
+  final CustomError? error;
+  final bool status;
+  final String message;
+  Map<String, dynamic>? data;
+  ApiResponse(this.data, this.error, this.status, this.message);
 }
 
 class ApiManager {
@@ -20,7 +22,7 @@ class ApiManager {
   ApiManager(this._dio, this.secureStorage);
 
 
-  Future<ApiResponse<T>> callNetworkApiRequest<T>({
+  Future<ApiResponse> callNetworkApiRequest<T>({
     required String url,
     required RequestMethod method,
     Map<String, dynamic>? data,
@@ -52,7 +54,7 @@ class ApiManager {
 
       final Map<String, dynamic> decodedJson = response.data;
       if (response.statusCode == 200) {
-        return ApiResponse<T>(decodedJson['data'], null);
+        return ApiResponse(decodedJson, null,true,decodedJson['message']);
       } else {
         throw DioExceptions.fromDioError(DioError(
           response: response,
@@ -60,7 +62,7 @@ class ApiManager {
         ));
       }
     } catch (e) {
-      return ApiResponse<T>(null, GeneralError(message: e.toString()));
+      return ApiResponse(null, GeneralError(message: e.toString()),false,"Failed to get data");
     }
   }
 }

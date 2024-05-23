@@ -30,15 +30,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'device_id': ':--NTwE6PrZ_J',
     };
 
-    final response = await apiManager.callNetworkApiRequest<BaseResponse>(
+    final response = await apiManager.callNetworkApiRequest<ApiResponse>(
         url: AppUrls.loginUrl, method: RequestMethod.POST, data: jsonMap);
+
+
 
     if (response.error != null) {
       return Future.error(
         GeneralError(message: response.error!.message),
       );
     } else {
-      final data = response.data!.data as Session;
+      final data =  Session.fromJson(response.data!);
+      print(data.toLocalJson());
       return data;
     }
   }

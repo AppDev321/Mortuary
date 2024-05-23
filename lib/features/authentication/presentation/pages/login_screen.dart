@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: GetBuilder<AuthController>(
-          id: updateSignupScreen,
+          id: updatedAuthWrapper,
           builder: (authController) {
             return Container(
               padding: const EdgeInsets.all(30),
@@ -75,10 +75,12 @@ class LoginScreen extends StatelessWidget {
                        ButtonWidget(
                         text: AppStrings.login,
                         buttonType: ButtonType.gradient,
-
+                        isLoading: authController.isAuthenticating,
                         textStyle:const  TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w600),
-                        onPressed:(){ Go.to(()=> OTPRequestScreen());},
+                        onPressed:(){
+                          authController.login(context);
+                        },
                       )
                     ],
                   ),

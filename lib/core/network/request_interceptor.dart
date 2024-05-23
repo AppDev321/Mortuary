@@ -59,8 +59,7 @@ class RequestInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // Log request details
     final requestPath = '${options.baseUrl}${options.path}';
-    logDebug(
-        '\n\n\n\n..................................................');
+    logDebug('..................................................');
     logDebug('onRequest: ${options.method} request => $requestPath',
         level: Level.info);
     logDebug('onRequest: Request Headers => ${options.headers}',

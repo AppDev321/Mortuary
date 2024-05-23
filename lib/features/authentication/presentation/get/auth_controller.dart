@@ -18,7 +18,6 @@ class AuthController extends GetxController {
 
   AuthController({required this.authUseRepo});
 
-  final loginFormKey = GlobalKey<FormState>();
 
   Rxn<User> userData = Rxn<User>();
 
@@ -59,7 +58,7 @@ class AuthController extends GetxController {
 
   bool get isVerifyingUser => verifyUserState == LoadingState.loading;
 
-  LoadingState authenticationState = LoadingState.loading;
+  LoadingState authenticationState = LoadingState.loaded;
 
   bool get isAuthenticating => authenticationState == LoadingState.loading;
 
@@ -73,9 +72,6 @@ class AuthController extends GetxController {
   Session? session;
 
   login(BuildContext context) async {
-    if (!loginFormKey.currentState!.validate()) {
-      return;
-    }
     authenticationState = LoadingState.loading;
     update([updatedAuthWrapper, updateEmailScreen]);
     await authUseRepo
@@ -85,11 +81,15 @@ class AuthController extends GetxController {
       authenticationState = LoadingState.loaded;
       update([updatedAuthWrapper, updateEmailScreen]);
     }).onError<CustomError>((error, stackTrace) async {
-      print('error is ${error.message}');
+
       authenticationState = LoadingState.loaded;
       update([updatedAuthWrapper, updateEmailScreen]);
       getErrorDialog(error);
-    });
-  }
+      print('error is ${error.message}');
 
+    });
+
+
+
+  }
 }

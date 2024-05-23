@@ -6,7 +6,7 @@ import '../styles/icons.dart';
 class CustomError {
   IconData iconData;
   String title;
-  String? message;
+  dynamic message;
   String stackTrace;
 
   CustomError(

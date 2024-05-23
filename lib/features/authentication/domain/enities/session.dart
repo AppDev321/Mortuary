@@ -7,12 +7,12 @@ class Session extends Equatable {
   const Session({this.sessionId});
 
   factory Session.fromJson(json) {
-    return Session(sessionId: json['access_token']);
+    return Session(sessionId: json['token']);
   }
 
   Map<String, dynamic> toLocalJson() {
     return {
-      'access_token': sessionId,
+      'token': sessionId,
     };
   }
 

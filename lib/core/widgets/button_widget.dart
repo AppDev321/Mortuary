@@ -118,7 +118,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   }
 
   getProgressIndicatorColor() {
-    return widget.buttonType == ButtonType.fill
+    return widget.buttonType == ButtonType.fill || widget.buttonType == ButtonType.gradient
         ? Colors.white
         : (widget.color ?? AppColors.primaryColor);
   }
