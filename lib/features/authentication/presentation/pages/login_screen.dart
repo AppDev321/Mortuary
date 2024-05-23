@@ -6,6 +6,7 @@ import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/pages/otp_request_screen.dart';
 
 import '../../../../core/styles/colors.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/custom_password_field.dart';
@@ -77,7 +78,7 @@ class LoginScreen extends StatelessWidget {
 
                         textStyle:const  TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w600),
-                        onPressed:(){ Get.to(()=> OTPRequestScreen());},
+                        onPressed:(){ Go.to(()=> OTPRequestScreen());},
                       )
                     ],
                   ),

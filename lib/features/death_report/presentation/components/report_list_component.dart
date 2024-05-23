@@ -14,23 +14,28 @@ class ReportListItem extends StatelessWidget {
     return 
       Stack(
       children:[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              CustomTextWidget(
-                text: "15th May\n2024",
-                colorText: AppColors.secondaryTextColor,
-                fontWeight: FontWeight.w700,
-                size: 14,
-              ),
-              CustomTextWidget(
-                text: "102:14:21 Am",
-                colorText: AppColors.secondaryTextColor,
-                fontWeight: FontWeight.w500,
-                size: 12,
-              )
-            ],
+        Positioned(
+          top: 70,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomTextWidget(
+                  text: "15th May\n2024",
+                  colorText: AppColors.secondaryTextColor,
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ),
+                CustomTextWidget(
+                  text: "102:14:21 Am",
+                  colorText: AppColors.secondaryTextColor,
+                  fontWeight: FontWeight.w500,
+                  size: 12,
+                )
+              ],
+            ),
           ),
         ),
         Positioned(
@@ -43,7 +48,7 @@ class ReportListItem extends StatelessWidget {
         ),
         Positioned(
             left: 90,
-            bottom: 10,
+            top:80,
             child: Container(
               height: 20.0,
               width: 20.0,

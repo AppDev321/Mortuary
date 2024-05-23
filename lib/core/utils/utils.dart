@@ -280,3 +280,16 @@ bool shouldShowBackButton(BuildContext context) {
   }
   return true;
 }
+
+
+class Go {
+  static Future<dynamic> to(dynamic page, {dynamic arguments}) async {
+    Get.to(
+      page,
+      arguments: arguments,
+      transition: Transition.fadeIn,
+      curve:Curves.easeInOut,// choose your page transition accordingly
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+}
