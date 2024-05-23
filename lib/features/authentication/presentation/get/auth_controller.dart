@@ -10,86 +10,78 @@ import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../../core/popups/show_snackbar.dart';
 import '../../../../init_main.dart';
-import '../../data/repositories/auth_repo_impl.dart';
+import '../../data/repositories/auth_repo.dart';
 
 class AuthController extends GetxController {
-  CustomError? customError;
   final AuthenticationRepo authUseRepo;
-
   AuthController({required this.authUseRepo});
 
-
+  CustomError? customError;
   Rxn<User> userData = Rxn<User>();
-
   String? email = '';
   String? forgotPasswordEmail = '';
   String? password = '';
   String? phone;
   String? phonePassword = '';
-
   int? userId;
-
-  setEmail(String? newEmail) {
-    email = newEmail;
-  }
-
-  setForgotPasswordEmail(String? newEmail) {
-    forgotPasswordEmail = newEmail;
-  }
-
-  setPhone(String? newPhone) {
-    phone = newPhone;
-  }
-
-  setPassword(String? newPassword) {
-    password = newPassword;
-  }
-
-  setPhonePassword(String? newPassword) {
-    phonePassword = newPassword;
-  }
-
-  LoadingState phoneAuthenticationState = LoadingState.loading;
-
-  LoadingState verifyUserState = LoadingState.loaded;
-
-  bool get isPhoneAuthenticating =>
-      phoneAuthenticationState == LoadingState.loading;
-
-  bool get isVerifyingUser => verifyUserState == LoadingState.loading;
-
-  LoadingState authenticationState = LoadingState.loaded;
-
-  bool get isAuthenticating => authenticationState == LoadingState.loading;
-
-  LoadingState resetPwdAuthenticationState = LoadingState.loaded;
-
-  bool get isResetPwdAuthenticating =>
-      resetPwdAuthenticationState == LoadingState.loading;
   bool isLoggedIn = false;
   bool isLoggedInAsGuest = false;
-
   Session? session;
 
+
+
+  var phoneAuthenticationState = LoadingState.loading;
+  var verifyUserState = LoadingState.loaded;
+  var authenticationState = LoadingState.loaded;
+  var resetPwdAuthenticationState = LoadingState.loaded;
+
+  bool get isPhoneAuthenticating => phoneAuthenticationState == LoadingState.loading;
+  bool get isVerifyingUser => verifyUserState == LoadingState.loading;
+  bool get isAuthenticating => authenticationState == LoadingState.loading;
+  bool get isResetPwdAuthenticating => resetPwdAuthenticationState == LoadingState.loading;
+
+
+
+  void setEmail(String? newEmail) => email = newEmail;
+  void setForgotPasswordEmail(String? newEmail) => forgotPasswordEmail = newEmail;
+  void setPhone(String? newPhone) => phone = newPhone;
+  void setPassword(String? newPassword) => password = newPassword;
+  void setPhonePassword(String? newPassword) => phonePassword = newPassword;
+
+
+
   login(BuildContext context) async {
-    authenticationState = LoadingState.loading;
-    update([updatedAuthWrapper, updateEmailScreen]);
+    onApiRequestStarted();
     await authUseRepo
         .login(emailAddress: email!, password: password!)
         .then((value) async {
       session = value;
-      authenticationState = LoadingState.loaded;
-      update([updatedAuthWrapper, updateEmailScreen]);
+      onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
-
-      authenticationState = LoadingState.loaded;
-      update([updatedAuthWrapper, updateEmailScreen]);
-      getErrorDialog(error);
-      print('error is ${error.message}');
-
+      onErrorShowDialog(error);
     });
-
-
-
   }
+
+
+
+  onErrorShowDialog(error)
+  {
+    onApiResponseCompleted();
+    getErrorDialog(error);
+  }
+  onApiResponseCompleted()
+  {
+    authenticationState = LoadingState.loaded;
+    onUpdateUI();
+  }
+  onApiRequestStarted()
+  {
+    authenticationState = LoadingState.loading;
+    onUpdateUI();
+  }
+  onUpdateUI(){
+    update([updatedAuthWrapper, updateEmailScreen]);
+  }
+
+
 }

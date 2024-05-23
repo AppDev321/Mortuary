@@ -16,7 +16,6 @@ class DioExceptions implements Exception {
         message = "Receive timeout in connection with API server";
         break;
       case DioErrorType.response:
-        print("error response");
         message = _handleError(
           dioError.response?.statusCode,
           dioError.response?.data,
@@ -26,10 +25,8 @@ class DioExceptions implements Exception {
         message = "Send timeout in connection with API server";
         break;
       case DioErrorType.other:
-
         if(dioError.response != null)
-          {
-            message = _handleError(
+          {message = _handleError(
               dioError.response?.statusCode,
               dioError.response?.data,
             );

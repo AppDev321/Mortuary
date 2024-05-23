@@ -10,6 +10,14 @@ import 'core/network/socket_client.dart';
 import 'core/network/web_socket_client.dart';
 
 initCore() {
+  Get.lazyPut<InternetConnectionCheckerPlus>(
+          () => InternetConnectionCheckerPlus(),
+      fenix: true);
+
+  Get.lazyPut<NetworkInfo>(
+          () => NetworkInfoImpl(Get.find()),
+      fenix: true);
+
 
   Get.lazyPut<FlutterSecureStorage>(
           () => const FlutterSecureStorage(
@@ -22,15 +30,9 @@ initCore() {
   Get.lazyPut(() => WebSocketService());
 
   Get.lazyPut<ApiManager>(
-          () => ApiManager(Get.find(), Get.find()),
+          () => ApiManager(Get.find(), Get.find(),Get.find()),
       fenix: true);
 
 
-  Get.lazyPut<InternetConnectionCheckerPlus>(
-          () => InternetConnectionCheckerPlus(),
-      fenix: true);
 
-  Get.lazyPut<NetworkInfo>(
-          () => NetworkInfoImpl(Get.find()),
-      fenix: true);
 }

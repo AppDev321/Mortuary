@@ -7,6 +7,12 @@ class AppUrls {
 
   //App URLS
   static const loginUrl = '${baseUrl}login';
+  static const forgotPasswordUrl = '${baseUrl}forgot-password';
+  static const verifyOTPUrl = '${baseUrl}verify-otp';
+  static const resetPasswordUrl = '${baseUrl}reset-password';
+
+
+
 
   /// google maps url
 

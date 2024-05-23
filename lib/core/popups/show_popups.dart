@@ -38,7 +38,7 @@ Future<void> getErrorDialog(CustomError? error,
   return Get.dialog(
       ChoiceDialog(
           title: error!.title,
-          message: '${error.message}',
+          message:error.message is List<String>?error.message.join("\n"): '${error.message}',
           firstChoice: buttonText,
           firstOnPressed: () {
             if (onPressed != null) {

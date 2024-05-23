@@ -4,7 +4,6 @@ import 'package:mortuary/core/constants/app_strings.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/pages/otp_request_screen.dart';
-
 import '../../../../core/styles/colors.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/utils/validators.dart';
@@ -17,11 +16,10 @@ import '../get/auth_controller.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
+  final loginFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: GetBuilder<AuthController>(
           id: updatedAuthWrapper,
@@ -33,56 +31,64 @@ class LoginScreen extends StatelessWidget {
               decoration: BoxDecoration(gradient: AppColors.appBackgroundColor),
               child: Center(
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomTextWidget(
-                        text: AppStrings.login.toUpperCase(),
-                        colorText: AppColors.themeTextColor,
-                        size: 24,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      sizeFieldLargePlaceHolder,
-                      CustomTextField(
-                        prefixIcon: const Icon(Icons.person),
-                        headText: AppStrings.username,
-                        borderEnable: true,
-                        text: AppStrings.username,
-                        // label: 'Email',
-                        validator: EmailValidator.validator,
-                        fontWeight: FontWeight.normal,
-                        onChanged: authController.setEmail,
-                      ),
-                      sizeFieldMediumPlaceHolder,
-                      PasswordField(
-                        prefixIcon: const Icon(Icons.key),
-                        borderEnable: true,
-                        labelText: AppStrings.password,
-                        validator: PasswordValidator.validator,
-                        onChanged: authController.setPassword,
-                      ),
-                      sizeFieldMediumPlaceHolder,
-                      const Align(
-                        alignment: Alignment.centerRight,
-                        child: CustomTextWidget(
-                          textDecoration: TextDecoration.underline,
-                          textAlign: TextAlign.end,
-                          text: "${AppStrings.forgotPassword}?",
+                  child: Form(
+                    key: loginFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomTextWidget(
+                          text: AppStrings.login.toUpperCase(),
+                          colorText: AppColors.themeTextColor,
+                          size: 24,
+                          fontWeight: FontWeight.w800,
                         ),
-                      ),
-                      sizeFieldLargePlaceHolder,
-                       ButtonWidget(
-                        text: AppStrings.login,
-                        buttonType: ButtonType.gradient,
-                        isLoading: authController.isAuthenticating,
-                        textStyle:const  TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
-                        onPressed:(){
-                          authController.login(context);
-                        },
-                      )
-                    ],
+                        sizeFieldLargePlaceHolder,
+                        CustomTextField(
+                          prefixIcon: const Icon(Icons.email),
+                          headText: AppStrings.email,
+                          borderEnable: true,
+                          text: AppStrings.email,
+                          validator: EmailValidator.validator,
+                          fontWeight: FontWeight.normal,
+                          onChanged: authController.setEmail,
+                        ),
+                        sizeFieldMediumPlaceHolder,
+                        PasswordField(
+                          prefixIcon: const Icon(Icons.key),
+                          borderEnable: true,
+                          labelText: AppStrings.password,
+                          validator: PasswordValidator.validator,
+                          onChanged: authController.setPassword,
+                        ),
+                        sizeFieldMediumPlaceHolder,
+                        InkWell(
+                          onTap: ()=>Go.to(()=>OTPRequestScreen()),
+                          child: const Align(
+                            alignment: Alignment.centerRight,
+                            child: CustomTextWidget(
+
+                              textDecoration: TextDecoration.underline,
+                              textAlign: TextAlign.end,
+                              text: "${AppStrings.forgotPassword}?",
+                            ),
+                          ),
+                        ),
+                        sizeFieldLargePlaceHolder,
+                        ButtonWidget(
+                          text: AppStrings.login,
+                          buttonType: ButtonType.gradient,
+                          isLoading: authController.isAuthenticating,
+                          textStyle: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600),
+                          onPressed: () {
+                            if (loginFormKey.currentState!.validate()) {
+                              authController.login(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

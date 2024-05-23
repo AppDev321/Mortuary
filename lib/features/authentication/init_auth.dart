@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mortuary/features/authentication/data/repositories/auth_repo_impl.dart';
+import 'package:mortuary/features/authentication/data/repositories/auth_repo.dart';
 import 'package:mortuary/features/authentication/presentation/get/auth_controller.dart';
 
 import '../../core/services/picker_decider.dart';
@@ -12,13 +12,13 @@ initAuth() async {
       () => AuthenticationRepo(
           remoteDataSource: Get.find(),
           localDataSource: Get.find(),
-          networkInfo: Get.find()),
+          apiManager: Get.find()),
       fenix: true);
 
   // Get.lazyPut<NotificationService>(() => NotificationServiceImpl());
   Get.lazyPut<FileChooserService>(() => FileChooserServiceImpl());
 
-  Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(Get.find()),
+  Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(Get.find(),Get.find()),
       fenix: true);
 
   Get.lazyPut<AuthLocalDataSource>(() => AuthLocalDataSourceImpl(Get.find()),

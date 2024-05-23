@@ -9,6 +9,7 @@ class AppStrings {
   static const String verification = "Verification";
   static const String verificationLabelMsg = 'Please verify your phone number below. We will send you a 6-digit OTP in order to reset your password';
   static const String verificationScreenLabelMsg = 'Please enter the 6-digit OTP sent to your phone number';
+  static const String email='Email';
 
   static const String phoneNumber='Phone Number';
   static const String requestCode = 'Request Code';
