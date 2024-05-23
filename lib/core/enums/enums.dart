@@ -4,16 +4,18 @@ enum LoginType { email, phone }
 
 enum LoadingState { loading, loaded, error }
 
-enum UserTypes { authorized, transport, processingUnit }
+
+enum UserTypes {
+  authorized("Authorized Person"),
+  transport("Transportation"),
+  processingUnit("Processing Center"),
+  admin("Admin"),
+  superAdmin("Super Admin");
 
 
-enum Gender {
-  male("Male"),
-  female("Female"),
-  other("Other");
 
-  const Gender(this.displayName);
 
+  const UserTypes(this.displayName);
   final String displayName;
 
   @override

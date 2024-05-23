@@ -1,5 +1,4 @@
 import 'package:mortuary/features/authentication/domain/enities/session.dart';
-import 'package:mortuary/features/authentication/url.dart';
 
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/error/errors.dart';
@@ -32,9 +31,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     };
 
     final response = await apiManager.callNetworkApiRequest<BaseResponse>(
-        url: '${AppUrls.testUrl}$loginUrl',
-        method: RequestMethod.POST,
-        data: jsonMap);
+        url: AppUrls.loginUrl, method: RequestMethod.POST, data: jsonMap);
 
     if (response.error != null) {
       return Future.error(
@@ -44,6 +41,5 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final data = response.data!.data as Session;
       return data;
     }
-
   }
 }

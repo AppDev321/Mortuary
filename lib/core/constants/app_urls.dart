@@ -1,10 +1,12 @@
-import 'package:get/get.dart';
+
 
 class AppUrls {
-  static const baseUrl = 'https://rideone.app/';
-  static const imgUrl = 'https://rideone.app';
-  static const testUrl = "${baseUrl}api/v1/";
+  static const applicationURL = 'https://mortuary.maetech.co';
+  static const baseUrl = "$applicationURL/api/";
   static const socketIOUrl = "";
+
+  //App URLS
+  static const loginUrl = '${baseUrl}login';
 
   /// google maps url
 

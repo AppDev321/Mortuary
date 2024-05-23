@@ -19,13 +19,13 @@ class SplashDataSourceImpl implements SplashDataSource {
 
   @override
   Future<AppConfig> getSplashApi(String token) async {
-    final response = await _dio.get('${AppUrls.testUrl}$splashApi');
+    final response = await _dio.get('${AppUrls.baseUrl}$splashApi');
 
 
     Map<String, dynamic> decodedJson = response.data;
 
     customLog(
-        url: '${AppUrls.testUrl}$splashApi', response: decodedJson['data']);
+        url: '${AppUrls.baseUrl}$splashApi', response: decodedJson['data']);
     if (response.statusCode != 200) {
       return Future.error(
         GeneralError(
