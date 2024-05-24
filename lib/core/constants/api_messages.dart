@@ -11,4 +11,5 @@ class ApiMessages {
   static const String timeOut = 'Connection timeout';
   static const String contactAlreadyCreated = 'Contact already created against specified email or phone number!';
   static const String sessionExpired = 'Session expired. Please login again!';
+  static const String unIdentifiedRole = "User role in not identified in app";
 }

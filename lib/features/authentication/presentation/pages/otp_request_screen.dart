@@ -25,10 +25,10 @@ class OTPRequestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<AuthController>(
-          id: updateSignupScreen,
+          id: updateOTPScreen,
           builder: (authController) {
             return Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               width: double.maxFinite,
               height: double.maxFinite,
               decoration: BoxDecoration(gradient: AppColors.appBackgroundColor),
@@ -47,7 +47,7 @@ class OTPRequestScreen extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                         sizeFieldLargePlaceHolder,
-                        CustomTextWidget(
+                        const CustomTextWidget(
                           textAlign: TextAlign.center,
                           text: AppStrings.verificationLabelMsg,
                           size: 13,
@@ -72,17 +72,18 @@ class OTPRequestScreen extends StatelessWidget {
                           validator: PhoneValidator.validator,
                           fontWeight: FontWeight.normal,
                           onChanged: authController.setPhone,
+                          inputFormatters: [ FilteringTextInputFormatter.digitsOnly,],
                         ),
                         sizeFieldLargePlaceHolder,
                         ButtonWidget(
                           isLoading: authController.isAuthenticating,
                           text: AppStrings.requestCode,
                           buttonType: ButtonType.gradient,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w600),
                           onPressed: () {
                             if (otpRequestFormKey.currentState!.validate()) {
-
+                                authController.forgotPassword(context);
                             }
                           },
                         )

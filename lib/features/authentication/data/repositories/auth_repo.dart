@@ -48,4 +48,35 @@ class AuthenticationRepo {
       );
     });
   }
+
+
+  Future<EmptyResponse> verifyOTP({
+    required String emailAddress,
+    required String phoneNumber,
+    required int otpCode
+  }) async {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.verifyOTP(
+        emailAddress: emailAddress,
+        phoneNumber: phoneNumber,
+        otpCode: otpCode
+      );
+    });
+  }
+
+  Future<EmptyResponse> resetPassword({
+    required String emailAddress,
+    required String phoneNumber,
+    required String password,
+    required String confirmPassword
+  }) async {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.resetPassword(
+          emailAddress: emailAddress,
+          phoneNumber: phoneNumber,
+          confirmPassword: confirmPassword,
+        password: password
+      );
+    });
+  }
 }

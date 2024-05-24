@@ -1,89 +1,85 @@
 
 import '../constants/app_strings.dart';
 
+
+
 abstract class Validator {
   static String? validator;
 }
 
-// TextField validators
+class ConfirmPasswordValidator implements Validator {
+  static String? validator(String? password, String? otherPassword) {
+    return (password?.isEmpty ?? true) && (otherPassword?.isEmpty ?? true)
+        ? AppStrings.confirmPasswordIsRequired
+        : password!.length < 6 && otherPassword!.length < 6
+        ? AppStrings.passwordLengthError
+        : password != otherPassword
+        ? AppStrings.passwordDoesNotMatch
+        : null;
+  }
+}
+
+
+
+class PasswordValidator implements Validator {
+  static String? validator(String? password) {
+    return password!.isEmpty
+        ? AppStrings.passwordIsRequired
+        : password.length >= 6
+        ? null
+        : AppStrings.passwordLengthError;
+  }
+}
+
+
 
 class UserNameValidator implements Validator {
   static String? validator(String? name) {
-    return name!.isEmpty ? 'Username is required' : null;
+    return name!.isEmpty ? AppStrings.usernameIsRequired : null;
   }
 }
 
 class EmailValidator implements Validator {
   static String? validator(String? email) {
     return email!.isEmpty
-        ? 'Email is required'
+        ? AppStrings.emailIsRequired
         : AppStrings.emailRegExp.hasMatch(email)
-            ? null
-            : 'Invalid Email Address';
-  }
-}
-
-class ConfirmPasswordValidator implements Validator {
-  static String? validator(String? password, String? otherPassword) {
-    return (password?.isEmpty ?? true) && (otherPassword?.isEmpty ?? true)
-        ? "This field is required"
-        : password!.length < 6 && otherPassword!.length < 6
-            ? "Min. Password Length is 6"
-            : password != otherPassword
-                ? "password does not match"
-                : null;
-  }
-}
-
-class PasswordValidator implements Validator {
-  static String? validator(String? password) {
-    return password!.isEmpty
-        ? 'Password is required'
-        : password.length >= 6
-            ? null
-            : 'Min. Password Length is 6';
+        ? null
+        : AppStrings.invalidEmailAddress;
   }
 }
 
 class OTPFieldValidator implements Validator {
   static String? validator(String? otpField) {
     return otpField == null
-        ? ""
+        ? ''
         : otpField.isEmpty
-            ? ''
-            : otpField.length == 4
-                ? null
-                : '';
-    // return otpField == null
-    //     ? "This field is required"
-    //     : otpField.isEmpty
-    //         ? 'Field is required'
-    //         : otpField.length == 4
-    //             ? null
-    //             : 'Min. Length is 4';
+        ? ''
+        : otpField.length == 4
+        ? null
+        : '';
   }
 }
 
 class DobValidator implements Validator {
   static String? validator(String? name) {
-    return name!.isEmpty ? 'Date of birth is required' : null;
+    return name!.isEmpty ? AppStrings.dateOfBirthIsRequired : null;
   }
 }
 
 class EmptyDateFieldValidator implements Validator {
   static String? validator(String? dateTime) {
     if (dateTime == null || dateTime.isEmpty) {
-      return 'This field is required.';
+      return AppStrings.emptyFieldIsRequired;
     }
     return null;
   }
 }
 
-
 class EmptyListValidator implements Validator {
   static String? validator(String? dateTime) {
     if (dateTime == null || dateTime.isEmpty) {
-      return 'This field is required.';
+      return AppStrings.emptyFieldIsRequired;
     }
     return null;
   }
@@ -91,52 +87,48 @@ class EmptyListValidator implements Validator {
 
 class GenderValidator implements Validator {
   static String? validator(name) {
-    return name == null ? 'Gender is required' : null;
+    return name == null ? AppStrings.genderIsRequired : null;
   }
 }
 
 class PhoneValidator implements Validator {
   static String? validator(String? phone) {
-    return phone!.isEmpty ? 'Phone number is required' : null;
+    return phone!.isEmpty ? AppStrings.phoneNumberIsRequired : null;
   }
 }
 
 class TrueValidator implements Validator {
   static String? validator(bool? value) {
     if (value == null) {
-      return 'You have to agree to Terms & Conditions';
+      return AppStrings.agreeToTermsIsRequired;
     }
-    return value ? null : 'You have to agree to Terms & Conditions';
+    return value ? null : AppStrings.agreeToTermsIsRequired;
   }
 }
 
 class DynamicFieldValidator implements Validator {
   static String? validator(dynamic file) {
     if (file == null) {
-      return 'This field is required.';
+      return AppStrings.emptyFieldIsRequired;
     }
     return null;
   }
 }
 
-
-
-// Generic Validator
 class EmptyFieldValidator implements Validator {
   static String? validator(dynamic string) {
     if (string == null) {
-      return 'This field is required.';
+      return AppStrings.emptyFieldIsRequired;
     }
-    return string.toString().isNotEmpty ? null : 'This field is Required';
+    return string.toString().isNotEmpty ? null : AppStrings.emptyFieldIsRequired;
   }
 }
 
-// Validator for checking the loyalty points
 class LoyaltyPointsValidator implements Validator {
   static String? validator(
       double? pointsValue, double total, double? maxAllowedPoints) {
     if (pointsValue == null) {
-      return 'This field is required.';
+      return AppStrings.emptyFieldIsRequired;
     }
 
     // Assuming pointsValue can be converted to double, you can add more validation checks here
@@ -160,9 +152,9 @@ class DoneQuantityValidator implements Validator {
     return doneQty.isEmpty || availableQty.isEmpty
         ? ''
         : int.parse(doneQty) <= int.parse(availableQty) &&
-                int.parse(doneQty) <= int.parse(demandQty)
-            ? null
-            : '';
+        int.parse(doneQty) <= int.parse(demandQty)
+        ? null
+        : '';
   }
 }
 
@@ -178,7 +170,7 @@ class MaxQuantityValidator implements Validator {
     return maxQty!.isEmpty || minQty!.isEmpty
         ? ''
         : int.parse(maxQty) >= int.parse(minQty)
-            ? null
-            : '';
+        ? null
+        : '';
   }
 }

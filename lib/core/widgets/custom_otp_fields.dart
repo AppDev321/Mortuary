@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 
@@ -57,6 +58,7 @@ class CustomOtpFields extends StatelessWidget {
       onCompleted: onCompleted,
       onChanged: onChanged,
       beforeTextPaste: beforeTextPaste,
+      inputFormatters: [ FilteringTextInputFormatter.digitsOnly],
     );
   }
 }

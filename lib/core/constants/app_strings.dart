@@ -16,8 +16,8 @@ class AppStrings {
   static const String verify = 'Verify';
   static const String login = 'Login';
   static const String update = 'Update';
-  static const String updatePassword = 'Update Password';
-  static const String updatePasswordScreenLabelMsg = 'Please provide new password in order to update your password';
+  static const String resetPassword = 'Reset Password';
+  static const String resetPasswordScreenLabelMsg = 'Please provide new password in order to update your password';
   static const String newPassword='New Password';
   static const String retypePassword='Re-type New Password';
 
@@ -45,6 +45,7 @@ class AppStrings {
   static const String ok='Ok';
   static const String locationSharedMessage='Your location has been shared successfully. Ambulance will arrive shortly.';
   static const String reportFormDesc='Please fill the form below in order to report a death';
+  static const String otpError='Please enter OTP';
 
 
 
@@ -76,7 +77,7 @@ class AppStrings {
   static const String defaultNetworkErrorMessage =
       'Unable to connect to internet.';
 
-  static const String defaultGeneralErrorTitle = 'Problem Occurred';
+  static const String defaultGeneralErrorTitle = 'Error';
   static const String defaultGeneralErrorMessage =
       'Unable to process your request, try again, or contact customer support.';
 
@@ -97,4 +98,18 @@ class AppStrings {
       'This section outlines that by using the app, the user agrees to the terms and conditions. This section describes the rules around creating an account, including age restrictions and the requirement for accurate personal information.This section explains the rules around product listings, including prohibited items and requirements for accurate product descriptions.This section outlines the rules around payment processing, including fees, refund policies, and chargeback policies.This section explains the rules around shipping and delivery, including delivery timelines and shipping costs. This section outlines the rules around intellectual property, including copyright infringement and trademarks.';
 
 
+
+  static const String usernameIsRequired = 'Username is required';
+  static const String emailIsRequired = 'Email is required';
+  static const String invalidEmailAddress = 'Invalid Email Address';
+  static const String passwordIsRequired = 'Password is required';
+  static const String confirmPasswordIsRequired = 'Confirm Password is required';
+  static const String passwordLengthError = 'Min. Password Length is 6';
+  static const String passwordDoesNotMatch = 'Password does not match';
+  static const String otpFieldIsRequired = 'OTP Field is required';
+  static const String dateOfBirthIsRequired = 'Date of birth is required';
+  static const String emptyFieldIsRequired = 'This field is required.';
+  static const String genderIsRequired = 'Gender is required';
+  static const String phoneNumberIsRequired = 'Phone number is required';
+  static const String agreeToTermsIsRequired = 'You have to agree to Terms & Conditions';
 }

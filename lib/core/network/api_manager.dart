@@ -69,9 +69,11 @@ class ApiManager {
       if (response.statusCode == 200) {
         return ApiResponse(decodedJson, null, true, decodedJson['message']);
       } else if (response.data != null) {
+        var error = decodedJson['errors'] as String;
+        error.replaceAll("###", "\n");
         return ApiResponse(
             null,
-            GeneralError(message: decodedJson['data']['error']),
+            GeneralError(message: error),
             false,
             "Failed to get data");
       } else {

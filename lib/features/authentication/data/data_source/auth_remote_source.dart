@@ -108,7 +108,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       url: AppUrls.loginUrl,
       method: RequestMethod.POST,
       data: jsonMap,
-      fromJson: (json) => Session.fromJson(json),
+      fromJson: (json) => Session.fromJson(json['data']),
     );
   }
 

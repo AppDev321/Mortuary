@@ -4,20 +4,39 @@ enum LoginType { email, phone }
 
 enum LoadingState { loading, loaded, error }
 
+enum UserRole {
+  authorized,
+  transport,
+  processingUnit,
+  admin,
+  superAdmin,
+  none
+}
 
-enum UserTypes {
-  authorized("Authorized Person"),
-  transport("Transportation"),
-  processingUnit("Processing Center"),
-  admin("Admin"),
-  superAdmin("Super Admin");
+extension UserRoleExtension on UserRole {
+  String get displayName {
+    switch (this) {
+      case UserRole.authorized:
+        return "Authorized Person";
+      case UserRole.transport:
+        return "Transportation";
+      case UserRole.processingUnit:
+        return "Processing Center";
+      case UserRole.admin:
+        return "Admin";
+      case UserRole.superAdmin:
+        return "Super Admin";
+      case UserRole.none:
+        return "none";
+    }
+  }
 
-
-
-
-  const UserTypes(this.displayName);
-  final String displayName;
-
-  @override
-  String toString() => displayName;
+  static UserRole fromString(String value) {
+    for (var userType in UserRole.values) {
+      if (userType.displayName == value) {
+        return userType;
+      }
+    }
+    return UserRole.none;
+  }
 }

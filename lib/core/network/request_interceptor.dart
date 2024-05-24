@@ -64,7 +64,7 @@ class RequestInterceptor extends Interceptor {
         level: Level.info);
     logDebug('onRequest: Request Headers => ${options.headers}',
         level: Level.info);
-    logDebug('onRequest: Request Data => ${_prettyJsonEncode(options.data)}',
+    logDebug('onRequest: Request Data => ${_prettyJsonEncode(options.data.fields)}',
         level: Level.info); // Log formatted request data
 
     return super.onRequest(options, handler);

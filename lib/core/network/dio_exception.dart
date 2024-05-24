@@ -47,7 +47,7 @@ class DioExceptions implements Exception {
   String _handleError(int? statusCode, dynamic error) {
     switch (statusCode) {
       case 400:
-        return error['data']['errors'][0];
+        return error['errors'];
       case 401:
         return 'Unauthorized';
       case 403:
@@ -55,7 +55,7 @@ class DioExceptions implements Exception {
       case 404:
         return 'Server is currently down. Please try again later.';
       case 422:
-        return error['data'];
+        return error['errors'];
       case 500:
         return 'Internal server error';
       case 502:

@@ -143,10 +143,15 @@ checkNetwork(NetworkInfo networkInfo) async {
   }
 }
 
-Future<void> showSnackDialog(context) async {
-  return showDialog(
-      context: context,
-      builder: (context) => const SnackBar(content: Text('data')));
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.black,
+      content: Text(message),
+      duration: const Duration(seconds: 3), // Adjust the duration as needed
+    ),
+  );
 }
 
 showAlertDialog(BuildContext context, String message, String description,
@@ -285,6 +290,15 @@ bool shouldShowBackButton(BuildContext context) {
 class Go {
   static Future<dynamic> to(dynamic page, {dynamic arguments}) async {
     Get.to(
+      page,
+      arguments: arguments,
+      transition: Transition.fadeIn,
+      curve:Curves.easeInOut,// choose your page transition accordingly
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+  static Future<dynamic> off(dynamic page, {dynamic arguments}) async {
+    Get.off(
       page,
       arguments: arguments,
       transition: Transition.fadeIn,

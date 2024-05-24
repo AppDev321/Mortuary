@@ -14,20 +14,20 @@ import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
 import '../../builder_ids.dart';
 import '../get/auth_controller.dart';
-import 'update_password_screen.dart';
+import 'reset_password_screen.dart';
 
 class OTPVerificationScreen extends StatelessWidget {
-  OTPVerificationScreen({super.key});
+  const OTPVerificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       body: GetBuilder<AuthController>(
-          id: updateSignupScreen,
+          id: updateOTPScreen,
           builder: (authController) {
             return Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               width: double.maxFinite,
               height: double.maxFinite,
               decoration: BoxDecoration(gradient: AppColors.appBackgroundColor),
@@ -44,28 +44,36 @@ class OTPVerificationScreen extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                       sizeFieldLargePlaceHolder,
-                      CustomTextWidget(
+                      const CustomTextWidget(
                         textAlign: TextAlign.center,
                         text: AppStrings.verificationScreenLabelMsg,
                         size: 13,
                         colorText: AppColors.secondaryTextColor,
                       ),
                       sizeFieldLargePlaceHolder,
-                      CustomOtpFields(onChanged: (value) {
-                        // setState(() {
-                        //   otp = value;
-                        // });
-                      }),
+                      CustomOtpFields(
+
+                        onCompleted: (value) {
+                        authController.otpCode = int.parse(value);
+                      }, onChanged: (value) {
+                        authController.otpCode = 0;
+                      },),
 
                       sizeFieldLargePlaceHolder,
                        ButtonWidget(
                         text: AppStrings.verify,
                         buttonType: ButtonType.gradient,
-
-                        textStyle: TextStyle(
+                        isLoading: authController.isAuthenticating,
+                        textStyle: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w600),
-                        onPressed: ()=>Go.to(UpdatePasswordScreen()),
-                        
+                        onPressed: (){
+                            if (authController.otpCode == 0) {
+                              showSnackBar(context, AppStrings.otpError);
+                            } else {
+                              authController.verifyOTP(context);
+                            }
+                          }
+
                       )
                     ],
                   ),

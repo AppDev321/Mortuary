@@ -9,7 +9,7 @@ class EmptyResponse extends Equatable {
 
   final bool status;
   final String message;
-  final String data;
+  final dynamic data;
 
   factory EmptyResponse.fromJson(Map<String, dynamic> json){
     return EmptyResponse(

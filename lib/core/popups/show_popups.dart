@@ -12,25 +12,24 @@ import '../constants/app_strings.dart';
 import '../error/errors.dart';
 import '../utils/utils.dart';
 
-// Future<void> showErrorDialog(BuildContext context, CustomError? error,
-//     {Function()? onPressed}) {
-//   return showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       useSafeArea: true,
-//       builder: (buildContext) => ChoiceDialog(
-//           title: error!.title,
-//           message:
-//               '${error.message} \n\n File: ${getFileWithError(error.stackTrace)}',
-//           firstChoice: AppLiterals.okButtonText,
-//           firstOnPressed: () {
-//             if (onPressed != null) {
-//               onPressed();
-//             } else {
-//               Navigator.pop(context);
-//             }
-//           }));
-// }
+Future<void> showInfoDialog(BuildContext context, String title,String message,
+    {Function()? onPressed}) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: true,
+      builder: (buildContext) => ChoiceDialog(
+          title: title,
+          message:message,
+          firstChoice: AppStrings.okButtonText,
+          firstOnPressed: () {
+            if (onPressed != null) {
+              onPressed();
+            } else {
+              Navigator.pop(context);
+            }
+          }));
+}
 
 Future<void> getErrorDialog(CustomError? error,
     {String buttonText = AppStrings.okButtonText, Function()? onPressed}) {
