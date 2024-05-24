@@ -82,9 +82,9 @@ class LoginScreen extends StatelessWidget {
                           textStyle: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w600),
                           onPressed: () {
-                            if (loginFormKey.currentState!.validate()) {
+                            //if (loginFormKey.currentState!.validate()) {
                               authController.login(context);
-                            }
+                           // }
                           },
                         )
                       ],

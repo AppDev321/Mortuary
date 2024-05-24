@@ -10,6 +10,7 @@ enum UserRole {
   processingUnit,
   admin,
   superAdmin,
+  volunteer,
   none
 }
 
@@ -26,6 +27,8 @@ extension UserRoleExtension on UserRole {
         return "Admin";
       case UserRole.superAdmin:
         return "Super Admin";
+      case UserRole.volunteer:
+        return "Volunteer";
       case UserRole.none:
         return "none";
     }

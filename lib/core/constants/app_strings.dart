@@ -41,13 +41,12 @@ class AppStrings {
   static const String scan='Scan';
   static const String submit='Submit';
   static const String skipForm='Skip Form & Share Pin Location';
-  static const String sharePinLocation='share Pin Location';
+  static const String sharePinLocation='Proceed & Share Location';
   static const String ok='Ok';
   static const String locationSharedMessage='Your location has been shared successfully. Ambulance will arrive shortly.';
   static const String reportFormDesc='Please fill the form below in order to report a death';
   static const String otpError='Please enter OTP';
-
-
+  static const String generalLocation='Generalized Location';
 
 
 

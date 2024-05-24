@@ -180,6 +180,10 @@ showAlertDialog(BuildContext context, String message, String description,
   );
 }
 
+
+
+
+
 apiExceptionMapping(int statusCode) {
   // if (statusCode == 500) {
   //   return Future.error(ServerError());

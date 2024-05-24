@@ -7,7 +7,7 @@ class AppAssets {
   static const String icReportDeathButton = "assets/icons/ic_report_death_button.svg";
   static const String icMale = "assets/icons/ic_male.svg";
   static const String icFemale = "assets/icons/ic_female.svg";
-
+  static const String icPinLocation = 'assets/icons/ic_pin_loc.svg';
 
 
   static const String boarding1 = "assets/images/boarding1.jpg";

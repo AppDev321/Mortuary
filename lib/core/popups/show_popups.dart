@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,9 +9,9 @@ import 'package:mortuary/core/widgets/image_viewer.dart';
 
 import '../constants/app_strings.dart';
 import '../error/errors.dart';
-import '../utils/utils.dart';
+import '../widgets/radio_option_dialog_view.dart';
 
-Future<void> showInfoDialog(BuildContext context, String title,String message,
+Future<void> showInfoDialog(BuildContext context, String title, String message,
     {Function()? onPressed}) {
   return showDialog(
       context: context,
@@ -20,7 +19,7 @@ Future<void> showInfoDialog(BuildContext context, String title,String message,
       useSafeArea: true,
       builder: (buildContext) => ChoiceDialog(
           title: title,
-          message:message,
+          message: message,
           firstChoice: AppStrings.okButtonText,
           firstOnPressed: () {
             if (onPressed != null) {
@@ -37,7 +36,9 @@ Future<void> getErrorDialog(CustomError? error,
   return Get.dialog(
       ChoiceDialog(
           title: error!.title,
-          message:error.message is List<String>?error.message.join("\n"): '${error.message}',
+          message: error.message is List<String>
+              ? error.message.join("\n")
+              : '${error.message}',
           firstChoice: buttonText,
           firstOnPressed: () {
             if (onPressed != null) {
@@ -166,4 +167,28 @@ Future<bool?> discountTypeWarning() async {
       'Confirm Change',
       Icons.change_circle_outlined,
       'Revert');
+}
+
+showRadioOptionDialog<T>(
+  BuildContext context,
+  String title,
+  List<T> options,
+  T selectedOption,
+  Function(T?) onChanged,
+  Function(T?) onConfirmed,
+ String Function(T) itemToString
+) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return RadioOptionDialog<T>(
+        title: title,
+        convertItemToStringName: itemToString,
+        options: options,
+        selectedOption: selectedOption,
+        onChanged: onChanged,
+        onConfirmed: onConfirmed,
+      );
+    },
+  );
 }
