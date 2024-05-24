@@ -47,7 +47,7 @@ class AppStrings {
   static const String reportFormDesc='Please fill the form below in order to report a death';
   static const String otpError='Please enter OTP';
   static const String generalLocation='Generalized Location';
-
+  static const String selectLocation = "Select Location";
 
 
 

@@ -45,3 +45,12 @@ List<RadioOption> getVehicleTypeList() {
   ];
 }
 
+List<RadioOption> getGeneralizeLocation() {
+  return [
+    RadioOption()..id = 1..name = "Van",
+    RadioOption()..id = 2..name = "Hiace",
+    RadioOption()..id = 3..name = "Ambulance",
+    RadioOption()..id = 4..name = "Emergency Response Vehicle",
+  ];
+}
+

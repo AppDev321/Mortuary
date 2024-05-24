@@ -151,11 +151,14 @@ class CustomTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (headText != null) ...[
-            CustomTextWidget(
-              text: headText,
-              size: 12,
-              colorText: AppColors.blackColor,
-              fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.only(left:8.0),
+              child: CustomTextWidget(
+                text: headText,
+                size: 14,
+                colorText: AppColors.blackColor,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(
               height: 5,

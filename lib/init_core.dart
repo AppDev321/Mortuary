@@ -33,6 +33,4 @@ initCore() {
           () => ApiManager(Get.find(), Get.find(),Get.find()),
       fenix: true);
 
-
-
 }

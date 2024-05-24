@@ -5,6 +5,7 @@ import '../../../../core/constants/app_urls.dart';
 import '../../../../core/error/errors.dart';
 import '../../../../core/network/api_manager.dart';
 import '../../../../core/network/empty_success_response.dart';
+import '../../../../init_main.dart';
 import 'auth_local_source.dart';
 
 abstract class AuthRemoteDataSource {
@@ -79,6 +80,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<bool> logout(String? token) async {
     await localDataSource.removeSession();
+    removeAll();
     return true;
   }
 
