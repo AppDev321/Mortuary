@@ -6,17 +6,47 @@ import '../../../../core/network/api_manager.dart';
 import '../data_source/auth_local_source.dart';
 import '../data_source/auth_remote_source.dart';
 
-class AuthenticationRepo {
+
+abstract class AuthenticationRepo {
+
+  Future<Session> login({
+    required String emailAddress,
+    required String password,
+  });
+
+  Future<EmptyResponse> forgotPassword({
+    required String emailAddress,
+    required String phoneNumber,
+  });
+
+  Future<EmptyResponse> verifyOTP({
+    required String emailAddress,
+    required String phoneNumber,
+    required int otpCode
+  });
+
+  Future<EmptyResponse> resetPassword({
+    required String emailAddress,
+    required String phoneNumber,
+    required String password,
+    required String confirmPassword
+  });
+
+
+
+}
+class AuthenticationRepoImpl extends AuthenticationRepo{
   final AuthRemoteDataSource remoteDataSource;
   final AuthLocalDataSource localDataSource;
   final ApiManager apiManager;
 
-  AuthenticationRepo({
+  AuthenticationRepoImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.apiManager,
   });
 
+  @override
   Future<Session> login({
     required String emailAddress,
     required String password,
@@ -33,7 +63,7 @@ class AuthenticationRepo {
       return session;
     });
   }
-
+  @override
   Future<EmptyResponse> forgotPassword({
     required String emailAddress,
     required String phoneNumber,
@@ -46,7 +76,7 @@ class AuthenticationRepo {
     });
   }
 
-
+  @override
   Future<EmptyResponse> verifyOTP({
     required String emailAddress,
     required String phoneNumber,
@@ -61,6 +91,7 @@ class AuthenticationRepo {
     });
   }
 
+  @override
   Future<EmptyResponse> resetPassword({
     required String emailAddress,
     required String phoneNumber,

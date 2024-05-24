@@ -9,7 +9,7 @@ import 'data/data_source/auth_remote_source.dart';
 
 initAuth() async {
   Get.lazyPut<AuthenticationRepo>(
-      () => AuthenticationRepo(
+      () => AuthenticationRepoImpl(
           remoteDataSource: Get.find(),
           localDataSource: Get.find(),
           apiManager: Get.find()),

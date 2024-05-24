@@ -5,19 +5,23 @@ import '../../../../core/error/errors.dart';
 import '../../../../core/network/api_manager.dart';
 import '../data_source/death_report_remote_source.dart';
 
-class DeathReportRepo {
+abstract class DeathReportRepo {
+  Future<EmptyResponse> volunteerDeathReport(
+  {required int deathBodyCount,required int locationId,required Position latLng});
+}
+
+class DeathReportRepoImpl extends DeathReportRepo {
   final DeathReportRemoteSource remoteDataSource;
   final ApiManager apiManager;
 
-  DeathReportRepo({
+  DeathReportRepoImpl({
     required this.remoteDataSource,
     required this.apiManager,
   });
 
+  @override
   Future<EmptyResponse> volunteerDeathReport(
-      {required int deathBodyCount,
-      required int locationId,
-      required Position latLng}) async {
+  {required int deathBodyCount,required int locationId,required Position latLng}) async {
     return apiManager.handleRequest(() async {
       final session = await remoteDataSource.volunteerDeathReport(
           deathBodyCount, locationId, latLng);

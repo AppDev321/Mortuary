@@ -28,10 +28,8 @@ class DeathReportController extends GetxController {
     currentUserRole = role;
   }
 
-  var apiResponseLoaded = LoadingState.loading;
-
+  var apiResponseLoaded = LoadingState.loaded;
   bool get isApiResponseLoaded => apiResponseLoaded == LoadingState.loading;
-
 
 
 

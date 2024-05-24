@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/popups/show_popups.dart';
-import 'package:mortuary/core/utils/common_api_data.dart';
+import 'package:mortuary/core/utils/app_config_service.dart';
 import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
@@ -14,6 +14,7 @@ import '../../../../core/enums/enums.dart';
 import '../../../../core/widgets/custom_screen_widget.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
+import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 
 class DeathCountScreen extends StatelessWidget {
   final UserRole currentUserRole;
@@ -115,11 +116,22 @@ class DeathCountScreen extends StatelessWidget {
                     icon: SvgPicture.asset(AppAssets.icPinLocation),
                     textStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w600),
-                    onPressed: () {
+                    onPressed: () async{
                       // if(deathCountKey.currentState!.validate()) {
                       //   print(controller.selectedGeneralLocation);
                       // }
-                      controller.initiateVolunteerDeathReport(context);
+                    //  controller.initiateVolunteerDeathReport(context);
+                      //Go.to(()=>QRViewExample());
+
+                      await Navigator.of(context).push(
+                          MaterialPageRoute(
+                          builder: (context) =>
+                      AiBarcodeScanner(
+                        onScan: (String value) {
+                          print("barcode= $value");
+                        }
+                        )));
+
                     },
                   ),
                 ]);

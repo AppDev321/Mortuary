@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/common_api_data.dart';
+import '../../../../core/utils/app_config_service.dart';
 
 class AppConfig extends Equatable {
   AppConfig({
@@ -12,6 +12,7 @@ class AppConfig extends Equatable {
     required this.unitTypes,
     required this.vehicleTypes,
     required this.visaTypes,
+    required this.generalLocation
   });
 
   final List<RadioOption> ageGroup;
@@ -22,6 +23,9 @@ class AppConfig extends Equatable {
   final List<RadioOption> unitTypes;
   final List<RadioOption> vehicleTypes;
   final List<RadioOption> visaTypes;
+  final List<RadioOption> generalLocation;
+
+
 
   factory AppConfig.fromJson(Map<String, dynamic> json) {
     return AppConfig(
@@ -57,6 +61,10 @@ class AppConfig extends Equatable {
           ? []
           : List<RadioOption>.from(
               json["visa_types"]!.map((x) => RadioOption.fromJson(x))),
+      generalLocation: json["age_groups"] == null
+          ? []
+          : List<RadioOption>.from(
+          json["age_groups"]!.map((x) => RadioOption.fromJson(x))),
     );
   }
 
@@ -70,6 +78,7 @@ class AppConfig extends Equatable {
         unitTypes,
         vehicleTypes,
         visaTypes,
+    generalLocation
       ];
 }
 

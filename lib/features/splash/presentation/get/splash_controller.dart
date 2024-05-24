@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:mortuary/core/utils/common_api_data.dart';
+import 'package:mortuary/core/utils/app_config_service.dart';
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:mortuary/features/splash/builder_ids.dart';

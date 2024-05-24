@@ -39,6 +39,7 @@ class AppStrings {
   static const String next='Next';
   static const String scanCode='Scan QR Code';
   static const String scan='Scan';
+  static const String scanScreenLabel = "Please scan the QR code in order to continue";
   static const String submit='Submit';
   static const String skipForm='Skip Form & Share Pin Location';
   static const String sharePinLocation='Proceed & Share Location';

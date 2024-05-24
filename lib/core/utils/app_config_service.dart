@@ -22,4 +22,8 @@ class ConfigService {
   List<RadioOption> getAgeGroups() {
     return _configData!.ageGroup ;
   }
+
+  List<RadioOption> getVisaTypes() {
+    return _configData!.visaTypes ;
+  }
 }

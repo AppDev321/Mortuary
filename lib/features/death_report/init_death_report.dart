@@ -6,7 +6,7 @@ import 'package:mortuary/features/death_report/presentation/get/death_report_con
 initDeathReport() async {
   Get.lazyPut<DeathReportRepo>(
       () =>
-          DeathReportRepo(remoteDataSource: Get.find(), apiManager: Get.find()),
+          DeathReportRepoImpl(remoteDataSource: Get.find(), apiManager: Get.find()),
       fenix: true);
 
   Get.lazyPut<DeathReportRemoteSource>(
