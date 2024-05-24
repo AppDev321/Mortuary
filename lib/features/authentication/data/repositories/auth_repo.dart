@@ -1,11 +1,8 @@
-import 'package:dio/dio.dart';
+
 import 'package:mortuary/core/error/errors.dart';
 import 'package:mortuary/core/network/empty_success_response.dart';
-import 'package:mortuary/core/services/network_service.dart';
 import 'package:mortuary/features/authentication/domain/enities/session.dart';
-
 import '../../../../core/network/api_manager.dart';
-import '../../../../core/utils/utils.dart';
 import '../data_source/auth_local_source.dart';
 import '../data_source/auth_remote_source.dart';
 

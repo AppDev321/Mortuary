@@ -76,7 +76,8 @@ class _ButtonWidgetState extends State<ButtonWidget> {
           ? BoxDecoration(gradient: buttonGradientColor,borderRadius:BorderRadius.circular(widget.radius) )
           : null,
       child: ElevatedButton.icon(
-        icon: widget.icon ?? const SizedBox(),
+        icon:widget.isLoading
+            ?const SizedBox(): widget.icon ?? const SizedBox(),
         style:
         buttonStyle,
         onPressed: () async {

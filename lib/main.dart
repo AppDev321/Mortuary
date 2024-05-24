@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         textTheme: lightTextTheme,
       ),
-      home:  LoginScreen()
+      home:  SplashScreen()
     );
   }
 }

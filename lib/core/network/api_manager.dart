@@ -69,14 +69,16 @@ class ApiManager {
       if (response.statusCode == 200) {
         return ApiResponse(decodedJson, null, true, decodedJson['message']);
       } else if (response.data != null) {
+
         var error = decodedJson['errors'] as String;
         error.replaceAll("###", "\n");
         return ApiResponse(
             null,
-            GeneralError(message: error),
+            GeneralError(message: error,title: decodedJson['message']),
             false,
             "Failed to get data");
       } else {
+
         throw DioExceptions.fromDioError(DioError(
           response: response,
           requestOptions: RequestOptions(path: url),
@@ -118,7 +120,7 @@ class ApiManager {
         url: url, method: method, data: data);
 
     if (response.error != null) {
-      return Future.error(GeneralError(message: response.error!.message));
+      return Future.error(response.error!);
     } else {
       return fromJson(response.data!);
     }

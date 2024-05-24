@@ -5,20 +5,21 @@ enum LoginType { email, phone }
 enum LoadingState { loading, loaded, error }
 
 enum UserRole {
-  authorized,
+  emergency,
   transport,
   processingUnit,
   admin,
   superAdmin,
   volunteer,
+  morgue,
   none
 }
 
 extension UserRoleExtension on UserRole {
   String get displayName {
     switch (this) {
-      case UserRole.authorized:
-        return "Authorized Person";
+      case UserRole.emergency:
+        return "Emergency";
       case UserRole.transport:
         return "Transportation";
       case UserRole.processingUnit:
@@ -29,6 +30,8 @@ extension UserRoleExtension on UserRole {
         return "Super Admin";
       case UserRole.volunteer:
         return "Volunteer";
+      case UserRole.morgue:
+        return "Morgue";
       case UserRole.none:
         return "none";
     }

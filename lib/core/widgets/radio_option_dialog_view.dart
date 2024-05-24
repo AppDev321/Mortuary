@@ -41,21 +41,23 @@ class _RadioOptionDialogState<T> extends State<RadioOptionDialog<T>> {
         widget.title,
         style: TextStyle(fontSize: 16),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: widget.options.map((option) {
-          return RadioListTile<T>(
-            title: Text(widget.convertItemToStringName(option)),
-            value: option,
-            groupValue: _selectedOption,
-            onChanged: (value) {
-              setState(() {
-                _selectedOption = value;
-                widget.onChanged(value);
-              });
-            },
-          );
-        }).toList(),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: widget.options.map((option) {
+            return RadioListTile<T>(
+              title: Text(widget.convertItemToStringName(option)),
+              value: option,
+              groupValue: _selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  _selectedOption = value;
+                  widget.onChanged(value);
+                });
+              },
+            );
+          }).toList(),
+        ),
       ),
       actions: <Widget>[
         TextButton(

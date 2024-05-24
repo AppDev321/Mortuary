@@ -26,6 +26,7 @@ class DeathCountScreen extends StatelessWidget {
     return Form(
       key: deathCountKey,
       child: GetBuilder<DeathReportController>(
+
           initState:
               Get.find<DeathReportController>().setUserRole(currentUserRole),
           builder: (controller) {
@@ -94,7 +95,7 @@ class DeathCountScreen extends StatelessWidget {
                       showRadioOptionDialog(
                           context,
                           AppStrings.generalLocation,
-                          getGeneralizeLocation(),
+                          ConfigService().getAgeGroups(),
                           controller.selectedGeneralLocation,
                               (onChanged) => controller.selectedGeneralLocation,
                               (onConfirmed){
@@ -108,15 +109,17 @@ class DeathCountScreen extends StatelessWidget {
                   ),
                   sizeFieldLargePlaceHolder,
                   ButtonWidget(
+                    isLoading: controller.isApiResponseLoaded,
                     text: AppStrings.sharePinLocation,
                     buttonType: ButtonType.gradient,
                     icon: SvgPicture.asset(AppAssets.icPinLocation),
                     textStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w600),
                     onPressed: () {
-                      if(deathCountKey.currentState!.validate()) {
-                        print(controller.selectedGeneralLocation);
-                      }
+                      // if(deathCountKey.currentState!.validate()) {
+                      //   print(controller.selectedGeneralLocation);
+                      // }
+                      controller.initiateVolunteerDeathReport(context);
                     },
                   ),
                 ]);

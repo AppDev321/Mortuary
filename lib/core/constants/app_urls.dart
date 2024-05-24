@@ -6,10 +6,12 @@ class AppUrls {
   static const socketIOUrl = "";
 
   //App URLS
+  static const configUrl = '${baseUrl}config';
   static const loginUrl = '${baseUrl}login';
   static const forgotPasswordUrl = '${baseUrl}forgot-password';
   static const verifyOTPUrl = '${baseUrl}verify-otp';
   static const resetPasswordUrl = '${baseUrl}reset-password';
+  static const volunteerDeathReportUrl= '${baseUrl}volunteer/death-report';
 
 
 

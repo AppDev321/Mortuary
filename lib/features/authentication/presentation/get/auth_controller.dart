@@ -21,9 +21,8 @@ class AuthController extends GetxController {
 
   AuthController({required this.authUseRepo});
 
-  CustomError? customError;
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'authperson@email.com';
+  String email = 'volunteer@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';
@@ -76,7 +75,7 @@ class AuthController extends GetxController {
       session = value;
       onApiResponseCompleted();
 
-      if (currentUserRole == UserRole.authorized || currentUserRole == UserRole.volunteer) {
+      if (currentUserRole == UserRole.volunteer) {
         Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole ?? UserRole.none));
       } else {
         showSnackBar(context, ApiMessages.unIdentifiedRole);
@@ -130,13 +129,14 @@ class AuthController extends GetxController {
         Get.offAll(() => LoginScreen());
       });
     }).onError<CustomError>((error, stackTrace) async {
+      print(error.title);
       onErrorShowDialog(error);
     });
   }
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();
-    getErrorDialog(error);
+    showAppThemedDialog(error);
   }
 
   onApiResponseCompleted() {

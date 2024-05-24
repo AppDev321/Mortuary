@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
@@ -290,6 +291,10 @@ bool shouldShowBackButton(BuildContext context) {
   return true;
 }
 
+Future<Position> getUserCurrentPosition() async {
+  await  Geolocator.requestPermission();
+  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+}
 
 class Go {
   static Future<dynamic> to(dynamic page, {dynamic arguments}) async {

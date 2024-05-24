@@ -8,8 +8,8 @@ class AppAssets {
   static const String icMale = "assets/icons/ic_male.svg";
   static const String icFemale = "assets/icons/ic_female.svg";
   static const String icPinLocation = 'assets/icons/ic_pin_loc.svg';
-
-
+  static const String icErrorAlert = 'assets/icons/ic_alert_error.svg';
+  static const String icSuccessAlert = 'assets/icons/ic_alert_success.svg';
   static const String boarding1 = "assets/images/boarding1.jpg";
   static const String boarding2 = "assets/images/boarding2.jpg";
   static const String boarding3 = "assets/images/boarding3.jpg";

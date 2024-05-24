@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mortuary/core/constants/app_assets.dart';
+import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/popups/show_snackbar.dart';
 import 'package:mortuary/core/popups/widgets/choice_dialog.dart';
 import 'package:mortuary/core/popups/widgets/image_choice.dart';
 import 'package:mortuary/core/styles/colors.dart';
+import 'package:mortuary/core/widgets/button_widget.dart';
+import 'package:mortuary/core/widgets/custom_text_field.dart';
+import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/core/widgets/image_viewer.dart';
 
 import '../constants/app_strings.dart';
@@ -170,14 +176,13 @@ Future<bool?> discountTypeWarning() async {
 }
 
 showRadioOptionDialog<T>(
-  BuildContext context,
-  String title,
-  List<T> options,
-  T selectedOption,
-  Function(T?) onChanged,
-  Function(T?) onConfirmed,
- String Function(T) itemToString
-) {
+    BuildContext context,
+    String title,
+    List<T> options,
+    T selectedOption,
+    Function(T?) onChanged,
+    Function(T?) onConfirmed,
+    String Function(T) itemToString) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -190,5 +195,56 @@ showRadioOptionDialog<T>(
         onConfirmed: onConfirmed,
       );
     },
+  );
+}
+
+showAppThemedDialog(CustomError? error,
+    {bool showErrorMessage = true,
+      String buttonText = AppStrings.okButtonText,
+      Function()? onPressed}) {
+  return Get.dialog(
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Material(
+                child: Column(
+                  children: [
+                    SvgPicture.asset(showErrorMessage?AppAssets.icErrorAlert:AppAssets.icSuccessAlert),
+                    sizeFieldMediumPlaceHolder,
+                    CustomTextWidget(text: error?.title.toUpperCase(),size: 16,fontWeight: FontWeight.bold,textAlign: TextAlign.center,),
+                    error?.title != null
+                        ? sizeFieldMediumPlaceHolder
+                        : sizeFieldMinPlaceHolder,
+                    CustomTextWidget(text: error?.message,size: 12,textAlign: TextAlign.center,colorText: AppColors.secondaryTextColor,),
+                    sizeFieldMediumPlaceHolder,
+                    ButtonWidget(
+                      text:buttonText,
+                      buttonType: ButtonType.gradient,
+                      onPressed: (){
+                        Get.back();
+                        if(onPressed != null) {
+                          onPressed();
+                        }
+                      }
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }

@@ -1,3 +1,7 @@
+import 'package:geolocator/geolocator.dart';
+import 'package:mortuary/core/network/empty_success_response.dart';
+
+import '../../../../core/error/errors.dart';
 import '../../../../core/network/api_manager.dart';
 import '../data_source/death_report_remote_source.dart';
 
@@ -10,22 +14,14 @@ class DeathReportRepo {
     required this.apiManager,
   });
 
-// Future<Session> login({
-//   required String emailAddress,
-//   required String password,
-// }) async {
-//   return apiManager.handleRequest(() async {
-//     final session = await remoteDataSource.login(
-//       emailAddress: emailAddress,
-//       password: password,
-//     );
-//
-//     if (session is! CustomError) {
-//       await localDataSource.saveSession(session);
-//     }
-//     return session;
-//   });
-// }
-//
-//
+  Future<EmptyResponse> volunteerDeathReport(
+      {required int deathBodyCount,
+      required int locationId,
+      required Position latLng}) async {
+    return apiManager.handleRequest(() async {
+      final session = await remoteDataSource.volunteerDeathReport(
+          deathBodyCount, locationId, latLng);
+      return session;
+    });
+  }
 }

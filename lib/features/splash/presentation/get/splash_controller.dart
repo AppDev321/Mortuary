@@ -1,18 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mortuary/core/utils/common_api_data.dart';
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/onboarding/presentation/pages/onboarding_screen.dart';
+import 'package:mortuary/features/splash/builder_ids.dart';
+import 'package:mortuary/features/splash/data/repositories/splash_repo.dart';
 
-class SplashScreenController extends GetxController{
-  static SplashScreenController get find => Get.find();
+import '../../../../core/error/errors.dart';
+import '../../../../core/popups/show_popups.dart';
 
+class SplashScreenController extends GetxController {
+  final SplashRepo splashRepo;
 
-  RxBool animate = false.obs;
+  SplashScreenController({required this.splashRepo});
 
+  var isApiLoading = false;
 
-  Future startAnimation() async {
+   startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    animate.value = true;
+
     await Future.delayed(const Duration(milliseconds: 5000));
-    Get.to( LoginScreen());
+    getApplicationConfiguration();
   }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+
+  }
+
+  getApplicationConfiguration() async {
+    isApiLoading = true;
+    update([updatedSplash]);
+    await splashRepo.getAppConfigurations().then((value) async {
+      //set data in configuration class
+      ConfigService().setConfigData(value);
+       Get.off(() => LoginScreen());
+    }).onError<CustomError>((error, stackTrace) async {
+      isApiLoading = false;
+      update();
+      showAppThemedDialog(error);
+    });
+  }
+
+
+
 }
