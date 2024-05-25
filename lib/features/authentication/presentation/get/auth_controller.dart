@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/constants/app_strings.dart';
 import 'package:mortuary/core/enums/enums.dart';
+import 'package:mortuary/core/services/fcm_controller.dart';
 import 'package:mortuary/features/authentication/builder_ids.dart';
 import 'package:mortuary/features/authentication/domain/enities/session.dart';
 import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
@@ -21,8 +22,10 @@ class AuthController extends GetxController {
 
   AuthController({required this.authUseRepo});
 
+  final fcmController  = Get.find<FCMController>();
+
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'volunteer@email.com';
+  String email = 'tansport@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';

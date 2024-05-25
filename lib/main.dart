@@ -1,21 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/styles/color_schemes.dart';
 import 'package:mortuary/core/styles/text_theme.dart';
 import 'package:mortuary/features/authentication/init_auth.dart';
-import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
-import 'package:mortuary/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:mortuary/features/splash/presentation/widget/splash_screen.dart';
 import 'package:mortuary/init_core.dart';
 import 'package:mortuary/init_main.dart';
 
-import 'features/death_report/presentation/widget/report_death_screen.dart';
+import 'core/services/push_notification_sevice.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // await Firebase.initializeApp();
+  debugPrint("background notification");
+  PushNotifications().firebaseMessagingBackgroundHandler(message);
+}
+
 
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   FlutterNativeSplash.remove();
   initCore();
