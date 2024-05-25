@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mortuary/core/widgets/button_widget.dart';
+import 'package:mortuary/core/widgets/custom_text_widget.dart';
 
 import '../constants/app_strings.dart';
 
@@ -37,9 +39,13 @@ class _RadioOptionDialogState<T> extends State<RadioOptionDialog<T>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        widget.title,
-        style: TextStyle(fontSize: 16),
+      elevation: 0,
+      backgroundColor: Colors.white,
+      title: CustomTextWidget(
+        text:widget.title,
+        size: 16,
+        fontWeight: FontWeight.w700,
+        textAlign: TextAlign.center,
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -59,20 +65,19 @@ class _RadioOptionDialogState<T> extends State<RadioOptionDialog<T>> {
           }).toList(),
         ),
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(AppStrings.cancelButtonText),
-        ),
-        TextButton(
+      actions:
+
+      <Widget>[
+
+        ButtonWidget(
+          text: AppStrings.okButtonText,
+          buttonType: ButtonType.gradient,
           onPressed: () {
             widget.onConfirmed(_selectedOption);
             Navigator.of(context).pop();
           },
-          child: Text(AppStrings.okButtonText),
-        ),
+        )
+
       ],
     );
   }

@@ -26,4 +26,8 @@ class ConfigService {
   List<RadioOption> getVisaTypes() {
     return _configData!.visaTypes ;
   }
+
+  List<RadioOption> getGeneralLocation() {
+    return _configData!.generalLocation ;
+  }
 }

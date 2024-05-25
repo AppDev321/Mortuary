@@ -3,10 +3,11 @@ import 'package:mortuary/core/network/empty_success_response.dart';
 
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/network/api_manager.dart';
+import '../../domain/enities/report_a_death_response.dart';
 
 abstract class DeathReportRemoteSource {
-  Future<EmptyResponse> volunteerDeathReport(
-      int deathBodyCount, int locationId, Position latLng);
+  Future<ReportDeathResponse> volunteerDeathReport(
+      int deathBodyCount, int locationId, double lat, double lng,String address);
 }
 
 class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
@@ -17,20 +18,21 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   );
 
   @override
-  Future<EmptyResponse> volunteerDeathReport(
-      int deathBodyCount, int locationId, Position latLng) async {
+  Future<ReportDeathResponse> volunteerDeathReport(
+      int deathBodyCount, int locationId, double lat,double lng,String address) async {
     final Map<String, dynamic> jsonMap = {
       "no_of_deaths": deathBodyCount,
       "general_location_id": locationId,
-      "latitude": latLng.latitude,
-      "longitude": latLng.longitude
+      "latitude": lat,
+      "longitude": lng,
+      "address":address
     };
 
-    return await apiManager.makeApiRequest<EmptyResponse>(
+    return await apiManager.makeApiRequest<ReportDeathResponse>(
       url: AppUrls.volunteerDeathReportUrl,
       method: RequestMethod.POST,
       data: jsonMap,
-      fromJson: (json) => EmptyResponse.fromJson(json['data']),
+      fromJson: (json) => ReportDeathResponse.fromJson(json['data'],json['message']),
     );
   }
 }

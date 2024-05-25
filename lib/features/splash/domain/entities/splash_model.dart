@@ -61,10 +61,10 @@ class AppConfig extends Equatable {
           ? []
           : List<RadioOption>.from(
               json["visa_types"]!.map((x) => RadioOption.fromJson(x))),
-      generalLocation: json["age_groups"] == null
+      generalLocation: json["generalLocations"] == null
           ? []
           : List<RadioOption>.from(
-          json["age_groups"]!.map((x) => RadioOption.fromJson(x))),
+          json["generalLocations"]!.map((x) => RadioOption.fromJson(x))),
     );
   }
 

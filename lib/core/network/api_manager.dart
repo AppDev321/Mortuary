@@ -66,6 +66,7 @@ class ApiManager {
       }
 
       final Map<String, dynamic> decodedJson = response.data;
+
       if (response.statusCode == 200) {
         return ApiResponse(decodedJson, null, true, decodedJson['message']);
       } else if (response.data != null) {

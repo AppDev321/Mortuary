@@ -13,6 +13,6 @@ initDeathReport() async {
       () => DeathReportRemoteSourceImpl(Get.find()),
       fenix: true);
 
-  Get.lazyPut(() => DeathReportController(deathReportRepo: Get.find()),
+  Get.lazyPut(() => DeathReportController(deathReportRepo: Get.find(),googleMapScreenController: Get.find()),
       fenix: true);
 }

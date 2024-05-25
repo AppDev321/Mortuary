@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/popups/show_popups.dart';
 import 'package:mortuary/core/styles/colors.dart';
+import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
@@ -18,7 +20,9 @@ import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/load_more_listview.dart';
 
 class DeathReportFormScreen extends StatefulWidget {
-  DeathReportFormScreen({Key? key}) : super(key: key);
+  final String  deathBodyBandCode;
+  final int  deathFormCode;
+  DeathReportFormScreen({Key? key, required this.deathBodyBandCode, required this.deathFormCode}) : super(key: key);
 
   @override
   State<DeathReportFormScreen> createState() => _DeathReportFormScreenState();
@@ -40,7 +44,7 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
         titleText: AppStrings.reportDeath.toUpperCase(),
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomTextWidget(
+          const CustomTextWidget(
             text: AppStrings.reportFormDesc,
             size: 13,
             colorText: AppColors.secondaryTextColor,
@@ -48,7 +52,15 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
           ),
           sizeFieldLargePlaceHolder,
           CustomTextField(
-            suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+            headText: AppStrings.qrNumber,
+            borderEnable: true,
+            text: widget.deathBodyBandCode,
+            fontWeight: FontWeight.normal,
+            readOnly: true,
+          ),
+          sizeFieldMinPlaceHolder,
+          const CustomTextField(
+            suffixIcon:  Icon(Icons.keyboard_arrow_down_rounded),
             headText: AppStrings.idType,
             borderEnable: true,
             text: AppStrings.idType,
@@ -57,15 +69,15 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
             readOnly: true,
           ),
           sizeFieldMinPlaceHolder,
-          CustomTextField(
+         const CustomTextField(
             headText: AppStrings.idNumber,
             borderEnable: true,
             text: AppStrings.idNumber,
-            // validator: EmailValidator.validator,
+            validator: EmptyFieldValidator.validator,
             fontWeight: FontWeight.normal,
           ),
           sizeFieldMinPlaceHolder,
-          Align(
+          const Align(
             alignment: Alignment.topLeft,
             child: CustomTextWidget(
                 text: AppStrings.gender,
@@ -79,7 +91,7 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
                     splashColor: Colors.pinkAccent,
                     onTap: () {
                       setState(() {
-                        genders.forEach((gender) => gender.isSelected = false);
+                        genders.map((gender) => gender.isSelected = false);
                         e.isSelected = true;
                       });
                     },
@@ -88,27 +100,25 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
             ],
           ),
           sizeFieldMinPlaceHolder,
-          CustomTextField(
-            suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+          const CustomTextField(
+            suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
             headText: AppStrings.ageGroup,
             borderEnable: true,
             text: AppStrings.ageGroup,
             // validator: EmailValidator.validator,
             fontWeight: FontWeight.normal,
             readOnly: true,
-          ),
 
+          ),
           sizeFieldLargePlaceHolder,
           sizeFieldMediumPlaceHolder,
           ButtonWidget(
             text: AppStrings.submit,
             buttonType: ButtonType.gradient,
-
-            textStyle:const  TextStyle(
-                fontSize: 15, fontWeight: FontWeight.w600),
-            onPressed:(){ },
+            textStyle:
+                const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            onPressed: () {},
           ),
-
           sizeFieldMediumPlaceHolder,
           CustomTextWidget(
             text: AppStrings.skipForm,
@@ -118,6 +128,4 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
           ),
         ]);
   }
-
-
 }

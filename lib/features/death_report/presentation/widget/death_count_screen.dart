@@ -96,14 +96,13 @@ class DeathCountScreen extends StatelessWidget {
                       showRadioOptionDialog(
                           context,
                           AppStrings.generalLocation,
-                          ConfigService().getAgeGroups(),
+                          ConfigService().getGeneralLocation(),
                           controller.selectedGeneralLocation,
                               (onChanged) => controller.selectedGeneralLocation,
                               (onConfirmed){
                                     controller.setGeneralLocation(onConfirmed!);
                                     controller.update();
                                     locationTextController.text =  controller.selectedGeneralLocation?.name ?? "";
-
                               },
                               (itemToString) => itemToString?.name ?? "");
                     }, text: AppStrings.selectLocation,
@@ -117,21 +116,9 @@ class DeathCountScreen extends StatelessWidget {
                     textStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w600),
                     onPressed: () async{
-                      // if(deathCountKey.currentState!.validate()) {
-                      //   print(controller.selectedGeneralLocation);
-                      // }
-                    //  controller.initiateVolunteerDeathReport(context);
-                      //Go.to(()=>QRViewExample());
-
-                      await Navigator.of(context).push(
-                          MaterialPageRoute(
-                          builder: (context) =>
-                      AiBarcodeScanner(
-                        onScan: (String value) {
-                          print("barcode= $value");
-                        }
-                        )));
-
+                       if(deathCountKey.currentState!.validate()) {
+                           controller.initiateVolunteerDeathReport(context);
+                       }
                     },
                   ),
                 ]);

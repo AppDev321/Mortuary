@@ -291,10 +291,7 @@ bool shouldShowBackButton(BuildContext context) {
   return true;
 }
 
-Future<Position> getUserCurrentPosition() async {
-  await  Geolocator.requestPermission();
-  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-}
+
 
 class Go {
   static Future<dynamic> to(dynamic page, {dynamic arguments}) async {

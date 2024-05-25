@@ -49,8 +49,8 @@ class AppStrings {
   static const String otpError='Please enter OTP';
   static const String generalLocation='Generalized Location';
   static const String selectLocation = "Select Location";
-
-
+  static const String qrNumber = "QR Number";
+  static const String shareOnlyLatLng='Force Share';
 
 
   // Empty String

@@ -221,11 +221,13 @@ showAppThemedDialog(CustomError? error,
                 child: Column(
                   children: [
                     SvgPicture.asset(showErrorMessage?AppAssets.icErrorAlert:AppAssets.icSuccessAlert),
+                    (error?.title ?? "").isNotEmpty
+                        ? Column(children: [
+                      sizeFieldMediumPlaceHolder,
+                      CustomTextWidget(text: error?.title.toUpperCase(),size: 16,fontWeight: FontWeight.bold,textAlign: TextAlign.center,),
+                    ],)
+                        : minPlaceHolder,
                     sizeFieldMediumPlaceHolder,
-                    CustomTextWidget(text: error?.title.toUpperCase(),size: 16,fontWeight: FontWeight.bold,textAlign: TextAlign.center,),
-                    error?.title != null
-                        ? sizeFieldMediumPlaceHolder
-                        : sizeFieldMinPlaceHolder,
                     CustomTextWidget(text: error?.message,size: 12,textAlign: TextAlign.center,colorText: AppColors.secondaryTextColor,),
                     sizeFieldMediumPlaceHolder,
                     ButtonWidget(

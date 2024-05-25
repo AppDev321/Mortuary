@@ -26,11 +26,17 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   geolocator: ^10.1.0
   google_maps_flutter: ^2.5.3
+  ### For Location NAme
+  geocoding: ^2.1.1
+
+
   #location: ^5.0.3
+  #flutter_google_places: ^0.3.0
+
+
+
   firebase_core: ^2.13.1
   change_app_package_name: ^1.1.0
-  #flutter_google_places: ^0.3.0
-  #geocoding: ^2.1.1
   url_launcher: ^6.2.4
   fluttertoast: ^8.0.8
   socket_io_client: ^2.0.3+1

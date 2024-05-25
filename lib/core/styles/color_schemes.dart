@@ -27,11 +27,12 @@ const lightColorScheme = ColorScheme(
   outline: Color(0xFFEEEEEE),
   onInverseSurface: Color(0xFFD6F6FF),
   inverseSurface: Color(0xFF27FF8B),
-  inversePrimary: Color(0xFFCBBEFF),
+  //inversePrimary: Color(0xFFCBBEFF),
   shadow: Color(0xFF000000),
   surfaceTint: Color(0xFF622CF9),
   outlineVariant: Color(0xFFC9C4D0),
   scrim: Color(0xFF000000),
+
 );
 
 const darkColorScheme = ColorScheme(
