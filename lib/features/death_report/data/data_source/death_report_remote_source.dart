@@ -1,9 +1,8 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:mortuary/core/network/empty_success_response.dart';
 
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/network/api_manager.dart';
 import '../../domain/enities/death_report_form_params.dart';
+import '../../domain/enities/death_report_list_reponse.dart';
 import '../../domain/enities/report_a_death_response.dart';
 
 abstract class DeathReportRemoteSource {
@@ -13,6 +12,7 @@ abstract class DeathReportRemoteSource {
   Future<Map<String,dynamic>> postDeathReportForm({
   required DeathReportFormRequest formRequest});
 
+  Future<List<DeathReportListResponse>> getDeathReportList();
 
 }
 
@@ -66,6 +66,17 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         "message":json['success'],
         "title":json['message']
       }
+    );
+  }
+
+  @override
+  Future<List<DeathReportListResponse>> getDeathReportList() async {
+    return await apiManager.makeApiRequest<List<DeathReportListResponse>>(
+        url: AppUrls.volunteerDeathReportListUrl,
+        method: RequestMethod.GET,
+        fromJson: (json) {
+         return List.from(json["data"]["reports"].map((x) => DeathReportListResponse.fromJson(x)));
+        }
     );
   }
 }

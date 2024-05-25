@@ -135,6 +135,34 @@ void printWrapped(String text) {
   }
 }
 
+String convertAppStyleDate(String date) {
+  DateFormat inputFormat = DateFormat("dd-MMM-yyyy");
+  DateTime parsedDate = inputFormat.parse(date);
+  String day = DateFormat('d').format(parsedDate);
+  String dayWithSuffix = getDayWithSuffix(day);
+  DateFormat outputFormat = DateFormat("MMMM\nyyyy");
+  String monthYear = outputFormat.format(parsedDate);
+  return "$dayWithSuffix $monthYear";
+}
+
+String getDayWithSuffix(String day) {
+  if (day.endsWith('11') || day.endsWith('12') || day.endsWith('13')) {
+    return "${day}th";
+  }
+  switch (day.substring(day.length - 1)) {
+    case '1':
+      return "${day}st";
+    case '2':
+      return "${day}nd";
+    case '3':
+      return "${day}rd";
+    default:
+      return "${day}th";
+  }
+}
+
+
+
 /// Logs the error return from the repo implementation
 
 

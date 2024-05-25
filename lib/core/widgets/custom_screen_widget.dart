@@ -36,8 +36,7 @@ class CustomScreenWidget extends StatelessWidget {
         // drawer: drawer,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-
-            elevation: 0.0,
+            elevation: 0,
             backgroundColor:Colors.white,
             actions: actions,
             leading: SizedBox(),

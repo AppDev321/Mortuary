@@ -5,7 +5,8 @@ import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
-import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
+import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
+import 'package:mortuary/features/death_report/presentation/widget/report_death_screen.dart';
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -59,8 +60,7 @@ class DeathReportController extends GetxController {
   void setIdNumber(String number) => idNumber = number;
 
   int deathReportIDFromApi = 0;
-
-
+  List<DeathReportListResponse> deathReportList = [];
 
 
 
@@ -150,15 +150,16 @@ class DeathReportController extends GetxController {
     onApiRequestStarted();
     deathReportRepo.postQRScanCode(qrCode).then((value) {
       isScanCodeCompleted = false;
-
+      qrScannedValue = "";
       onApiResponseCompleted();
      Go.off(() => DeathReportFormScreen(
                  deathBodyBandCode: value, deathFormCode: deathReportIDFromApi));
 
 
     }).onError<CustomError>((error, stackTrace) async {
-      onErrorShowDialog(error);
       isScanCodeCompleted = false;
+      qrScannedValue = "";
+      onErrorShowDialog(error);
     });
 
 
@@ -194,21 +195,38 @@ class DeathReportController extends GetxController {
       });
     }).onError<CustomError>((error, stackTrace) async {
       onApiResponseCompleted();
-      print("Remaining Death count ==> $deathNumberCount");
-      if (deathNumberCount == 0) {
+      if (deathNumberCount == 1) {
         var customError = GeneralError(
           title: "",
           message: AppStrings.allDeathReportsPosted,
         );
+        Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole!));
         showAppThemedDialog(customError,
             showErrorMessage: false, dissmisableDialog: false, onPressed: () {
-          Get.off(() => DeathReportListScreen());
+
         });
       } else {
         onErrorShowDialog(error);
       }
     });
   }
+
+
+
+  Future<List<DeathReportListResponse>> getDeathReportList() async {
+    deathReportList.clear();
+    onApiRequestStarted();
+   await deathReportRepo.getDeathReportList().then((response) {
+     deathReportList = response;
+      onApiResponseCompleted();
+    }).onError<CustomError>((error, stackTrace) async {
+        onErrorShowDialog(error);
+    });
+    return deathReportList;
+  }
+
+
+
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();

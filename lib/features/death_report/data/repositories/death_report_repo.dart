@@ -4,6 +4,7 @@ import 'package:mortuary/core/network/empty_success_response.dart';
 import '../../../../core/error/errors.dart';
 import '../../../../core/network/api_manager.dart';
 import '../../domain/enities/death_report_form_params.dart';
+import '../../domain/enities/death_report_list_reponse.dart';
 import '../../domain/enities/report_a_death_response.dart';
 import '../data_source/death_report_remote_source.dart';
 
@@ -19,6 +20,9 @@ abstract class DeathReportRepo {
 
   Future<Map<String,dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest});
+
+  Future<List<DeathReportListResponse>> getDeathReportList();
+
 }
 
 class DeathReportRepoImpl extends DeathReportRepo {
@@ -56,6 +60,13 @@ class DeathReportRepoImpl extends DeathReportRepo {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.postDeathReportForm(
           formRequest: formRequest);
+    });
+  }
+
+  @override
+  Future<List<DeathReportListResponse>> getDeathReportList() {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.getDeathReportList();
     });
   }
 }

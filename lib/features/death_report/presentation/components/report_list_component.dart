@@ -5,13 +5,16 @@ import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/utils/utils.dart';
+import '../../domain/enities/death_report_list_reponse.dart';
 
 class ReportListItem extends StatelessWidget {
-  ReportListItem({Key? key}) : super(key: key);
+  final DeathReportListResponse listItem;
+  const ReportListItem({Key? key, required this.listItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return 
+    return
       Stack(
       children:[
         Positioned(
@@ -19,19 +22,21 @@ class ReportListItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 CustomTextWidget(
-                  text: "15th May\n2024",
+                  text: convertAppStyleDate(listItem.reportDate),
                   colorText: AppColors.secondaryTextColor,
                   fontWeight: FontWeight.w700,
                   size: 14,
+                  textAlign: TextAlign.right,
                 ),
                 CustomTextWidget(
-                  text: "102:14:21 Am",
+                  text: listItem.reportTime,
                   colorText: AppColors.secondaryTextColor,
                   fontWeight: FontWeight.w500,
+                  textAlign: TextAlign.right,
                   size: 12,
                 )
               ],
@@ -55,7 +60,7 @@ class ReportListItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.blueAccent, width: 2)),
+                  border: Border.all(color:AppColors.hexToColor(listItem.status.color), width: 2)),
             )),
 
 
@@ -78,7 +83,7 @@ class ReportListItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.amber,
+        color: AppColors.hexToColor(listItem.status.color),
       ),
 
       child: Column(
@@ -94,17 +99,19 @@ class ReportListItem extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Table(
                 children: [
-                  rowData(AppStrings.idType,"123123"),
-                  rowData(AppStrings.idNumber,"123123123123123123123123123123123123"),
-                  rowData(AppStrings.gender,"AMle"),
-                  rowData(AppStrings.ageGroup,"12"),
+                  rowData(AppStrings.qrNumber,listItem.bandCode),
+                  rowData(AppStrings.idType,listItem.visaType),
+                  rowData(AppStrings.idNumber,listItem.idNumber),
+                  rowData(AppStrings.gender,listItem.gender),
+                  rowData(AppStrings.age,listItem.age),
+                  rowData(AppStrings.ageGroup,listItem.ageGroup),
                 ],
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8,bottom: 8),
-            child: CustomTextWidget(text: AppStrings.onWayToProcess,textAlign:TextAlign.center,colorText: AppColors.whiteAccent,fontWeight: FontWeight.bold,size: 14,),
+          const Padding(
+            padding:  EdgeInsets.only(left: 8.0,right: 8,bottom: 8),
+            child: CustomTextWidget(text: AppStrings.onWayToProcess,textAlign:TextAlign.center,colorText: AppColors.whiteAccent,fontWeight: FontWeight.w500,size: 14,),
           ),
         ],
       ),
@@ -113,7 +120,6 @@ class ReportListItem extends StatelessWidget {
   TableRow rowData(String title,String body)
   {
     return TableRow(
-
       children: [
         CustomTextWidget(text: title,colorText: AppColors.secondaryTextColor,fontWeight: FontWeight.w600,size: 14,),
         CustomTextWidget(text: body,fontWeight: FontWeight.w500,size: 14,)

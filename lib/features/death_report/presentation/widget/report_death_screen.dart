@@ -3,14 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
-import 'package:mortuary/core/error/errors.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
-
+import 'package:mortuary/features/death_report/presentation/widget/reporter_map_view.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/enums.dart';
-import '../../../../core/popups/show_popups.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/button_widget.dart';
 import 'death_count_screen.dart';
@@ -43,22 +41,23 @@ class ReportDeathScreen extends StatelessWidget {
           sizeFieldLargePlaceHolder,
           GestureDetector(
               onTap: () {
-                Go.to(
-                    () => DeathCountScreen(currentUserRole: currentUserRole));
+                Go.to(() => DeathCountScreen(currentUserRole: currentUserRole));
               },
               child: SvgPicture.asset(AppAssets.icReportDeathButton)),
           sizeFieldLargePlaceHolder,
           ButtonWidget(
               text: AppStrings.viewLiveMap,
               buttonType: ButtonType.gradient,
-              textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              onPressed: null),
+              textStyle:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              onPressed: () => Go.to(() => const ReportMapViewScreen())),
           sizeFieldMediumPlaceHolder,
           ButtonWidget(
               text: AppStrings.viewDeathReportList,
               buttonType: ButtonType.transparent,
-              textStyle: const  TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              onPressed: () => Get.to(() => DeathReportListScreen())),
+              textStyle:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              onPressed: () => Go.to(() => const DeathReportListScreen())),
         ]);
   }
 }

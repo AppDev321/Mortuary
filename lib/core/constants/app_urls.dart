@@ -14,6 +14,7 @@ class AppUrls {
   static const volunteerDeathReportUrl= '${baseUrl}volunteer/death-report';
   static const volunteerScanQRCodeUrl= '${baseUrl}volunteer/scan-qr';
   static const deathReportFormUrl = '${baseUrl}volunteer/death-form';
+  static const volunteerDeathReportListUrl = '${baseUrl}volunteer/death-report';
 
 
 
