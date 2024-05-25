@@ -14,7 +14,7 @@ class GoogleMapScreenController extends GetxController {
   GoogleMapScreenController({required this.googleMapRepo});
 
 
-  String mapKey = 'AIzaSyA80LxnzrE2fTGP_SFrkejGc9Enyz3D2oU';
+  String mapKey = 'key';
 
   late GoogleMapController googleMapController;
 
