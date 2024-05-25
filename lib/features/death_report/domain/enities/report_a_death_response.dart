@@ -29,10 +29,10 @@ class ReportDeathResponse extends Equatable {
     return ReportDeathResponse(
       deathReportId: json["death_report_id"] ?? 0,
       volunteerId: json["volunteer_id"] ?? 0,
-      generalLocationId: json["general_location_id"]?? 0 ,
+      generalLocationId: int.parse(json["general_location_id"]?? "0" ),
       latitude: json["latitude"] ?? 0.0,
       longitude: json["longitude"] ?? 0.0,
-      noOfDeaths: json["no_of_deaths"] ?? 0,
+      noOfDeaths: int.parse(json["no_of_deaths"] ?? "0"),
       reportDate: json["report_date"] ?? "",
       reportTime: json["report_time"] ?? "",
       address: json["address"] ?? "",

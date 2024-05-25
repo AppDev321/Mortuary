@@ -12,7 +12,8 @@ class AppUrls {
   static const verifyOTPUrl = '${baseUrl}verify-otp';
   static const resetPasswordUrl = '${baseUrl}reset-password';
   static const volunteerDeathReportUrl= '${baseUrl}volunteer/death-report';
-
+  static const volunteerScanQRCodeUrl= '${baseUrl}volunteer/scan-qr';
+  static const deathReportFormUrl = '${baseUrl}volunteer/death-form';
 
 
 

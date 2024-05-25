@@ -22,12 +22,14 @@ class DeathCountScreen extends StatelessWidget {
   DeathCountScreen({Key? key, required this.currentUserRole}) : super(key: key);
   final deathCountKey = GlobalKey<FormState>();
   TextEditingController locationTextController = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: deathCountKey,
       child: GetBuilder<DeathReportController>(
-
           initState:
               Get.find<DeathReportController>().setUserRole(currentUserRole),
           builder: (controller) {

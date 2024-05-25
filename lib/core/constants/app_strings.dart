@@ -31,6 +31,7 @@ class AppStrings {
   static const String idType='ID Type';
   static const String idNumber='ID Number';
   static const String gender='Gender';
+  static const String age='Age';
   static const String ageGroup='Age Group';
   static const String onWayToProcess='Ambulance on way to processing centre';
   static const String handedToProcess='Handed over to processing centre';
@@ -50,6 +51,11 @@ class AppStrings {
   static const String generalLocation='Generalized Location';
   static const String selectLocation = "Select Location";
   static const String qrNumber = "QR Number";
+  static const String selectAgeGroup = "Select Age Group";
+  static const String selectVisaType = "Select Visa Type";
+  static const String selectGender = "Select Gender";
+  static const String allDeathReportsPosted = "You have complete your Report task";
+
   static const String shareOnlyLatLng='Force Share';
 
 

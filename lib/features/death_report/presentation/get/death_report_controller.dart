@@ -3,6 +3,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
+import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
+import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
+import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -10,6 +13,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 import '../../../splash/domain/entities/splash_model.dart';
+import '../../builder_ids.dart';
 import '../../data/repositories/death_report_repo.dart';
 import '../widget/death_report_form.dart';
 
@@ -21,21 +25,40 @@ class DeathReportController extends GetxController {
       {required this.deathReportRepo, required this.googleMapScreenController});
 
   int deathNumberCount = 1;
+
   void setNumberOfDeathReport(int deathCount) => deathNumberCount = deathCount;
 
-  RadioOption? selectedGeneralLocation;
-  void setGeneralLocation(RadioOption loc) => selectedGeneralLocation = loc;
-
   UserRole? currentUserRole;
+
   setUserRole(UserRole role) {
     currentUserRole = role;
   }
 
   var apiResponseLoaded = LoadingState.loaded;
+
   bool get isApiResponseLoaded => apiResponseLoaded == LoadingState.loading;
 
+  bool isScanCodeCompleted = false;
+  String qrScannedValue = "";
 
+  RadioOption? selectedGeneralLocation;
 
+  void setGeneralLocation(RadioOption loc) => selectedGeneralLocation = loc;
+  RadioOption? selectedAgeGroup;
+
+  void setAgeGroup(RadioOption ageGroup) => selectedAgeGroup = ageGroup;
+  RadioOption? selectedVisaType;
+
+  void setVisaType(RadioOption visaType) => selectedVisaType = visaType;
+
+  int ageNumber = 0;
+  void setAgeNumber(String age) =>
+      ageNumber = int.parse(age.isEmpty ? "0" : age);
+
+  String idNumber = "";
+  void setIdNumber(String number) => idNumber = number;
+
+  int deathReportIDFromApi = 0;
 
 
 
@@ -48,13 +71,12 @@ class DeathReportController extends GetxController {
 
       if (value.geometry == null) {
         var loc = await googleMapScreenController.getPositionPoints();
-        initiateDeathReport(
+        initiateDeathReportToServer(
             loc.latitude, loc.longitude, value.formattedAddress ?? "");
       } else {
-        initiateDeathReport(value.geometry!.location.lat,
+        initiateDeathReportToServer(value.geometry!.location.lat,
             value.geometry!.location.lng, value.formattedAddress ?? "");
       }
-
     }).onError((error, stackTrace) {
       onApiResponseCompleted();
       var customError = GeneralError(
@@ -66,7 +88,7 @@ class DeathReportController extends GetxController {
     });
   }
 
-  sendPositionCoordinates() async{
+  sendPositionCoordinates() async {
     onApiRequestStarted();
     googleMapScreenController.getPositionPoints().then((value) async {
       List<Placemark> placeMarksList =
@@ -78,14 +100,14 @@ class DeathReportController extends GetxController {
 
       print("Force Location ==> ${currentAddress}");
 
-      initiateDeathReport(value.latitude, value.longitude, currentAddress);
+      initiateDeathReportToServer(value.latitude, value.longitude, currentAddress);
     }).onError((error, stackTrace) {
       print(error);
       onErrorShowDialog(error);
     });
   }
 
-  initiateDeathReport(double lat, double lng, String currentAddress) {
+  initiateDeathReportToServer(double lat, double lng, String currentAddress) {
     deathReportRepo
         .volunteerDeathReport(
             deathBodyCount: deathNumberCount,
@@ -96,19 +118,95 @@ class DeathReportController extends GetxController {
         .then((response) async {
       onApiResponseCompleted();
 
-      var locationShareAlert = GeneralError(title: "", message: response.message);
-      showAppThemedDialog(locationShareAlert, showErrorMessage: false,
-          onPressed: () {
-        Go.to(() => AiBarcodeScanner(
-              canPop: false,
-              onScan: (String value) {
-                Go.off(() => DeathReportFormScreen(
-                    deathBodyBandCode: value, deathFormCode: response.deathReportId));
-              },
-            ));
-      });
+      var locationShareAlert =
+          GeneralError(title: "", message: response.message);
+      showAppThemedDialog(locationShareAlert,
+          dissmisableDialog: false, showErrorMessage: false, onPressed: () {
+
+            deathReportIDFromApi = response.deathReportId;
+
+            showQRCodeScannerScreen();
+          });
+
+
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
+    });
+  }
+
+  showQRCodeScannerScreen() {
+    Go.to(() => AiBarcodeScanner(
+          canPop: false,
+          onScan: (String value) {
+            if (isScanCodeCompleted == false) {
+              isScanCodeCompleted = true;
+              qrScannedValue = value;
+            }
+          },
+        ));
+  }
+
+  postQRCodeToServer(String qrCode) {
+    onApiRequestStarted();
+    deathReportRepo.postQRScanCode(qrCode).then((value) {
+      isScanCodeCompleted = false;
+
+      onApiResponseCompleted();
+     Go.off(() => DeathReportFormScreen(
+                 deathBodyBandCode: value, deathFormCode: deathReportIDFromApi));
+
+
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+      isScanCodeCompleted = false;
+    });
+
+
+  }
+
+  postDeathReportFormToServer(
+      int deathReportId, int bandCodeId, Gender gender) {
+    var request = DeathReportFormRequest(
+        deathReportId: deathReportId,
+        visaTypeId: selectedVisaType?.id ?? 0,
+        bandCodeId: bandCodeId,
+        idNumber: idNumber,
+        genderId: gender.id,
+        age: ageNumber,
+        ageGroupId: selectedAgeGroup?.id ?? 0);
+
+    onApiRequestStarted();
+    deathReportRepo.postDeathReportForm(formRequest: request).then((response) {
+      onApiResponseCompleted();
+      deathNumberCount--;
+      var customError = GeneralError(
+        title: response['title'],
+        message: response['message'],
+      );
+
+      showAppThemedDialog(customError,
+          showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+        int remainingDeathCount = response['remainingCount'];
+        if (remainingDeathCount > 0) {
+          Get.back();
+          showQRCodeScannerScreen();
+        }
+      });
+    }).onError<CustomError>((error, stackTrace) async {
+      onApiResponseCompleted();
+      print("Remaining Death count ==> $deathNumberCount");
+      if (deathNumberCount == 0) {
+        var customError = GeneralError(
+          title: "",
+          message: AppStrings.allDeathReportsPosted,
+        );
+        showAppThemedDialog(customError,
+            showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+          Get.off(() => DeathReportListScreen());
+        });
+      } else {
+        onErrorShowDialog(error);
+      }
     });
   }
 
@@ -129,6 +227,7 @@ class DeathReportController extends GetxController {
 
   onUpdateUI() {
     update();
+    update([updateDeathReportScreen]);
     //update([updatedAuthWrapper, updateEmailScreen, updateOTPScreen]);
   }
 }

@@ -5,12 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/utils/utils.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/death_report/builder_ids.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/styles/colors.dart';
+import '../../../death_report/presentation/get/death_report_controller.dart';
 import 'overlay.dart';
 
 /// Barcode scanner widget
@@ -99,7 +102,7 @@ class AiBarcodeScanner extends StatefulWidget {
   /// If this is null, defaults to a black [ColoredBox]
   /// with a centered white [Icons.error] icon.
   final Widget Function(BuildContext, MobileScannerException, Widget?)?
-      errorBuilder;
+  errorBuilder;
 
   /// The function that builds a placeholder widget when the scanner
   /// is not yet displaying its camera preview.
@@ -196,146 +199,170 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScreenWidget(
-        titleText: AppStrings.scanCode,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children:[
-          CustomTextWidget(text: AppStrings.scanScreenLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
-          sizeFieldLargePlaceHolder,
-          Container(
-            height: Get.height*0.6,
+    return GetBuilder<DeathReportController>(
+      id: updateDeathReportScreen,
+        builder: (deathController) {
+          return CustomScreenWidget(
+              titleText: AppStrings.scanCode,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomTextWidget(text: AppStrings.scanScreenLabel,
+                  colorText: AppColors.secondaryTextColor,
+                  textAlign: TextAlign.center,),
+                sizeFieldLargePlaceHolder,
+                Container(
+                  height: Get.height * 0.6,
 
-child: Stack(
-  children: [
-    MobileScanner(
-      controller: controller,
-      fit: widget.fit,
-      errorBuilder: widget.errorBuilder,
-      onScannerStarted: widget.onScannerStarted,
-      placeholderBuilder: widget.placeholderBuilder,
-      scanWindow: widget.scanWindow,
-      startDelay: widget.startDelay ?? false,
-      key: widget.key,
-      onDetect: (BarcodeCapture barcode) async {
-        widget.onDetect?.call(barcode);
+                  child: Stack(
+                    children: [
+                      MobileScanner(
+                        controller: controller,
+                        fit: widget.fit,
+                        errorBuilder: widget.errorBuilder,
+                        onScannerStarted: widget.onScannerStarted,
+                        placeholderBuilder: widget.placeholderBuilder,
+                        scanWindow: widget.scanWindow,
+                        startDelay: widget.startDelay ?? false,
+                        key: widget.key,
+                        onDetect: (BarcodeCapture barcode) async {
+                          widget.onDetect?.call(barcode);
 
-        if (barcode.barcodes.isEmpty) {
-          log('Scanned Code is Empty');
-          return;
+                          if (barcode.barcodes.isEmpty) {
+                            log('Scanned Code is Empty');
+                            return;
+                          }
+
+                          final String code = barcode.barcodes.first.rawValue ??
+                              "";
+
+                          if ((widget.validator != null &&
+                              !widget.validator!(code))) {
+                            setState(() {
+                              if (widget.hapticFeedback) HapticFeedback
+                                  .heavyImpact();
+                              log('Invalid Barcode => $code');
+                              _isSuccess = false;
+                            });
+                            return;
+                          }
+                          setState(() {
+                            _isSuccess = true;
+                            if (widget.hapticFeedback) HapticFeedback
+                                .lightImpact();
+                            log('Barcode rawValue => $code');
+                            widget.onScan(code);
+                          });
+                          if (widget.canPop && mounted &&
+                              Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                            return;
+                          }
+                        },
+                      ),
+                      if (widget.showOverlay)
+                        Container(
+                          decoration: ShapeDecoration(
+                            shape: OverlayShape(
+                              borderRadius: widget.borderRadius,
+                              borderColor: ((_isSuccess ?? false) && widget
+                                  .showSuccess)
+                                  ? widget.successColor
+                                  : (!(_isSuccess ?? true) && widget.showError)
+                                  ? widget.errorColor
+                                  : widget.borderColor,
+                              borderLength: widget.borderLength,
+                              borderWidth: widget.borderWidth,
+                              cutOutSize: widget.cutOutSize,
+                              cutOutBottomOffset: widget.cutOutBottomOffset,
+                              cutOutWidth: widget.cutOutWidth,
+                              cutOutHeight: widget.cutOutHeight,
+                              overlayColor:
+                              ((_isSuccess ?? false) && widget.showSuccess)
+                                  ? widget.successColor.withOpacity(0.4)
+                                  : (!(_isSuccess ?? true) && widget.showError)
+                                  ? widget.errorColor.withOpacity(0.4)
+                                  : widget.overlayColor,
+                            ),
+                          ),
+                        ),
+
+
+                    ],
+                  ),
+                ),
+                sizeFieldLargePlaceHolder,
+
+                ButtonWidget(text: AppStrings.scan,
+                  buttonType: ButtonType.gradient,
+                  isLoading : deathController.isApiResponseLoaded,
+                  onPressed: (){
+                  if(deathController.isScanCodeCompleted == true) {
+                    deathController.postQRCodeToServer(
+                        deathController.qrScannedValue);
+                  }
+                  else{
+                    showSnackBar(context, "Please scan your QR");
+                  }
+
+                  },
+                  )
+
+
+              ]);
         }
-
-        final String code = barcode.barcodes.first.rawValue ?? "";
-
-        if ((widget.validator != null && !widget.validator!(code))) {
-          setState(() {
-            if (widget.hapticFeedback) HapticFeedback.heavyImpact();
-            log('Invalid Barcode => $code');
-            _isSuccess = false;
-          });
-          return;
-        }
-        setState(() {
-          _isSuccess = true;
-          if (widget.hapticFeedback) HapticFeedback.lightImpact();
-          log('Barcode rawValue => $code');
-          widget.onScan(code);
-        });
-        if (widget.canPop && mounted && Navigator.canPop(context)) {
-          Navigator.pop(context);
-          return;
-        }
-      },
-    ),
-    if (widget.showOverlay)
-      Container(
-        decoration: ShapeDecoration(
-          shape: OverlayShape(
-            borderRadius: widget.borderRadius,
-            borderColor: ((_isSuccess ?? false) && widget.showSuccess)
-                ? widget.successColor
-                : (!(_isSuccess ?? true) && widget.showError)
-                ? widget.errorColor
-                : widget.borderColor,
-            borderLength: widget.borderLength,
-            borderWidth: widget.borderWidth,
-            cutOutSize: widget.cutOutSize,
-            cutOutBottomOffset: widget.cutOutBottomOffset,
-            cutOutWidth: widget.cutOutWidth,
-            cutOutHeight: widget.cutOutHeight,
-            overlayColor:
-            ((_isSuccess ?? false) && widget.showSuccess)
-                ? widget.successColor.withOpacity(0.4)
-                : (!(_isSuccess ?? true) && widget.showError)
-                ? widget.errorColor.withOpacity(0.4)
-                : widget.overlayColor,
-          ),
-        ),
-      ),
+    );
 
 
-  ],
-),
-          ),
-          sizeFieldLargePlaceHolder,
-
-          ButtonWidget(text: AppStrings.scan, buttonType: ButtonType.gradient)
-
-
-
-        ] );
-
-
-
-      OrientationBuilder(
+    OrientationBuilder(
       builder: (context, orientation) {
         return Scaffold(
           bottomNavigationBar: orientation == Orientation.portrait
               ? widget.bottomBar ??
-                  ListTile(
-                    leading: Builder(
-                      builder: (context) {
-                        return IconButton(
-                          tooltip: "Switch Camera",
-                          onPressed: () => controller.switchCamera(),
-                          icon: ValueListenableBuilder<CameraFacing>(
-                            valueListenable: controller.cameraFacingState,
-                            builder: (context, state, child) {
-                              switch (state) {
-                                case CameraFacing.front:
-                                  return const Icon(Icons.camera_front);
-                                case CameraFacing.back:
-                                  return const Icon(Icons.camera_rear);
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    title: Text(
-                      widget.bottomBarText,
-                      textAlign: TextAlign.center,
-                      style: widget.bottomBarTextStyle,
-                    ),
-                    trailing: Builder(
-                      builder: (context) {
-                        return IconButton(
-                          tooltip: "Torch",
-                          onPressed: () => controller.toggleTorch(),
-                          icon: ValueListenableBuilder<TorchState>(
-                            valueListenable: controller.torchState,
-                            builder: (context, state, child) {
-                              switch (state) {
-                                case TorchState.off:
-                                  return const Icon(Icons.flash_off);
-                                case TorchState.on:
-                                  return const Icon(Icons.flash_on);
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  )
+              ListTile(
+                leading: Builder(
+                  builder: (context) {
+                    return IconButton(
+                      tooltip: "Switch Camera",
+                      onPressed: () => controller.switchCamera(),
+                      icon: ValueListenableBuilder<CameraFacing>(
+                        valueListenable: controller.cameraFacingState,
+                        builder: (context, state, child) {
+                          switch (state) {
+                            case CameraFacing.front:
+                              return const Icon(Icons.camera_front);
+                            case CameraFacing.back:
+                              return const Icon(Icons.camera_rear);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+                title: Text(
+                  widget.bottomBarText,
+                  textAlign: TextAlign.center,
+                  style: widget.bottomBarTextStyle,
+                ),
+                trailing: Builder(
+                  builder: (context) {
+                    return IconButton(
+                      tooltip: "Torch",
+                      onPressed: () => controller.toggleTorch(),
+                      icon: ValueListenableBuilder<TorchState>(
+                        valueListenable: controller.torchState,
+                        builder: (context, state, child) {
+                          switch (state) {
+                            case TorchState.off:
+                              return const Icon(Icons.flash_off);
+                            case TorchState.on:
+                              return const Icon(Icons.flash_on);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+              )
               : null,
           appBar: widget.appBar,
           body: Stack(
@@ -387,8 +414,8 @@ child: Stack(
                       borderColor: ((_isSuccess ?? false) && widget.showSuccess)
                           ? widget.successColor
                           : (!(_isSuccess ?? true) && widget.showError)
-                              ? widget.errorColor
-                              : widget.borderColor,
+                          ? widget.errorColor
+                          : widget.borderColor,
                       borderLength: widget.borderLength,
                       borderWidth: widget.borderWidth,
                       cutOutSize: widget.cutOutSize,
@@ -396,11 +423,11 @@ child: Stack(
                       cutOutWidth: widget.cutOutWidth,
                       cutOutHeight: widget.cutOutHeight,
                       overlayColor:
-                          ((_isSuccess ?? false) && widget.showSuccess)
-                              ? widget.successColor.withOpacity(0.4)
-                              : (!(_isSuccess ?? true) && widget.showError)
-                                  ? widget.errorColor.withOpacity(0.4)
-                                  : widget.overlayColor,
+                      ((_isSuccess ?? false) && widget.showSuccess)
+                          ? widget.successColor.withOpacity(0.4)
+                          : (!(_isSuccess ?? true) && widget.showError)
+                          ? widget.errorColor.withOpacity(0.4)
+                          : widget.overlayColor,
                     ),
                   ),
                 ),

@@ -201,8 +201,10 @@ showRadioOptionDialog<T>(
 showAppThemedDialog(CustomError? error,
     {bool showErrorMessage = true,
       String buttonText = AppStrings.okButtonText,
-      Function()? onPressed}) {
+      Function()? onPressed,
+    bool dissmisableDialog = true}) {
   return Get.dialog(
+
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -248,5 +250,6 @@ showAppThemedDialog(CustomError? error,
         ),
       ],
     ),
+    barrierDismissible: dissmisableDialog
   );
 }

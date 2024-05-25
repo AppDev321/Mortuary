@@ -46,6 +46,7 @@ class Gender {
   String name;
   String icon;
   bool isSelected;
+  int id;
 
-  Gender(this.name, this.icon, this.isSelected);
+  Gender(this.id,this.name, this.icon, this.isSelected);
 }
