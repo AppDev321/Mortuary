@@ -21,6 +21,7 @@ abstract class AuthRemoteDataSource {
   Future<Session> login({
     required String emailAddress,
     required String password,
+    required String deviceFcmToken,
   });
 
   Future<EmptyResponse> forgotPassword({
@@ -97,11 +98,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Session> login({
     required String emailAddress,
     required String password,
+    required String deviceFcmToken
   }) async {
     final Map<String, dynamic> jsonMap = {
       'email': emailAddress,
       'password': password,
-      'device_token': 'cOxgdbYHTwO0N2mdgwVW9j:-',
+      'fcm_token': deviceFcmToken,
       'device_type': 'android',
       'device_id': ':--NTwE6PrZ_J',
     };

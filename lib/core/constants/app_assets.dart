@@ -10,6 +10,23 @@ class AppAssets {
   static const String icPinLocation = 'assets/icons/ic_pin_loc.svg';
   static const String icErrorAlert = 'assets/icons/ic_alert_error.svg';
   static const String icSuccessAlert = 'assets/icons/ic_alert_success.svg';
+  static const String icDeathAlert = 'assets/icons/ic_alert.svg';
+  static const String icLoc = 'assets/icons/ic_loc.svg';
+  static const String icClock = 'assets/icons/ic_clock.svg';
+  static const String icLocation = 'assets/icons/ic_location.svg';
+  static const String icPerson = 'assets/icons/ic_person.svg';
+  static const String icCalender = 'assets/icons/ic_calender.svg';
+  static const String icTime = 'assets/icons/ic_time.svg';
+  static const String icVolunteerLoc = 'assets/icons/ic_volunteer_loc.svg';
+  static const String icAcceptButton = 'assets/icons/ic_accept_button.svg';
+  static const String icPhoneCall = 'assets/icons/ic_phone_call.svg';
+  static const String icTick = 'assets/icons/ic_tick.svg';
+
+
+
+
+
+
   static const String boarding1 = "assets/images/boarding1.jpg";
   static const String boarding2 = "assets/images/boarding2.jpg";
   static const String boarding3 = "assets/images/boarding3.jpg";

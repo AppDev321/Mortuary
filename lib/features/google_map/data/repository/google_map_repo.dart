@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mortuary/core/network/api_manager.dart';
 import '../../domain/entities/place_prediction_model.dart';
 import '../../domain/entities/places_api_response.dart';
@@ -14,6 +15,9 @@ abstract class GoogleMapRepo {
       String inputText, String mapKey);
 
   Future<PlacesApiResponse> findPlaceByPlaceId(String placeId, String mapKey);
+
+  Future<Map<String, dynamic>> getMapDetailsByLatLng(
+      LatLng start, LatLng des, String mapKey);
 }
 
 class GoogleMapRepoImpl implements GoogleMapRepo {
@@ -50,6 +54,15 @@ class GoogleMapRepoImpl implements GoogleMapRepo {
     return apiManager.handleRequest(() async {
       final session =
           await remoteDataSource.getUserCurrentLocation(position, mapKey);
+      return session;
+    });
+  }
+
+  @override
+  Future<Map<String, dynamic>> getMapDetailsByLatLng(LatLng start, LatLng des, String mapKey) {
+    return apiManager.handleRequest(() async {
+      final session =
+      await remoteDataSource.getMapDetailsByLatLng(start,des, mapKey);
       return session;
     });
   }

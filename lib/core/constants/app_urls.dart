@@ -11,12 +11,18 @@ class AppUrls {
   static const forgotPasswordUrl = '${baseUrl}forgot-password';
   static const verifyOTPUrl = '${baseUrl}verify-otp';
   static const resetPasswordUrl = '${baseUrl}reset-password';
+
+
   static const volunteerDeathReportUrl= '${baseUrl}volunteer/death-report';
   static const volunteerScanQRCodeUrl= '${baseUrl}volunteer/scan-qr';
   static const deathReportFormUrl = '${baseUrl}volunteer/death-form';
   static const volunteerDeathReportListUrl = '${baseUrl}volunteer/death-report';
 
 
+  static const transportDeathReportListUrl = '${baseUrl}transportation/death-report';
+  static const transportAlertUrl = '${baseUrl}transportation/alert';
+  static const getDeathReportByIdUrl= "${baseUrl}transportation/death-report-by-id";
+  static const acceptDeathAlertByTransportUrl= "${baseUrl}transportation/accept-death-report";
 
   /// google maps url
 

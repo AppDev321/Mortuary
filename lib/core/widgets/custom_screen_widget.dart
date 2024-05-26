@@ -36,7 +36,6 @@ class CustomScreenWidget extends StatelessWidget {
         // drawer: drawer,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-            elevation: 0,
             backgroundColor:Colors.white,
             actions: actions,
             leading: SizedBox(),
@@ -79,7 +78,7 @@ class CustomScreenWidget extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: AppColors.appBackgroundColor,
           ),
-          child:  SingleChildScrollView(
+          child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.only(

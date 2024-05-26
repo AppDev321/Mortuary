@@ -28,6 +28,16 @@ class AppStrings {
   static const String viewDeathReportList='View List of Death Reports';
   static const String deathReportList='Death Reports List';
 
+
+  static const String pickupMapLoc = 'Pick up location';
+  static const String pickupMapLabel = "Please reach the death alert location in order to receive the dead body.";
+  static const String callVolunteer = "Call the Volunteer";
+  static const String arrived = "Arrived";
+  static const String scanNextBody = "Proceed to scanned next";
+  static const String scanSuccess = "Scan Successful";
+
+
+
   static const String idType='ID Type';
   static const String idNumber='ID Number';
   static const String gender='Gender';
@@ -55,9 +65,16 @@ class AppStrings {
   static const String selectVisaType = "Select Visa Type";
   static const String selectGender = "Select Gender";
   static const String allDeathReportsPosted = "You have complete your Report task";
-
+  static const String deathAlert='Death Alert';
+  static const String deathAlertAt='Death Alert at ';
   static const String shareOnlyLatLng='Force Share';
-
+  static const String newDeathAlertTitle = "New death Alert\nreceived";
+  static const String newDeathLabelMsg = "Please click on the button below in order to Initiate your journey";
+  static const String reportDetail = "Report Details:";
+  static const String  noOfDeath = "No of deaths";
+  static const String date = "Date";
+  static const String time = "Time";
+  static const String address = "Address";
 
   // Empty String
   static const String emptyString = '';

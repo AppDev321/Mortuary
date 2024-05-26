@@ -10,6 +10,7 @@ import 'package:mortuary/features/authentication/domain/enities/user_model.dart'
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/otp_verification_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/reset_password_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
 import 'package:mortuary/features/death_report/presentation/widget/report_death_screen.dart';
 
 import '../../../../../core/error/errors.dart';
@@ -25,7 +26,7 @@ class AuthController extends GetxController {
   final fcmController  = Get.find<FCMController>();
 
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'tansport@email.com';
+  String email = 'trasnport@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';
@@ -73,14 +74,18 @@ class AuthController extends GetxController {
   login(BuildContext context) async {
     onApiRequestStarted();
     await authUseRepo
-        .login(emailAddress: email, password: password)
+        .login(emailAddress: email, password: password,deviceFcmToken: fcmController.fcmToken.value)
         .then((value) async {
       session = value;
       onApiResponseCompleted();
 
       if (currentUserRole == UserRole.volunteer) {
         Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole ?? UserRole.none));
-      } else {
+      }
+      else if (currentUserRole == UserRole.transport) {
+        Get.offAll(() =>  DeathReportListScreen(userRole: currentUserRole ?? UserRole.none,));
+      }
+      else {
         showSnackBar(context, ApiMessages.unIdentifiedRole);
       }
     }).onError<CustomError>((error, stackTrace) async {

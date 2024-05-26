@@ -1,8 +1,6 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:mortuary/core/network/empty_success_response.dart';
-
-import '../../../../core/error/errors.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/network/api_manager.dart';
+import '../../domain/enities/death_report_alert.dart';
 import '../../domain/enities/death_report_form_params.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
 import '../../domain/enities/report_a_death_response.dart';
@@ -18,10 +16,17 @@ abstract class DeathReportRepo {
 
   Future<int> postQRScanCode(String qrCode);
 
-  Future<Map<String,dynamic>> postDeathReportForm(
+  Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest});
 
-  Future<List<DeathReportListResponse>> getDeathReportList();
+  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
+
+  Future<List<DeathReportAlert>> checkAnyAlertExits();
+
+  Future<DeathReportAlert> getDeathReportDetailsById(
+      {required int deathReportId});
+
+  Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
 
 }
 
@@ -55,7 +60,7 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<Map<String,dynamic>> postDeathReportForm(
+  Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest}) {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.postDeathReportForm(
@@ -64,9 +69,33 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<List<DeathReportListResponse>> getDeathReportList() {
+  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) {
     return apiManager.handleRequest(() async {
-      return await remoteDataSource.getDeathReportList();
+      return await remoteDataSource.getDeathReportList(userRole);
+    });
+  }
+
+  @override
+  Future<List<DeathReportAlert>> checkAnyAlertExits() {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.checkAnyAlertExits();
+    });
+  }
+
+  @override
+  Future<DeathReportAlert> getDeathReportDetailsById(
+      {required int deathReportId}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.getDeathReportDetailsById(
+          deathReportId: deathReportId);
+    });
+  }
+
+  @override
+  Future<Map<String, dynamic>> acceptDeathReportAlertByTransport({required int deathReportId}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.acceptDeathReportAlertByTransport(
+          deathReportId: deathReportId);
     });
   }
 }

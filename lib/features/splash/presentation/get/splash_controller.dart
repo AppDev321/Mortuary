@@ -40,7 +40,7 @@ class SplashScreenController extends GetxController {
     }).onError<CustomError>((error, stackTrace) async {
       isApiLoading = false;
       update();
-      showAppThemedDialog(error);
+      //showAppThemedDialog(error);
     });
   }
 

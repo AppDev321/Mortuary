@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/network/api_manager.dart';
@@ -15,6 +16,8 @@ abstract class GoogleMapDataSource {
       String inputText, String mapKey);
 
   Future<PlacesApiResponse> findPlaceByPlaceId(String placeId, String mapKey);
+  Future<Map<String, dynamic>> getMapDetailsByLatLng(
+      LatLng start, LatLng des, String mapKey);
 }
 
 class GoogleMapDataSourceImpl implements GoogleMapDataSource {
@@ -60,5 +63,60 @@ class GoogleMapDataSourceImpl implements GoogleMapDataSource {
       method: RequestMethod.GET,
       fromJson: (json) => PlacesApiResponse.fromJson(json['data']['result']),
     );
+  }
+
+
+  @override
+  Future<Map<String, dynamic>> getMapDetailsByLatLng(LatLng start, LatLng des, String mapKey) async{
+  var url =   'https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${des.latitude},${des.longitude}&key=$mapKey';
+
+  return await apiManager.makeApiRequest<Map<String, dynamic>>(
+    url: url,
+    method: RequestMethod.GET,
+    fromJson: (json) {
+      Map<String, dynamic> data = json['data'];
+      List<LatLng> coordinates = [];
+      List steps = data["routes"][0]["legs"][0]["steps"];
+      var distance = data["routes"][0]["legs"][0]['distance']['text'];
+      var duration = data["routes"][0]["legs"][0]['duration']['text'];
+
+      for (int i = 0; i < steps.length; i++) {
+        String encodedPolyline = steps[i]["polyline"]["points"];
+        List<LatLng> segmentCoordinates = _decodePoly(encodedPolyline);
+        coordinates.addAll(segmentCoordinates);
+      }
+      return {
+        'polylines': coordinates,
+        'distance': distance,
+        'duration': duration
+      };
+    });
+  }
+  List<LatLng> _decodePoly(String encoded) {
+    List<LatLng> points = [];
+    int index = 0, len = encoded.length;
+    int lat = 0, lng = 0;
+    while (index < len) {
+      int b, shift = 0, result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lat += dlat;
+      shift = 0;
+      result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lng += dlng;
+
+      points.add(LatLng((lat / 1E5).toDouble(), (lng / 1E5).toDouble()));
+    }
+    return points;
   }
 }

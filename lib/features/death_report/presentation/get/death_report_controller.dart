@@ -3,6 +3,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
+import 'package:mortuary/core/services/notification_service.dart';
+import 'package:mortuary/core/services/push_notification_sevice.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
@@ -16,7 +18,9 @@ import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 import '../../data/repositories/death_report_repo.dart';
+import '../../domain/enities/death_report_alert.dart';
 import '../widget/death_report_form.dart';
+import '../widget/pickup_map_view.dart';
 
 class DeathReportController extends GetxController {
   final DeathReportRepo deathReportRepo;
@@ -213,19 +217,70 @@ class DeathReportController extends GetxController {
 
 
 
-  Future<List<DeathReportListResponse>> getDeathReportList() async {
+  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
     deathReportList.clear();
     onApiRequestStarted();
-   await deathReportRepo.getDeathReportList().then((response) {
+   await deathReportRepo.getDeathReportList(userRole).then((response) {
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
+      print(error.message);
         onErrorShowDialog(error);
     });
     return deathReportList;
   }
 
+  Future<List<DeathReportAlert>> checkAnyAlerts() async {
+    List<DeathReportAlert> alertList = [];
+    onApiRequestStarted();
+    await deathReportRepo.checkAnyAlertExits().then((response) {
+      alertList = response;
+      onApiResponseCompleted();
+      if(alertList.isNotEmpty) {
+        var pickFirstNotificationAlert = alertList.first;
+        NotificationService().newNotification("Death Alert at ${pickFirstNotificationAlert.address}", "", true);
+      }
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+    return alertList;
+  }
 
+
+  getDeathReportById(DeathReportAlert deathReportAlert) async {
+    // onApiRequestStarted();
+    // await deathReportRepo.getDeathReportDetailsById(deathReportId: deathReportId).then((response) {
+    //   onApiResponseCompleted();
+    //
+    //
+    // }).onError<CustomError>((error, stackTrace) async {
+    //   onErrorShowDialog(error);
+    // });
+
+  }
+
+
+
+  acceptDeathReportByTransport(DeathReportAlert deathReportAlert) async {
+    onApiRequestStarted();
+    await deathReportRepo.acceptDeathReportAlertByTransport(
+        deathReportId: deathReportAlert.deathReportId)
+        .then((response) {
+      onApiResponseCompleted();
+      var dialogData = GeneralError(
+        title: response['title'],
+        message: response['message']
+      );
+      showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
+        print(response['data']);
+    Go.off(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
+      });
+
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+
+  }
 
 
   onErrorShowDialog(error) {

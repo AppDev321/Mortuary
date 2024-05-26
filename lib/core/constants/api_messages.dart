@@ -13,4 +13,5 @@ class ApiMessages {
   static const String sessionExpired = 'Session expired. Please login again!';
   static const String unIdentifiedRole = "User role in not identified in app";
   static const String locationAddressError = "Unable to get user current address";
+  static const String dataNotFound = 'No data found';
 }

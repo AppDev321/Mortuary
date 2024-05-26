@@ -12,6 +12,7 @@ abstract class AuthenticationRepo {
   Future<Session> login({
     required String emailAddress,
     required String password,
+    required String deviceFcmToken
   });
 
   Future<EmptyResponse> forgotPassword({
@@ -50,11 +51,13 @@ class AuthenticationRepoImpl extends AuthenticationRepo{
   Future<Session> login({
     required String emailAddress,
     required String password,
+    required String deviceFcmToken
   }) async {
     return apiManager.handleRequest(() async {
       final session = await remoteDataSource.login(
         emailAddress: emailAddress,
         password: password,
+        deviceFcmToken: deviceFcmToken
       );
 
       if (session is! CustomError) {

@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:mortuary/core/constants/api_messages.dart';
+import 'package:mortuary/core/constants/app_assets.dart';
+import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
+import 'package:mortuary/features/death_report/presentation/widget/accept_report_death_screen.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/styles/colors.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/load_more_listview.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
 
 class DeathReportListScreen extends StatefulWidget {
-  const DeathReportListScreen({Key? key}) : super(key: key);
+  final UserRole userRole;
+
+  const DeathReportListScreen({Key? key, required this.userRole})
+      : super(key: key);
 
   @override
   State<DeathReportListScreen> createState() => _DeathReportListScreenState();
@@ -22,14 +34,28 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   List<DeathReportListResponse> paginatedList = [];
   List<DeathReportListResponse> allReportsList = [];
 
+  bool hasAnyNotificationAlert = false;
+  DeathReportAlert? deathReportAlert;
+
   @override
   void initState() {
     super.initState();
     var controller = Get.find<DeathReportController>();
-    controller.getDeathReportList().then((value){
+    controller.getDeathReportList(widget.userRole).then((value) {
       allReportsList = value;
       getPaginatedList();
     });
+
+    if (widget.userRole == UserRole.transport) {
+      controller.checkAnyAlerts().then((value) {
+        setState(() {
+          if (value.isNotEmpty) {
+            deathReportAlert = value.first;
+            hasAnyNotificationAlert = true;
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -40,13 +66,84 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  //hasAnyNotificationAlert = false;
+                });
+                Go.to(() => AcceptDeathAlertScreen(
+                      dataModel: deathReportAlert!,
+                      userRole: widget.userRole,
+                      onReportHistoryButton: () {
+                        controller.getDeathReportList(widget.userRole);
+                      },
+                    ));
+              },
+              child: Visibility(
+                  visible: hasAnyNotificationAlert,
+                  child: Card(
+                    elevation: 5,
+                    semanticContainer: false,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(13),
+                        child: Row(
+                          children: [
+                            sizeHorizontalFieldMediumPlaceHolder,
+                            SvgPicture.asset(AppAssets.icDeathAlert),
+                            sizeHorizontalFieldMediumPlaceHolder,
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  CustomTextWidget(
+                                    text:
+                                        "${AppStrings.deathAlertAt}${deathReportAlert?.address}",
+                                    colorText: Colors.black,
+                                    size: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  sizeFieldMinPlaceHolder,
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppAssets.icLoc),
+                                      const CustomTextWidget(
+                                        text: "10Km",
+                                        colorText: AppColors.secondaryTextColor,
+                                        size: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      sizeHorizontalFieldLargePlaceHolder,
+                                      SvgPicture.asset(AppAssets.icClock),
+                                      const CustomTextWidget(
+                                        text: "23 min",
+                                        colorText: AppColors.secondaryTextColor,
+                                        size: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )),
+            ),
             SizedBox(
               height: Get.height * 0.8,
               child: RefreshIndicator(
-                onRefresh: controller.getDeathReportList,
-                child: controller.deathReportList.isEmpty && controller.isApiResponseLoaded == false
-                    ? CustomTextWidget(
-                        text: "No Data found",
+                onRefresh: () => controller.getDeathReportList(widget.userRole),
+                child: controller.deathReportList.isEmpty &&
+                        controller.isApiResponseLoaded == false
+                    ? const Center(
+                        child: CustomTextWidget(
+                          text: ApiMessages.dataNotFound,
+                          size: 18,
+                        ),
                       )
                     : LoadMore(
                         whenEmptyLoad: false,
@@ -61,10 +158,12 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                           itemBuilder: (context, index) {
                             var listItem = paginatedList[index];
                             return SizedBox(
-                                height: Get.height*0.3, child: ReportListItem(listItem:listItem));
+                                height: Get.height * 0.3,
+                                child: ReportListItem(listItem: listItem));
                           },
                         ),
-                      ).wrapWithListViewSkeleton( controller.isApiResponseLoaded),
+                      ).wrapWithListViewSkeleton(
+                        controller.isApiResponseLoaded),
               ),
             )
           ]);

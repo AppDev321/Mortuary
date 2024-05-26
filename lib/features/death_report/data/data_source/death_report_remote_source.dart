@@ -1,6 +1,8 @@
 
 import '../../../../core/constants/app_urls.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/network/api_manager.dart';
+import '../../domain/enities/death_report_alert.dart';
 import '../../domain/enities/death_report_form_params.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
 import '../../domain/enities/report_a_death_response.dart';
@@ -9,10 +11,15 @@ abstract class DeathReportRemoteSource {
   Future<ReportDeathResponse> initiateDeathReport(
       int deathBodyCount, int locationId, double lat, double lng,String address);
   Future<int> postQRScanCode(String qrCode);
+
   Future<Map<String,dynamic>> postDeathReportForm({
   required DeathReportFormRequest formRequest});
 
-  Future<List<DeathReportListResponse>> getDeathReportList();
+  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
+  Future<List<DeathReportAlert>> checkAnyAlertExits();
+  Future<DeathReportAlert> getDeathReportDetailsById({required int deathReportId});
+  
+  Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
 
 }
 
@@ -70,13 +77,60 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
   @override
-  Future<List<DeathReportListResponse>> getDeathReportList() async {
+  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
+    var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerDeathReportListUrl:
+                AppUrls.transportDeathReportListUrl;
+
     return await apiManager.makeApiRequest<List<DeathReportListResponse>>(
-        url: AppUrls.volunteerDeathReportListUrl,
+        url: appUrl,
         method: RequestMethod.GET,
         fromJson: (json) {
-         return List.from(json["data"]["reports"].map((x) => DeathReportListResponse.fromJson(x)));
+          return List.from(json["data"]["reports"].map((x) =>
+              DeathReportListResponse.fromJson(x)));
         }
+    );
+  }
+
+  @override
+  Future<List<DeathReportAlert>> checkAnyAlertExits()async {
+    return await apiManager.makeApiRequest<List<DeathReportAlert>>(
+        url: AppUrls.transportAlertUrl,
+        method: RequestMethod.GET,
+        fromJson: (json) {
+          return List.from(json["data"]["alerts"].map((x) => DeathReportAlert.fromJson(x)));
+        }
+    );
+  }
+
+  @override
+  Future<DeathReportAlert> getDeathReportDetailsById({required int deathReportId}) async {
+    final Map<String, dynamic> jsonMap = {
+      "death_report_id": deathReportId
+    };
+    return await apiManager.makeApiRequest<DeathReportAlert>(
+      url: AppUrls.volunteerScanQRCodeUrl,
+      method: RequestMethod.POST,
+      data: jsonMap,
+      fromJson: (json) => json['data'],
+    );
+  }
+
+
+
+  @override
+  Future<Map<String, dynamic>> acceptDeathReportAlertByTransport({required int deathReportId}) async{
+    final Map<String, dynamic> jsonMap = {
+      "death_report_id": deathReportId
+    };
+    return await apiManager.makeApiRequest<Map<String, dynamic>>(
+      url: AppUrls.acceptDeathAlertByTransportUrl,
+      method: RequestMethod.POST,
+      data: jsonMap,
+      fromJson: (json)=>{
+        "title":json["message"],
+        "message":json["success"],
+        "data":json["data"]
+      },
     );
   }
 }

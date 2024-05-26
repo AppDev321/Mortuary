@@ -57,7 +57,7 @@ class ReportDeathScreen extends StatelessWidget {
               buttonType: ButtonType.transparent,
               textStyle:
                   const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              onPressed: () => Go.to(() => const DeathReportListScreen())),
+              onPressed: () => Go.to(() =>  DeathReportListScreen(userRole: currentUserRole,))),
         ]);
   }
 }
