@@ -150,7 +150,6 @@ class DeathReportController extends GetxController {
           onApiCallBack: onApiCallBack,
           canPop: false,
           onScan: (String value) {
-            print("scanned valuee ===>$value");
             if (isScanCodeCompleted == false) {
               isScanCodeCompleted = true;
               qrScannedValue = value;
@@ -161,21 +160,24 @@ class DeathReportController extends GetxController {
   }
 
   postQRCodeToServer(String qrCode, void Function(dynamic)? onApiCallBack) {
+    qrCode = "1";
     onApiRequestStarted();
     deathReportRepo.postQRScanCode(qrCode, currentUserRole ?? UserRole.none).then((value) {
       isScanCodeCompleted = false;
       qrScannedValue = "";
       onApiResponseCompleted();
-
-      if (currentUserRole == UserRole.volunteer) {
-        Go.off(() => DeathReportFormScreen(
-            deathBodyBandCode: value['band_code'],
-            deathFormCode: deathReportIDFromApi));
-      } else {
-        if (onApiCallBack != null) {
-          onApiCallBack(value["processingCenters"]);
-        }
+      if (onApiCallBack != null) {
+        onApiCallBack(value["processingCenters"]);
       }
+      // if (currentUserRole == UserRole.volunteer) {
+      //   Go.off(() => DeathReportFormScreen(
+      //       deathBodyBandCode: value['band_code'],
+      //       deathFormCode: deathReportIDFromApi));
+      // } else {
+      //   if (onApiCallBack != null) {
+      //     onApiCallBack(value["processingCenters"]);
+      //   }
+      // }
     }).onError<CustomError>((error, stackTrace) async {
       isScanCodeCompleted = false;
       qrScannedValue = "";
@@ -313,7 +315,8 @@ class DeathReportController extends GetxController {
           message: response['message']
       );
       showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
-        Go.off(()=>const DeathReportListScreen(userRole: UserRole.transport));
+        Get.offAll(
+            () => const DeathReportListScreen(userRole: UserRole.transport));
       });
 
     }).onError<CustomError>((error, stackTrace) async {

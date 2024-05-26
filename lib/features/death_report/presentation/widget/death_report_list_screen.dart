@@ -40,22 +40,27 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   @override
   void initState() {
     super.initState();
-    var controller = Get.find<DeathReportController>();
-    controller.getDeathReportList(widget.userRole).then((value) {
-      allReportsList = value;
-      getPaginatedList();
+
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      var controller = Get.find<DeathReportController>();
+      controller.getDeathReportList(widget.userRole).then((value) {
+        allReportsList = value;
+        getPaginatedList();
+      });
+
+      if (widget.userRole == UserRole.transport) {
+        controller.checkAnyAlerts().then((value) {
+          setState(() {
+            if (value.isNotEmpty) {
+              deathReportAlert = value.first;
+              hasAnyNotificationAlert = true;
+            }
+          });
+        });
+      }
     });
 
-    if (widget.userRole == UserRole.transport) {
-      controller.checkAnyAlerts().then((value) {
-        setState(() {
-          if (value.isNotEmpty) {
-            deathReportAlert = value.first;
-            hasAnyNotificationAlert = true;
-          }
-        });
-      });
-    }
   }
 
   @override

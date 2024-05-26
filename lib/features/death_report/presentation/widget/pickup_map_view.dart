@@ -97,7 +97,7 @@ class PickupMapScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              sizeFieldLargePlaceHolder,
+              sizeFieldMediumPlaceHolder,
               GestureDetector(
                 onTap: (){
                   openDialPad(context,dataModel.volunteerContactNumber);
@@ -117,7 +117,6 @@ class PickupMapScreen extends StatelessWidget {
               onPressed: (){
                 controller.showQRCodeScannerScreen(
                   onApiCallBack: (data){
-                  print("Api call backed success ==>> ${controller.transportScannedBodyCount}");
                   if(controller.transportScannedBodyCount > 1) {
                     controller.transportScannedBodyCount--;
                     var dataDialog = GeneralError(
@@ -128,17 +127,7 @@ class PickupMapScreen extends StatelessWidget {
                   }
                   else
                     {
-
                       var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
-                      list.add(list[0]);
-                      list.add(list[0]);
-                      list.add(list[0]);  list.add(list[0]);
-                      list.add(list[0]);
-                      list.add(list[0]);  list.add(list[0]);
-                      list.add(list[0]);
-
-                      print(list.length);
-
                       Go.to(()=>ProcessingUnitListScreen(processingCenters: list,deathReportId: dataModel.deathReportId,));
                     }
                 });

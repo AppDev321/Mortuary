@@ -29,6 +29,12 @@ class ProcessingCenter extends Equatable {
 
 
   factory ProcessingCenter.fromJson(Map<String, dynamic> json, Map<String, dynamic>? extras){
+
+    List<ProcessingUser> usersList = [];
+    if (extras != null && extras.containsKey('processingUsers')) {
+      usersList = List<ProcessingUser>.from(extras['processingUsers'].map((x) => ProcessingUser.fromJson(x)));
+    }
+
     return ProcessingCenter(
       processingCenterId: json["processing_center_id"] ?? 0,
       centreName: json["centre_name"] ?? "",
@@ -39,7 +45,7 @@ class ProcessingCenter extends Equatable {
       availableSpace: json["available_space"] ?? 0,
       policePoc: json["police_poc"] ?? "",
       policePhoneNo: json["police_phone_no"] ?? "",
-        processingUsers: extras ==null ? [] : List<ProcessingUser>.from(json["processingUsers"]!.map((x) => ProcessingUser.fromJson(x)))
+        processingUsers: usersList
     );
   }
 

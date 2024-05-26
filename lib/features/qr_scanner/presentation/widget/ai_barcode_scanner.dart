@@ -308,13 +308,12 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                   onPressed: (){
                     deathController.postQRCodeToServer(
                         deathController.qrScannedValue,widget.onApiCallBack);
-                  print("scanned ==> ${deathController.isScanCodeCompleted}");
-                  if(deathController.isScanCodeCompleted == true) {
-
-                  }
-                  else{
-                    showSnackBar(context, "Please scan your QR");
-                  }
+                  // if(deathController.isScanCodeCompleted == true) {
+                  //
+                  // }
+                  // else{
+                  //   showSnackBar(context, "Please scan your QR");
+                  // }
 
                   },
                   )

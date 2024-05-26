@@ -36,6 +36,7 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
     return GetBuilder<DeathReportController>(
       builder: (controller) {
         return Container(
+
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -87,6 +88,7 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
                     ButtonWidget(
                       isLoading: isApiLoading,
                       text: AppStrings.select,
+                      icon: SvgPicture.asset(AppAssets.icTick),
                       buttonType: ButtonType.gradient,
                       onPressed: () async{
                         setState(() {

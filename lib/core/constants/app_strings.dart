@@ -30,7 +30,7 @@ class AppStrings {
 
 
 
-  static const String processCenterLoc = 'Processing centre location';
+  static const String processCenterLoc = 'Processing centre\nlocation';
   static const String pickupMapLoc = 'Pick up location';
   static const String pickupMapLabel = "Please reach the death alert location in order to receive the dead body.";
   static const String callVolunteer = "Call the Volunteer";
