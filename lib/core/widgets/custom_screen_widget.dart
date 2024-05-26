@@ -90,6 +90,7 @@ class CustomScreenWidget extends StatelessWidget {
                 mainAxisAlignment: mainAxisAlignment,
                 crossAxisAlignment: crossAxisAlignment,
                 children: children,
+
               ),
             ),
           ),

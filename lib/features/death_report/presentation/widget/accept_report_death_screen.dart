@@ -32,6 +32,7 @@ class AcceptDeathAlertScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DeathReportController>(
+      initState: Get.find<DeathReportController>().setUserRole(userRole),
       builder: (controller) {
         return CustomScreenWidget(
             crossAxisAlignment: CrossAxisAlignment.start,

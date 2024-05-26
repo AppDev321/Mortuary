@@ -60,7 +60,10 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DeathReportController>(builder: (controller) {
+    return GetBuilder<DeathReportController>(
+        initState:
+        Get.find<DeathReportController>().setUserRole(widget.userRole),
+        builder: (controller) {
       return CustomScreenWidget(
           titleText: AppStrings.deathReportList.toUpperCase(),
           crossAxisAlignment: CrossAxisAlignment.center,

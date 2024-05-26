@@ -23,6 +23,10 @@ class AppUrls {
   static const transportAlertUrl = '${baseUrl}transportation/alert';
   static const getDeathReportByIdUrl= "${baseUrl}transportation/death-report-by-id";
   static const acceptDeathAlertByTransportUrl= "${baseUrl}transportation/accept-death-report";
+  static const transportScanQRCodeUrl= '${baseUrl}transportation/scan-qr';
+  static const dropBodyToProcessUnitUrl= '${baseUrl}transportation/close-death-report';
+
+
 
   /// google maps url
 

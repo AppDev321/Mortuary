@@ -11,6 +11,7 @@ import 'package:mortuary/core/utils/utils.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/death_report/builder_ids.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
@@ -20,25 +21,23 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_strings.dart';
 
-class PickupMapScreen extends StatelessWidget {
-  final DeathReportAlert dataModel;
-  const PickupMapScreen({Key? key, required this.dataModel}) : super(key: key);
+class DropProcessUnitMapScreen extends StatelessWidget {
+  final ProcessingCenter dataModel;
+  final int deathReportId;
+  const DropProcessUnitMapScreen({Key? key, required this.dataModel, required this.deathReportId}) : super(key: key);
 
 
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DeathReportController>(
-        initState: (_) {
-          // Use a function to initialize the state
-          Get.find<DeathReportController>().transportScannedBodyCount = int.parse(dataModel.noOfDeaths);
-        }, builder: (controller) {
+      id:updateDeathReportScreen,
+        builder: (controller) {
         return CustomScreenWidget(
           crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            titleText: AppStrings.pickupMapLoc.toUpperCase(),
+            titleText: AppStrings.processCenterLoc.toUpperCase(),
             children: [
-              const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
               sizeFieldMinPlaceHolder,
               Container(
                 height: Get.height * 0.4,
@@ -52,21 +51,18 @@ class PickupMapScreen extends StatelessWidget {
                 ),
               ),
             sizeFieldLargePlaceHolder,
-
             Row(
               children: [
-                SvgPicture.asset(AppAssets.icVolunteerLoc),
+               // SvgPicture.asset(AppAssets.icProcessingUnitLoc),
                 sizeHorizontalFieldMediumPlaceHolder,
                Flexible(
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    mainAxisAlignment: MainAxisAlignment.start,
                    children: [
-                   createInfoRow(AppAssets.icPerson,"${AppStrings.noOfDeath}:", dataModel.noOfDeaths),
-                     createInfoRow(AppAssets.icCalender,AppStrings.date, dataModel.reportDate),
-                     createInfoRow(AppAssets.icTime,AppStrings.time, dataModel.reportTime),
-                     createInfoRow(AppAssets.icLocation,AppStrings.generalLocation,dataModel.generalLocation),
-                     createInfoRow(AppAssets.icCalender,AppStrings.address, dataModel.address ??"N/A")
+                   createInfoRow(AppAssets.icProcessingUnitLoc,dataModel.centreName,""),
+                     createInfoRow(AppAssets.icLocation,AppStrings.address, dataModel.address),
+
                  ],),
                )
               ],
@@ -100,7 +96,7 @@ class PickupMapScreen extends StatelessWidget {
               sizeFieldLargePlaceHolder,
               GestureDetector(
                 onTap: (){
-                  openDialPad(context,dataModel.volunteerContactNumber);
+                  openDialPad(context,dataModel.policePhoneNo);
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -112,36 +108,13 @@ class PickupMapScreen extends StatelessWidget {
                 ),
               ),
               sizeFieldMinPlaceHolder,
-              ButtonWidget(text: AppStrings.arrived, buttonType: ButtonType.gradient,
+              ButtonWidget(
+                text: AppStrings.arrived,
+                buttonType: ButtonType.gradient,
+               isLoading: controller.isApiResponseLoaded,
                icon: SvgPicture.asset(AppAssets.icTick),
               onPressed: (){
-                controller.showQRCodeScannerScreen(
-                  onApiCallBack: (data){
-                  print("Api call backed success ==>> ${controller.transportScannedBodyCount}");
-                  if(controller.transportScannedBodyCount > 1) {
-                    controller.transportScannedBodyCount--;
-                    var dataDialog = GeneralError(
-                        message: AppStrings.scanNextBody,
-                        title: AppStrings.scanSuccess
-                    );
-                    showAppThemedDialog(dataDialog,showErrorMessage: false);
-                  }
-                  else
-                    {
-
-                      var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x)));
-                      list.add(list[0]);
-                      list.add(list[0]);
-                      list.add(list[0]);  list.add(list[0]);
-                      list.add(list[0]);
-                      list.add(list[0]);  list.add(list[0]);
-                      list.add(list[0]);
-
-                      print(list.length);
-
-                      Go.to(()=>ProcessingUnitListScreen(processingCenters: list,deathReportId: dataModel.deathReportId,));
-                    }
-                });
+                controller.dropBodyToProcessingUnitByTransport(deathReportId, dataModel.processingCenterId);
               },
               ),
               sizeFieldLargePlaceHolder,

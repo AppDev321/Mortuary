@@ -10,7 +10,7 @@ import '../../domain/enities/report_a_death_response.dart';
 abstract class DeathReportRemoteSource {
   Future<ReportDeathResponse> initiateDeathReport(
       int deathBodyCount, int locationId, double lat, double lng,String address);
-  Future<int> postQRScanCode(String qrCode);
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole);
 
   Future<Map<String,dynamic>> postDeathReportForm({
   required DeathReportFormRequest formRequest});
@@ -20,6 +20,9 @@ abstract class DeathReportRemoteSource {
   Future<DeathReportAlert> getDeathReportDetailsById({required int deathReportId});
   
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
+
+
 
 }
 
@@ -50,15 +53,26 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
   @override
-  Future<int> postQRScanCode(String qrCode) async {
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole) async {
+    var code = int.tryParse(qrCode);
+
     final Map<String, dynamic> jsonMap = {
-      "qr_code": qrCode
+      "qr_code": code ?? "-1"
     };
-    return await apiManager.makeApiRequest<int>(
-      url: AppUrls.volunteerScanQRCodeUrl,
+
+    var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerScanQRCodeUrl:
+    AppUrls.transportScanQRCodeUrl;
+
+    return await apiManager.makeApiRequest<Map<String,dynamic>>(
+      url: appUrl,
       method: RequestMethod.POST,
       data: jsonMap,
-      fromJson: (json) => json['data']['band_code_id'],
+      fromJson: (json)=> {
+        if(userRole == UserRole.volunteer)
+        "band_code":json['data']['band_code_id'],
+        if(userRole == UserRole.transport)
+        "processingCenters" : json['data']['processingCenters']
+      },
     );
   }
 
@@ -116,7 +130,6 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
 
-
   @override
   Future<Map<String, dynamic>> acceptDeathReportAlertByTransport({required int deathReportId}) async{
     final Map<String, dynamic> jsonMap = {
@@ -133,4 +146,23 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
       },
     );
   }
+
+  @override
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) async{
+    final Map<String, dynamic> jsonMap = {
+      "death_report_id": deathReportId,
+      "processing_center_id":processingUnitId
+    };
+    return await apiManager.makeApiRequest<Map<String, dynamic>>(
+      url: AppUrls.dropBodyToProcessUnitUrl,
+      method: RequestMethod.POST,
+      data: jsonMap,
+      fromJson: (json)=>{
+        "title":json["message"],
+        "message":json["success"],
+      },
+    );
+  }
+
+
 }

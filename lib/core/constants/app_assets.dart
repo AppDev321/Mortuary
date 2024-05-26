@@ -21,6 +21,9 @@ class AppAssets {
   static const String icAcceptButton = 'assets/icons/ic_accept_button.svg';
   static const String icPhoneCall = 'assets/icons/ic_phone_call.svg';
   static const String icTick = 'assets/icons/ic_tick.svg';
+  static const String icProcessingUnit = 'assets/icons/ic_processing_unit.svg';
+  static const String icProcessingUnitLoc = 'assets/icons/ic_processing_loc.svg';
+  static const String icBedSpace = 'assets/icons/ic_bed_space.svg';
 
 
 

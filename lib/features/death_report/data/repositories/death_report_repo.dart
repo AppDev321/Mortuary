@@ -14,7 +14,7 @@ abstract class DeathReportRepo {
       required double lng,
       required String address});
 
-  Future<int> postQRScanCode(String qrCode);
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole);
 
   Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest});
@@ -27,6 +27,8 @@ abstract class DeathReportRepo {
       {required int deathReportId});
 
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
+
 
 }
 
@@ -53,9 +55,9 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<int> postQRScanCode(String qrCode) {
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole) {
     return apiManager.handleRequest(() async {
-      return await remoteDataSource.postQRScanCode(qrCode);
+      return await remoteDataSource.postQRScanCode(qrCode,userRole);
     });
   }
 
@@ -96,6 +98,16 @@ class DeathReportRepoImpl extends DeathReportRepo {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.acceptDeathReportAlertByTransport(
           deathReportId: deathReportId);
+    });
+  }
+
+  @override
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId, required int processingUnitId}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.dropBodyToProcessUnityByTransport(
+          deathReportId: deathReportId,
+        processingUnitId: processingUnitId
+      );
     });
   }
 }

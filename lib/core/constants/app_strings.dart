@@ -29,14 +29,20 @@ class AppStrings {
   static const String deathReportList='Death Reports List';
 
 
+
+  static const String processCenterLoc = 'Processing centre location';
   static const String pickupMapLoc = 'Pick up location';
   static const String pickupMapLabel = "Please reach the death alert location in order to receive the dead body.";
   static const String callVolunteer = "Call the Volunteer";
   static const String arrived = "Arrived";
   static const String scanNextBody = "Proceed to scanned next";
   static const String scanSuccess = "Scan Successful";
+  static const String select = "Select";
 
 
+  static const String processingCenter = "Processing centre";
+  static const String processingCenterLabel = "Please select a processing centre to drop body";
+  static const String availableSpace = "Available Space: ";
 
   static const String idType='ID Type';
   static const String idNumber='ID Number';

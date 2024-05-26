@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/services/notification_service.dart';
-import 'package:mortuary/core/services/push_notification_sevice.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
+import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
+import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
 import 'package:mortuary/features/death_report/presentation/widget/report_death_screen.dart';
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
@@ -30,17 +31,14 @@ class DeathReportController extends GetxController {
       {required this.deathReportRepo, required this.googleMapScreenController});
 
   int deathNumberCount = 1;
-
   void setNumberOfDeathReport(int deathCount) => deathNumberCount = deathCount;
 
   UserRole? currentUserRole;
-
   setUserRole(UserRole role) {
     currentUserRole = role;
   }
 
   var apiResponseLoaded = LoadingState.loaded;
-
   bool get isApiResponseLoaded => apiResponseLoaded == LoadingState.loading;
 
   bool isScanCodeCompleted = false;
@@ -62,6 +60,11 @@ class DeathReportController extends GetxController {
 
   String idNumber = "";
   void setIdNumber(String number) => idNumber = number;
+
+
+  int transportScannedBodyCount = 1;
+
+
 
   int deathReportIDFromApi = 0;
   List<DeathReportListResponse> deathReportList = [];
@@ -138,35 +141,43 @@ class DeathReportController extends GetxController {
     });
   }
 
-  showQRCodeScannerScreen() {
+  showQRCodeScannerScreen({Function(dynamic)? onApiCallBack}) {
     Go.to(() => AiBarcodeScanner(
+           userRole: currentUserRole,
+          onApiCallBack: onApiCallBack,
           canPop: false,
           onScan: (String value) {
+            print("scanned valuee ===>$value");
             if (isScanCodeCompleted == false) {
               isScanCodeCompleted = true;
               qrScannedValue = value;
             }
+            onUpdateUI();
           },
         ));
   }
 
-  postQRCodeToServer(String qrCode) {
+  postQRCodeToServer(String qrCode, void Function(dynamic)? onApiCallBack) {
     onApiRequestStarted();
-    deathReportRepo.postQRScanCode(qrCode).then((value) {
+    deathReportRepo.postQRScanCode(qrCode, currentUserRole ?? UserRole.none).then((value) {
       isScanCodeCompleted = false;
       qrScannedValue = "";
       onApiResponseCompleted();
-     Go.off(() => DeathReportFormScreen(
-                 deathBodyBandCode: value, deathFormCode: deathReportIDFromApi));
 
-
+      if (currentUserRole == UserRole.volunteer) {
+        Go.off(() => DeathReportFormScreen(
+            deathBodyBandCode: value['band_code'],
+            deathFormCode: deathReportIDFromApi));
+      } else {
+        if (onApiCallBack != null) {
+          onApiCallBack(value["processingCenters"]);
+        }
+      }
     }).onError<CustomError>((error, stackTrace) async {
       isScanCodeCompleted = false;
       qrScannedValue = "";
       onErrorShowDialog(error);
     });
-
-
   }
 
   postDeathReportFormToServer(
@@ -224,7 +235,6 @@ class DeathReportController extends GetxController {
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
-      print(error.message);
         onErrorShowDialog(error);
     });
     return deathReportList;
@@ -247,19 +257,6 @@ class DeathReportController extends GetxController {
   }
 
 
-  getDeathReportById(DeathReportAlert deathReportAlert) async {
-    // onApiRequestStarted();
-    // await deathReportRepo.getDeathReportDetailsById(deathReportId: deathReportId).then((response) {
-    //   onApiResponseCompleted();
-    //
-    //
-    // }).onError<CustomError>((error, stackTrace) async {
-    //   onErrorShowDialog(error);
-    // });
-
-  }
-
-
 
   acceptDeathReportByTransport(DeathReportAlert deathReportAlert) async {
     onApiRequestStarted();
@@ -272,8 +269,7 @@ class DeathReportController extends GetxController {
         message: response['message']
       );
       showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
-        print(response['data']);
-    Go.off(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
+       Go.off(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
       });
 
     }).onError<CustomError>((error, stackTrace) async {
@@ -282,6 +278,26 @@ class DeathReportController extends GetxController {
 
   }
 
+
+ dropBodyToProcessingUnitByTransport(int deathReportId,int processingUnitID) async {
+    onApiRequestStarted();
+    await deathReportRepo.dropBodyToProcessUnityByTransport(
+        deathReportId: deathReportId,processingUnitId: processingUnitID)
+        .then((response) {
+      onApiResponseCompleted();
+      var dialogData = GeneralError(
+          title: response['title'],
+          message: response['message']
+      );
+      showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
+        Go.off(()=>const DeathReportListScreen(userRole: UserRole.transport));
+      });
+
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+
+  }
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();
