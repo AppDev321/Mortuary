@@ -3,6 +3,7 @@ import '../../../../core/network/api_manager.dart';
 import '../../domain/enities/death_report_alert.dart';
 import '../../domain/enities/death_report_form_params.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
+import '../../domain/enities/processing_center.dart';
 import '../../domain/enities/report_a_death_response.dart';
 import '../data_source/death_report_remote_source.dart';
 
@@ -27,6 +28,7 @@ abstract class DeathReportRepo {
       {required int deathReportId});
 
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId}) ;
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
 
 
@@ -107,6 +109,16 @@ class DeathReportRepoImpl extends DeathReportRepo {
       return await remoteDataSource.dropBodyToProcessUnityByTransport(
           deathReportId: deathReportId,
         processingUnitId: processingUnitId
+      );
+    });
+  }
+
+  @override
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId, required int processingUnitId}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.getDetailOfProcessUnit(
+          deathReportId: deathReportId,
+          processingUnitId: processingUnitId
       );
     });
   }

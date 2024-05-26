@@ -72,6 +72,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         ButtonWidget(
                           text: AppStrings.update,
                           buttonType: ButtonType.gradient,
+                          isLoading: authController.isAuthenticating,
                           textStyle: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w600),
                           onPressed: () {

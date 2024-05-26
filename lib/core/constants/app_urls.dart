@@ -24,6 +24,7 @@ class AppUrls {
   static const getDeathReportByIdUrl= "${baseUrl}transportation/death-report-by-id";
   static const acceptDeathAlertByTransportUrl= "${baseUrl}transportation/accept-death-report";
   static const transportScanQRCodeUrl= '${baseUrl}transportation/scan-qr';
+  static const processUnitDetailUrl= '${baseUrl}transportation/select-processing-unit';
   static const dropBodyToProcessUnitUrl= '${baseUrl}transportation/close-death-report';
 
 

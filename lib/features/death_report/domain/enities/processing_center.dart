@@ -12,6 +12,7 @@ class ProcessingCenter extends Equatable {
     required this.availableSpace,
     required this.policePoc,
     required this.policePhoneNo,
+    this.processingUsers = const [],
   });
 
   final int processingCenterId;
@@ -24,7 +25,10 @@ class ProcessingCenter extends Equatable {
   final String policePoc;
   final String policePhoneNo;
 
-  factory ProcessingCenter.fromJson(Map<String, dynamic> json){
+   List<ProcessingUser> processingUsers = List.empty();
+
+
+  factory ProcessingCenter.fromJson(Map<String, dynamic> json, Map<String, dynamic>? extras){
     return ProcessingCenter(
       processingCenterId: json["processing_center_id"] ?? 0,
       centreName: json["centre_name"] ?? "",
@@ -35,10 +39,34 @@ class ProcessingCenter extends Equatable {
       availableSpace: json["available_space"] ?? 0,
       policePoc: json["police_poc"] ?? "",
       policePhoneNo: json["police_phone_no"] ?? "",
+        processingUsers: extras ==null ? [] : List<ProcessingUser>.from(json["processingUsers"]!.map((x) => ProcessingUser.fromJson(x)))
     );
   }
 
   @override
   List<Object?> get props => [
     processingCenterId, centreName, address, latitude, longitude, totalSpace, availableSpace, policePoc, policePhoneNo, ];
+}
+
+
+
+class ProcessingUser extends Equatable {
+  ProcessingUser({
+    required this.name,
+    required this.phoneNo,
+  });
+
+  final String name;
+  final String phoneNo;
+
+  factory ProcessingUser.fromJson(Map<String, dynamic> json){
+    return ProcessingUser(
+      name: json["name"] ?? "",
+      phoneNo: json["phone_no"] ?? "",
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    name, phoneNo, ];
 }

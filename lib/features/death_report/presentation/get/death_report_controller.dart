@@ -71,6 +71,9 @@ class DeathReportController extends GetxController {
 
 
 
+  /// ********  Volunteer Api Section Started ///////////
+
+
   initiateVolunteerDeathReport(BuildContext context) async {
     onApiRequestStarted();
     googleMapScreenController.getUserCurrentPosition().then((value) async {
@@ -226,8 +229,6 @@ class DeathReportController extends GetxController {
     });
   }
 
-
-
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
     deathReportList.clear();
     onApiRequestStarted();
@@ -239,6 +240,11 @@ class DeathReportController extends GetxController {
     });
     return deathReportList;
   }
+
+  ////////////// Volunteer Api Section Close/////////////////
+
+
+  /// ***********  Transport Api Section  *****************
 
   Future<List<DeathReportAlert>> checkAnyAlerts() async {
     List<DeathReportAlert> alertList = [];
@@ -255,7 +261,6 @@ class DeathReportController extends GetxController {
     });
     return alertList;
   }
-
 
 
   acceptDeathReportByTransport(DeathReportAlert deathReportAlert) async {
@@ -275,7 +280,25 @@ class DeathReportController extends GetxController {
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
     });
+  }
 
+  Future<ProcessingCenter?> getDetailOfProcessUnit(int deathReportId, int processingUnitID) async {
+    try {
+      onApiRequestStarted();
+      ProcessingCenter response = await deathReportRepo.getDetailOfProcessUnit(
+        deathReportId: deathReportId,
+        processingUnitId: processingUnitID,
+      );
+      onApiResponseCompleted();
+      return response;
+    } catch (error) {
+      if (error is CustomError) {
+        onErrorShowDialog(error);
+      } else {
+        print('Unexpected error: $error');
+      }
+      return null;
+    }
   }
 
 
@@ -298,6 +321,7 @@ class DeathReportController extends GetxController {
     });
 
   }
+  ////////////     Transport Api Section End /////////////
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();

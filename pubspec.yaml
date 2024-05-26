@@ -51,6 +51,8 @@ dependencies:
   wave: ^0.2.2
   pin_code_fields: ^7.3.0
   mobile_scanner: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+
 
 dev_dependencies:
   flutter_test:
@@ -58,18 +60,24 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter_native_splash:
-  image: assets/icons/freshly_logo.jpg
+  image: assets/images/img_app_icon.png
   # branding: assets/icons/3x/branding_light.png
   android: true
   ios: true
   # color_dark: 1F1B16
-  color: "#FFFFFF"
+  color: "#F1FFEA"
   fullscreen: true
   android_12:
-    image: assets/icons/freshly_logo.jpg
+    image: assets/images/img_app_icon.png
     # branding: assets/icons/3x/branding_light.png
     # color_dark: 1F1B16
-    color: "#FFFFFF"
+    color: "#F1FFEA"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/img_app_icon.png"
+
 flutter:
   uses-material-design: true
   assets:

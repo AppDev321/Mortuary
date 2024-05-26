@@ -100,10 +100,24 @@ class AuthController extends GetxController {
         .forgotPassword(emailAddress: email, phoneNumber: phone)
         .then((value) async {
       onApiResponseCompleted();
-      showInfoDialog(context, value.message, '${value.data}', onPressed: () {
-        Get.back();
-        Go.off(() =>const  OTPVerificationScreen());
-      });
+
+
+      var alertData = GeneralError(
+        message: '${value.data}',
+        title:value.message,
+      );
+
+      showAppThemedDialog(
+          alertData,
+          showErrorMessage: false,
+          dissmisableDialog: false,
+          onPressed: (){
+            Get.back();
+            Go.off(() =>const  OTPVerificationScreen());
+          }
+      );
+
+
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
     });
@@ -132,10 +146,20 @@ class AuthController extends GetxController {
             password: password)
         .then((value) async {
       onApiResponseCompleted();
-      showInfoDialog(context, AppStrings.resetPassword, value.message,
-          onPressed: () {
-        Get.offAll(() => LoginScreen());
-      });
+      var alertData = GeneralError(
+        message: value.message,
+        title: AppStrings.resetPassword,
+      );
+      showAppThemedDialog(
+          alertData,
+          showErrorMessage: false,
+        dissmisableDialog: false,
+        onPressed: (){
+          Get.offAll(() => LoginScreen());
+        }
+      );
+
+
     }).onError<CustomError>((error, stackTrace) async {
       print(error.title);
       onErrorShowDialog(error);

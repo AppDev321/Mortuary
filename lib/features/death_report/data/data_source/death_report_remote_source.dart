@@ -1,4 +1,6 @@
 
+import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
+
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/network/api_manager.dart';
@@ -20,6 +22,7 @@ abstract class DeathReportRemoteSource {
   Future<DeathReportAlert> getDeathReportDetailsById({required int deathReportId});
   
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId});
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
 
 
@@ -161,6 +164,20 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         "title":json["message"],
         "message":json["success"],
       },
+    );
+  }
+
+  @override
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId, required int processingUnitId}) async {
+    final Map<String, dynamic> jsonMap = {
+      "death_report_id": deathReportId,
+      "processing_center_id":processingUnitId
+    };
+    return await apiManager.makeApiRequest<ProcessingCenter>(
+      url: AppUrls.processUnitDetailUrl,
+      method: RequestMethod.POST,
+      data: jsonMap,
+      fromJson: (json)=>ProcessingCenter.fromJson(json["data"]["processingCenters"],json["extra"])
     );
   }
 

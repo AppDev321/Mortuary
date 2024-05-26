@@ -129,7 +129,7 @@ class PickupMapScreen extends StatelessWidget {
                   else
                     {
 
-                      var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x)));
+                      var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
                       list.add(list[0]);
                       list.add(list[0]);
                       list.add(list[0]);  list.add(list[0]);
