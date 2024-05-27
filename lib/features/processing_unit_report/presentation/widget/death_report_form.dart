@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
-import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/popups/show_popups.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/utils/utils.dart';
@@ -12,29 +11,30 @@ import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
-import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/app_config_service.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 
-class DeathReportFormScreen extends StatefulWidget {
+class PUDeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
 
-  DeathReportFormScreen(
+  PUDeathReportFormScreen(
       {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
       : super(key: key);
 
   @override
-  State<DeathReportFormScreen> createState() => _DeathReportFormScreenState();
+  State<PUDeathReportFormScreen> createState() => _PUDeathReportFormScreenState();
 }
 
-class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
+class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
   List<Gender> genders = [];
   Gender? selectedGender;
-  var deathReportFormKey = GlobalKey<FormState>();
+  var puDeathReportFormKey = GlobalKey<FormState>();
   TextEditingController groupAgeTextController = TextEditingController();
   TextEditingController visaTypeTextController = TextEditingController();
 
@@ -47,9 +47,9 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DeathReportController>(builder: (controller) {
+    return GetBuilder<ProcessingUnitController>(builder: (controller) {
       return Form(
-        key: deathReportFormKey,
+        key: puDeathReportFormKey,
         child: CustomScreenWidget(
             titleText: AppStrings.reportDeath.toUpperCase(),
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -170,14 +170,14 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
                 textStyle:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                 onPressed: () {
-                  if (deathReportFormKey.currentState!.validate()) {
+                  if (puDeathReportFormKey.currentState!.validate()) {
                     if (selectedGender == null) {
                       showSnackBar(context, AppStrings.selectGender);
                     } else {
                       controller.postDeathReportFormToServer(
                         widget.deathFormCode,
                           widget.deathBodyBandCode,
-                          selectedGender!,UserRole.volunteer);
+                          selectedGender!,UserRole.emergency);
                     }
                   }
                 },

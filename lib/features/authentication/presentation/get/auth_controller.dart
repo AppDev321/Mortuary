@@ -16,6 +16,7 @@ import 'package:mortuary/features/death_report/presentation/widget/report_death_
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/utils/utils.dart';
+import '../../../processing_unit_report/presentation/widget/home_screen.dart';
 import '../../data/repositories/auth_repo.dart';
 
 class AuthController extends GetxController {
@@ -26,7 +27,7 @@ class AuthController extends GetxController {
   final fcmController  = Get.find<FCMController>();
 
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'trasnport@email.com';
+  String email = 'emergency@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';
@@ -80,11 +81,15 @@ class AuthController extends GetxController {
       onApiResponseCompleted();
 
       if (currentUserRole == UserRole.volunteer) {
-        Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole ?? UserRole.none));
+        Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole!));
       }
       else if (currentUserRole == UserRole.transport) {
-        Get.offAll(() =>  DeathReportListScreen(userRole: currentUserRole ?? UserRole.none,));
+        Get.offAll(() =>  DeathReportListScreen(userRole: currentUserRole!));
       }
+      else if (currentUserRole == UserRole.emergency)
+        {
+          Get.offAll(() =>  PUHomeScreen(currentUserRole: currentUserRole!));
+        }
       else {
         showSnackBar(context, ApiMessages.unIdentifiedRole);
       }

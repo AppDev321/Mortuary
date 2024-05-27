@@ -3,6 +3,8 @@ import 'package:mortuary/features/death_report/data/data_source/death_report_rem
 import 'package:mortuary/features/death_report/data/repositories/death_report_repo.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 
+import '../processing_unit_report/presentation/get/processing_unit_controller.dart';
+
 initDeathReport() async {
   Get.lazyPut<DeathReportRepo>(
       () =>
@@ -14,5 +16,8 @@ initDeathReport() async {
       fenix: true);
 
   Get.lazyPut(() => DeathReportController(deathReportRepo: Get.find(),googleMapScreenController: Get.find()),
+      fenix: true);
+
+  Get.lazyPut(() => ProcessingUnitController(deathReportRepo: Get.find(),googleMapScreenController: Get.find()),
       fenix: true);
 }

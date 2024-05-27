@@ -116,6 +116,7 @@ class PickupMapScreen extends StatelessWidget {
                icon: SvgPicture.asset(AppAssets.icTick),
               onPressed: (){
                 controller.showQRCodeScannerScreen(
+                  dataModel.deathReportId,
                   onApiCallBack: (data){
                   if(controller.transportScannedBodyCount > 1) {
                     controller.transportScannedBodyCount--;

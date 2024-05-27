@@ -24,6 +24,10 @@ class AppAssets {
   static const String icProcessingUnit = 'assets/icons/ic_processing_unit.svg';
   static const String icProcessingUnitLoc = 'assets/icons/ic_processing_loc.svg';
   static const String icBedSpace = 'assets/icons/ic_bed_space.svg';
+  static const String icAttachment = 'assets/icons/ic_attachment.svg';
+  static const String icReceiveDeath = 'assets/icons/ic_receive_death.svg';
+  static const String icRemoveAttachment = 'assets/icons/ic_remove_attach.svg';
+  static const String icReportDeath = 'assets/icons/ic_report_death.svg';
 
 
 

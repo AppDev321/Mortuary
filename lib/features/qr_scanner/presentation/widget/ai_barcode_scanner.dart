@@ -15,6 +15,7 @@ import 'package:mortuary/features/death_report/builder_ids.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/styles/colors.dart';
 import '../../../death_report/presentation/get/death_report_controller.dart';
+import '../../../processing_unit_report/presentation/get/processing_unit_controller.dart';
 import 'overlay.dart';
 
 /// Barcode scanner widget
@@ -137,10 +138,13 @@ class AiBarcodeScanner extends StatefulWidget {
 
   final void Function(dynamic)? onApiCallBack;
   final UserRole? userRole;
+  int deathReportId;
 
-  const AiBarcodeScanner({
+
+   AiBarcodeScanner({
     super.key,
     required this.onScan,
+    required this.deathReportId,
     this.validator,
     this.fit = BoxFit.cover,
     this.controller,
@@ -182,6 +186,7 @@ class AiBarcodeScanner extends StatefulWidget {
 class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
   /// bool to check if barcode is valid or not
   bool? _isSuccess;
+  String scannedValue = "";
 
   /// Scanner controller
   late MobileScannerController controller;
@@ -260,6 +265,7 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                                   .lightImpact();
                               log('Barcode rawValue => $code');
                               widget.onScan(code);
+                              scannedValue = code;
                             });
                             if (widget.canPop && mounted &&
                                 Navigator.canPop(context)) {
@@ -306,8 +312,21 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                   buttonType: ButtonType.gradient,
                   isLoading : deathController.isApiResponseLoaded,
                   onPressed: (){
-                    deathController.postQRCodeToServer(
-                        deathController.qrScannedValue,widget.onApiCallBack);
+
+                  if(widget.userRole != null) {
+                    if (widget.userRole! == UserRole.volunteer || widget.userRole! == UserRole.transport) {
+                      deathController.postQRCodeToServer(
+                          scannedValue,widget.deathReportId,widget.userRole!, widget.onApiCallBack);
+                    }
+                    else  if (widget.userRole! == UserRole.emergency || widget.userRole! == UserRole.morgue) {
+
+                      final ProcessingUnitController processingController = Get.find();
+                      processingController.postQRCodeToServer(
+                          scannedValue,widget.deathReportId,widget.userRole!, widget.onApiCallBack);
+                    }
+
+
+                  }
                   // if(deathController.isScanCodeCompleted == true) {
                   //
                   // }

@@ -11,11 +11,11 @@ import '../../domain/enities/report_a_death_response.dart';
 
 abstract class DeathReportRemoteSource {
   Future<ReportDeathResponse> initiateDeathReport(
-      int deathBodyCount, int locationId, double lat, double lng,String address);
+      int deathBodyCount, int locationId, double lat, double lng,String address,UserRole userRole);
   Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole);
 
   Future<Map<String,dynamic>> postDeathReportForm({
-  required DeathReportFormRequest formRequest});
+  required DeathReportFormRequest formRequest, required UserRole userRole});
 
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
   Future<List<DeathReportAlert>> checkAnyAlertExits();
@@ -38,7 +38,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
   @override
   Future<ReportDeathResponse> initiateDeathReport(
-      int deathBodyCount, int locationId, double lat,double lng,String address) async {
+      int deathBodyCount, int locationId, double lat,double lng,String address,UserRole userRole) async {
     final Map<String, dynamic> jsonMap = {
       "no_of_deaths": deathBodyCount,
       "general_location_id": locationId,
@@ -46,9 +46,11 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
       "longitude": lng,
       "address":address
     };
-
+    var url = userRole == UserRole.volunteer
+        ? AppUrls.volunteerDeathReportUrl
+        : AppUrls.emergencyDeathReportUrl;
     return await apiManager.makeApiRequest<ReportDeathResponse>(
-      url: AppUrls.volunteerDeathReportUrl,
+      url: url,
       method: RequestMethod.POST,
       data: jsonMap,
       fromJson: (json) => ReportDeathResponse.fromJson(json['data'],json['message']),
@@ -64,14 +66,16 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
     };
 
     var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerScanQRCodeUrl:
-    AppUrls.transportScanQRCodeUrl;
+        UserRole.transport == userRole?AppUrls.transportScanQRCodeUrl:
+        AppUrls.emergencyScanQRCodeUrl;
+
 
     return await apiManager.makeApiRequest<Map<String,dynamic>>(
       url: appUrl,
       method: RequestMethod.POST,
       data: jsonMap,
       fromJson: (json)=> {
-        if(userRole == UserRole.volunteer)
+        if(userRole == UserRole.volunteer || userRole == UserRole.emergency )
         "band_code":json['data']['band_code_id'],
         if(userRole == UserRole.transport)
         "processingCenters" : json['data']['processingCenters']
@@ -80,13 +84,18 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
   @override
-  Future<Map<String,dynamic>> postDeathReportForm({required DeathReportFormRequest formRequest}) async {
+  Future<Map<String,dynamic>> postDeathReportForm({required DeathReportFormRequest formRequest, required UserRole userRole}) async {
+
+    var appUrl = userRole == UserRole.volunteer ? AppUrls.deathReportFormUrl:
+   AppUrls.emergencyDeathFormUrl;
+
     return await apiManager.makeApiRequest<Map<String,dynamic>>(
-      url: AppUrls.deathReportFormUrl,
+      url: appUrl,
       method: RequestMethod.POST,
       data: formRequest.toJson(),
       fromJson: (json) => {
-        "remainingCount":json['extra']['remainingDeaths'],
+        if(userRole == UserRole.volunteer)
+          "remainingCount":json['extra']['remainingDeaths'],
         "message":json['success'],
         "title":json['message']
       }

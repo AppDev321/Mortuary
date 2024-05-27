@@ -33,12 +33,13 @@ class AppStrings {
   static const String processCenterLoc = 'Processing centre\nlocation';
   static const String pickupMapLoc = 'Pick up location';
   static const String pickupMapLabel = "Please reach the death alert location in order to receive the dead body.";
+  static const String spaceAvailabilityCenter='Space Availability in Processing Centre';
   static const String callVolunteer = "Call the Volunteer";
   static const String arrived = "Arrived";
   static const String scanNextBody = "Proceed to scanned next";
   static const String scanSuccess = "Scan Successful";
   static const String select = "Select";
-
+  static const String handOverBody='Hand Over Dead Body';
 
   static const String processingCenter = "Processing centre";
   static const String processingCenterLabel = "Please select a processing centre to drop body";
@@ -81,6 +82,9 @@ class AppStrings {
   static const String date = "Date";
   static const String time = "Time";
   static const String address = "Address";
+  static const String documents = "Documents";
+  static const String documentsLabel = "Please upload the documents mentioned below";
+
 
   // Empty String
   static const String emptyString = '';

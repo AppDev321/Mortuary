@@ -16,7 +16,8 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/styles/colors.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/load_more_listview.dart';
-import '../../domain/enities/death_report_list_reponse.dart';
+import '../../../death_report/domain/enities/death_report_list_reponse.dart';
+
 
 class DeathReportListScreen extends StatefulWidget {
   final UserRole userRole;
@@ -166,7 +167,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                           itemBuilder: (context, index) {
                             var listItem = paginatedList[index];
                             return SizedBox(
-                                height: Get.height * 0.35,
+                                height: Get.height * 0.3,
                                 child: ReportListItem(listItem: listItem));
                           },
                         ),

@@ -8,7 +8,6 @@ import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/reporter_map_view.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/utils.dart';
@@ -79,17 +78,20 @@ class AcceptDeathAlertScreen extends StatelessWidget {
                       dataModel.address ?? "N/A"),
                 ],
               ),
-              sizeFieldLargePlaceHolder,
-              GestureDetector(
-                onTap: (){
-                  controller.acceptDeathReportByTransport(dataModel);
-                },
-                child: Center(
-                    child: SvgPicture.asset(
-                  AppAssets.icAcceptButton,
-                  height: 200,
-                )),
-              ).wrapWithLoadingBool(controller.isApiResponseLoaded),
+              sizeFieldMediumPlaceHolder,
+              SizedBox(
+                height: 170,
+                child: GestureDetector(
+                  onTap: (){
+                    controller.acceptDeathReportByTransport(dataModel);
+                  },
+                  child: Center(
+                      child: SvgPicture.asset(
+                    AppAssets.icAcceptButton,
+                    height: 170,
+                  )),
+                ).wrapWithLoadingBool(controller.isApiResponseLoaded),
+              ),
               sizeFieldMediumPlaceHolder,
               Center(
                 child: ButtonWidget(
@@ -113,14 +115,17 @@ class AcceptDeathAlertScreen extends StatelessWidget {
         children: [
           SvgPicture.asset(assets),
           sizeHorizontalMinPlaceHolder,
-          CustomTextWidget(
-            text: title,
-            colorText: AppColors.hexToColor("#667085"),
-            fontWeight: FontWeight.w500,
-            size: 14,
+          Expanded(
+            child: CustomTextWidget(
+              text: title,
+              colorText: AppColors.hexToColor("#667085"),
+              fontWeight: FontWeight.w500,
+              size: 14,
+            ),
           ),
         ],
       ),
+
       CustomTextWidget(
         text: body,
         colorText: AppColors.hexToColor("#AEAEAE"),
