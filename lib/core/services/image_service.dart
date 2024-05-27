@@ -15,8 +15,7 @@ class ImageServiceImpl implements ImageService {
 
   ImageServiceImpl();
 
-  /// There's a known issue for ios simulator, that the image picker opens twice for the first time after permissions are given
-  /// https://github.com/flutter/flutter/issues/82602
+
   @override
   Future<File?> pickImage(
       {ImageSource imageSource = ImageSource.gallery}) async {
@@ -86,7 +85,7 @@ class ImageServiceImpl implements ImageService {
         sourcePath: File(pickedFile.path).path,
         maxWidth: 1080,
         maxHeight: 1080,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+       // aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 2.0),
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'Cropper',

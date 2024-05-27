@@ -3,9 +3,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/styles/color_schemes.dart';
 import 'package:mortuary/core/styles/text_theme.dart';
 import 'package:mortuary/features/authentication/init_auth.dart';
+import 'package:mortuary/features/document_upload/presentation/widget/document_upload_screen.dart';
 import 'package:mortuary/features/splash/presentation/widget/splash_screen.dart';
 import 'package:mortuary/init_core.dart';
 import 'package:mortuary/init_main.dart';
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         textTheme: lightTextTheme,
       ),
-      home:  SplashScreen()
+      home:  DocumentUploadScreen(currentUserRole: UserRole.emergency,)
     );
   }
 }

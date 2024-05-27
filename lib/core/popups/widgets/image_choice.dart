@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/styles/colors.dart';
+
+import '../../constants/app_strings.dart';
 
 class ImageChoiceDialog extends StatelessWidget {
   const ImageChoiceDialog({super.key});
@@ -11,14 +14,19 @@ class ImageChoiceDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
+
       ),
       child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.white
+        ),
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Select Image Source',
+              AppStrings.selectImageSource,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
@@ -35,7 +43,7 @@ class ImageChoiceDialog extends StatelessWidget {
                     Get.back(result: ImageSource.camera);
                   },
                   iconData: Icons.camera_alt_outlined,
-                  title: 'Camera',
+                  title: AppStrings.camera,
                 ),
                 const SizedBox(
                   width: 20.0,
@@ -45,7 +53,7 @@ class ImageChoiceDialog extends StatelessWidget {
                     Get.back(result: ImageSource.gallery);
                   },
                   iconData: Icons.photo_library,
-                  title: 'Gallery',
+                  title: AppStrings.gallery,
                 )
               ],
             ),
@@ -73,7 +81,7 @@ class ImageOption extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-          color: Colors.blueGrey.withOpacity(.2),
+          color: Colors.grey.withOpacity(0.2),
           borderRadius: BorderRadius.circular(12.0)),
       child: InkWell(
         onTap: onTap,

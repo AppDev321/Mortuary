@@ -17,6 +17,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../death_report/data/repositories/death_report_repo.dart';
 import '../../../death_report/domain/enities/death_report_alert.dart';
+import '../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 import '../../../splash/domain/entities/splash_model.dart';
@@ -200,23 +201,21 @@ class ProcessingUnitController extends GetxController {
     deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) {
       onApiResponseCompleted();
       deathNumberCount--;
-      var customError = GeneralError(
-        title: response['title'],
-        message: response['message'],
-      );
+      // var customError = GeneralError(
+      //   title: response['title'],
+      //   message: response['message'],
+      // );
 
-      showAppThemedDialog(customError,
-          showErrorMessage: false, dissmisableDialog: false, onPressed: () {
-        // int remainingDeathCount = response['remainingCount'];
-        // if (remainingDeathCount > 0) {
-        //   Get.back();
-        //   showQRCodeScannerScreen(role,deathReportId);
-        // }
+      // showAppThemedDialog(customError,
+      //     showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+      //   int remainingDeathCount = response['remainingCount'];
+      //   if (remainingDeathCount > 0) {
+      //     Get.back();
+      //     showQRCodeScannerScreen(role,deathReportId);
+      //   }
+      // });
 
-
-
-      });
-
+      Get.off(()=>DocumentUploadScreen(currentUserRole: role));
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);

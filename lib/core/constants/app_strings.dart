@@ -83,7 +83,15 @@ class AppStrings {
   static const String time = "Time";
   static const String address = "Address";
   static const String documents = "Documents";
+  static const String document = "Document";
   static const String documentsLabel = "Please upload the documents mentioned below";
+  static const String upload = "Upload";
+  static const String selectImageSource = "Select Image Source";
+  static const String camera = "Camera";
+  static const String gallery = "Gallery";
+
+
+
 
 
   // Empty String
