@@ -70,12 +70,16 @@ class PUHomeScreen extends StatelessWidget {
                     onTap: () {
                     controller.showQRCodeScannerScreen(currentUserRole, -111,
                         onApiCallBack: (response) {
-                      print("its herer")
-;                              var dataDialog = GeneralError(title: AppStrings.scanSuccess,message: AppStrings.scanSuccessMsg);
-                              showAppThemedDialog(dataDialog,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
-                                Get.offAll(PUHomeScreen(currentUserRole: currentUserRole));
-                              });
-                        });
+                      var dataDialog = GeneralError(
+                          title: AppStrings.scanSuccess,
+                          message: AppStrings.scanSuccessMsg);
+                      showAppThemedDialog(dataDialog,
+                          showErrorMessage: false,
+                          dissmisableDialog: false, onPressed: () {
+                        Get.offAll(
+                            PUHomeScreen(currentUserRole: currentUserRole));
+                      });
+                    });
                   },
                     child: SvgPicture.asset(AppAssets.icReceiveDeath)),
               ),
