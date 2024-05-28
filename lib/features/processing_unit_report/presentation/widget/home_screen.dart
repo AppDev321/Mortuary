@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/error/errors.dart';
+import 'package:mortuary/core/popups/show_popups.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
@@ -66,8 +68,15 @@ class PUHomeScreen extends StatelessWidget {
                 height: Get.height * 0.18,
                 child: GestureDetector(
                     onTap: () {
-
-                    },
+                    controller.showQRCodeScannerScreen(currentUserRole, -111,
+                        onApiCallBack: (response) {
+                      print("its herer")
+;                              var dataDialog = GeneralError(title: AppStrings.scanSuccess,message: AppStrings.scanSuccessMsg);
+                              showAppThemedDialog(dataDialog,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
+                                Get.offAll(PUHomeScreen(currentUserRole: currentUserRole));
+                              });
+                        });
+                  },
                     child: SvgPicture.asset(AppAssets.icReceiveDeath)),
               ),
               sizeFieldLargePlaceHolder,

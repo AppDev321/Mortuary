@@ -33,6 +33,7 @@ abstract class DeathReportRepo {
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
   Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId}) ;
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
+  Future<void> updateSpaceAvailabilityStatusPU({required int status});
 
 
 }
@@ -123,6 +124,15 @@ class DeathReportRepoImpl extends DeathReportRepo {
       return await remoteDataSource.getDetailOfProcessUnit(
           deathReportId: deathReportId,
           processingUnitId: processingUnitId
+      );
+    });
+  }
+
+  @override
+  Future<void> updateSpaceAvailabilityStatusPU({required int status}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.updateSpaceAvailabilityStatusPU(
+          status:status
       );
     });
   }

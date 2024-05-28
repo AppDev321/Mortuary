@@ -204,7 +204,6 @@ showAppThemedDialog(CustomError? error,
       Function()? onPressed,
     bool dissmisableDialog = true}) {
   return Get.dialog(
-
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

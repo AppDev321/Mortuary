@@ -38,6 +38,7 @@ class AppStrings {
   static const String arrived = "Arrived";
   static const String scanNextBody = "Proceed to scanned next";
   static const String scanSuccess = "Scan Successful";
+  static const String scanSuccessMsg = "QR code Scanned successfully";
   static const String select = "Select";
   static const String handOverBody='Hand Over Dead Body';
 
@@ -78,7 +79,7 @@ class AppStrings {
   static const String newDeathAlertTitle = "New death Alert\nreceived";
   static const String newDeathLabelMsg = "Please click on the button below in order to Initiate your journey";
   static const String reportDetail = "Report Details:";
-  static const String  noOfDeath = "No of deaths";
+  static const String noOfDeath = "No of deaths";
   static const String date = "Date";
   static const String time = "Time";
   static const String address = "Address";
@@ -89,7 +90,7 @@ class AppStrings {
   static const String selectImageSource = "Select Image Source";
   static const String camera = "Camera";
   static const String gallery = "Gallery";
-
+  static const String skip = "Skip";
 
 
 

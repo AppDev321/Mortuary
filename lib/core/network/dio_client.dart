@@ -9,8 +9,8 @@ class DioClient {
   DioClient(this._dio) {
     _dio
       ..options.baseUrl = AppUrls.baseUrl
-      ..options.connectTimeout = 6000
-      ..options.receiveTimeout = 15000
+      //..options.connectTimeout = 6000
+     // ..options.receiveTimeout = 15000
       ..options.responseType = ResponseType.json
        ..interceptors.add(RequestInterceptor());
   }

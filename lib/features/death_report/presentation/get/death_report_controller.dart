@@ -232,10 +232,12 @@ class DeathReportController extends GetxController {
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
     deathReportList.clear();
     onApiRequestStarted();
+
    await deathReportRepo.getDeathReportList(userRole).then((response) {
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
+      print(error);
         onErrorShowDialog(error);
     });
     return deathReportList;

@@ -25,6 +25,7 @@ abstract class DeathReportRemoteSource {
   Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId});
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
 
+  Future<void> updateSpaceAvailabilityStatusPU({required int status}) ;
 
 
 }
@@ -105,7 +106,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   @override
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
     var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerDeathReportListUrl:
-                AppUrls.transportDeathReportListUrl;
+    userRole == UserRole.transport? AppUrls.transportDeathReportListUrl:AppUrls.emergencyDeathReportListUrl;
 
     return await apiManager.makeApiRequest<List<DeathReportListResponse>>(
         url: appUrl,
@@ -187,6 +188,19 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
       method: RequestMethod.POST,
       data: jsonMap,
       fromJson: (json)=>ProcessingCenter.fromJson(json["data"]["processingCenters"],json["extra"])
+    );
+  }
+
+  @override
+  Future<void> updateSpaceAvailabilityStatusPU({required int status}) async{
+    final Map<String, dynamic> jsonMap = {
+      "status": status
+    };
+    return await apiManager.makeApiRequest(
+        url: AppUrls.emergencyAvailabilityStatus,
+        method: RequestMethod.POST,
+        data: jsonMap,
+        fromJson: (json)=>()
     );
   }
 

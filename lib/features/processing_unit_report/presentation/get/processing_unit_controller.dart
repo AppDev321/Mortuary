@@ -67,6 +67,7 @@ class ProcessingUnitController extends GetxController {
    setBedSpace(bool isSpaceAvailable) {
      isBedSpaceAvailable = isSpaceAvailable;
      onUpdateUI();
+     updateAvailabilityStatus(isSpaceAvailable==true?1:0);
    }
 
 
@@ -126,7 +127,7 @@ class ProcessingUnitController extends GetxController {
   initiateDeathReportToServer(double lat, double lng, String currentAddress,UserRole userRole) {
     deathReportRepo
         .initiateDeathReport(
-            deathBodyCount: deathNumberCount,
+            deathBodyCount: 1,//deathNumberCount,
             locationId: selectedGeneralLocation?.id ?? 0,
             lat: lat,
             lng: lng,
@@ -170,13 +171,13 @@ class ProcessingUnitController extends GetxController {
 
       onApiResponseCompleted();
       if (onApiCallBack != null) {
-        onApiCallBack("");
+        onApiCallBack(value);
       }
-
+      else{
         Go.off(() => PUDeathReportFormScreen(
             deathBodyBandCode: value['band_code'],
             deathFormCode: deathReportId));
-
+      }
 
     }).onError<CustomError>((error, stackTrace) async {
       //To update scanner Button Ui because it use DeathReportController
@@ -215,7 +216,7 @@ class ProcessingUnitController extends GetxController {
       //   }
       // });
 
-      Get.off(()=>DocumentUploadScreen(currentUserRole: role));
+      Get.off(()=>DocumentUploadScreen(currentUserRole: role,bandCodeId: bandCodeId,));
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
@@ -239,12 +240,21 @@ class ProcessingUnitController extends GetxController {
     deathReportList.clear();
     onApiRequestStarted();
    await deathReportRepo.getDeathReportList(userRole).then((response) {
+     print(response);
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
         onErrorShowDialog(error);
     });
     return deathReportList;
+  }
+
+  updateAvailabilityStatus(int status) async {
+    onApiRequestStarted();
+    await deathReportRepo
+        .updateSpaceAvailabilityStatusPU(status: status)
+        .then((value) => onApiResponseCompleted())
+        .onError((error, stackTrace) => onErrorShowDialog(error));
   }
 
   ////////////// Emnergency Api Section Close/////////////////

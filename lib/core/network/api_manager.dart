@@ -40,6 +40,7 @@ class ApiManager {
     required String url,
     required RequestMethod method,
     Map<String, dynamic>? data,
+    dynamic files,
   }) async {
     try {
       Response response;
@@ -57,8 +58,13 @@ class ApiManager {
           response = await _dio.get(url, options: options);
           break;
         case RequestMethod.POST:
-          response = await _dio.post(url,
-              options: options, data: FormData.fromMap(data ?? {}));
+          if (files != null) {
+            print(files.fields);
+            response = await _dio.post(url, options: options, data: files);
+          }else {
+            response = await _dio.post(url,
+                options: options, data: FormData.fromMap(data ?? {}));
+          }
           break;
 
         default:
@@ -119,6 +125,22 @@ class ApiManager {
   }) async {
     final response = await callNetworkApiRequest<ApiResponse>(
         url: url, method: method, data: data);
+
+    if (response.error != null) {
+      return Future.error(response.error!);
+    } else {
+      return fromJson(response.data!);
+    }
+  }
+
+  Future<T> makeFileUploadRequest<T>({
+    required String url,
+    required RequestMethod method,
+    dynamic data,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
+    final response = await callNetworkApiRequest<ApiResponse>(
+        url: url, method: method, files: data,);
 
     if (response.error != null) {
       return Future.error(response.error!);

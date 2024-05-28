@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         textTheme: lightTextTheme,
       ),
-      home:  DocumentUploadScreen(currentUserRole: UserRole.emergency,)
+      home:  SplashScreen()
     );
   }
 }

@@ -29,9 +29,16 @@ class AppUrls {
 
 
 
+
   static const emergencyScanQRCodeUrl= '${baseUrl}emergency/scan-qr';
   static const emergencyDeathReportUrl= '${baseUrl}emergency/death-report';
   static const emergencyDeathFormUrl= '${baseUrl}emergency/death-form';
+  static const emergencyUploadFileUrl= '${baseUrl}emergency/attachments';
+  static const emergencyAvailabilityStatus= '${baseUrl}emergency/change-status';
+  static const emergencyDeathReportListUrl = '${baseUrl}emergency/death-report';
+
+
+
 
   /// google maps url
 
