@@ -8,8 +8,8 @@ import 'package:mortuary/features/authentication/presentation/component/gender_o
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
-import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
-import 'package:mortuary/features/death_report/presentation/widget/report_death_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/common/death_report_list_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/authorized_person/report_death_screen.dart';
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -20,8 +20,8 @@ import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 import '../../data/repositories/death_report_repo.dart';
 import '../../domain/enities/death_report_alert.dart';
-import '../widget/death_report_form.dart';
-import '../widget/pickup_map_view.dart';
+import '../widget/authorized_person/death_report_form.dart';
+import '../widget/transport/pickup_map_view.dart';
 
 class DeathReportController extends GetxController {
   final DeathReportRepo deathReportRepo;
@@ -167,6 +167,7 @@ class DeathReportController extends GetxController {
 
   postQRCodeToServer(String qrCode, int deathReportId, UserRole userRole,
       void Function(dynamic)? onApiCallBack) {
+    print("QRCode ==> $qrCode");
     onApiRequestStarted();
     deathReportRepo.postQRScanCode(qrCode,userRole).then((value) {
       isScanCodeCompleted = false;
@@ -191,6 +192,8 @@ class DeathReportController extends GetxController {
 
   postDeathReportFormToServer(
       int deathReportId, int bandCodeId, Gender gender,UserRole userRole) {
+    print(bandCodeId);
+    print(deathReportId);
     var request = DeathReportFormRequest(
         deathReportId: deathReportId,
         visaTypeId: selectedVisaType?.id ?? 0,
@@ -198,7 +201,9 @@ class DeathReportController extends GetxController {
         idNumber: idNumber,
         genderId: gender.id,
         age: ageNumber,
-        ageGroupId: selectedAgeGroup?.id ?? 0);
+        ageGroupId: selectedAgeGroup?.id ?? 0,
+        deathTypeId: selectedDeathType?.id ??0,
+        countryId: selectedNationality?.id ??0);
 
     onApiRequestStarted();
     deathReportRepo.postDeathReportForm(formRequest: request,userRole: userRole).then((response) {

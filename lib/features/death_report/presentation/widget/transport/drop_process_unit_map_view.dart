@@ -15,11 +15,11 @@ import 'package:mortuary/features/death_report/builder_ids.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/processing_centers_list.dart';
+import 'package:mortuary/features/death_report/presentation/widget/transport/processing_centers_list.dart';
 import 'package:mortuary/features/google_map/google_map_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/constants/app_strings.dart';
+import '../../../../../core/constants/app_strings.dart';
 
 class DropProcessUnitMapScreen extends StatefulWidget {
   final ProcessingCenter dataModel;

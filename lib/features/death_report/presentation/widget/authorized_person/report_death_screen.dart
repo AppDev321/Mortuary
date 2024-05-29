@@ -6,13 +6,13 @@ import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
-import 'package:mortuary/features/death_report/presentation/widget/reporter_map_view.dart';
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/enums/enums.dart';
-import '../../../../core/utils/utils.dart';
-import '../../../../core/widgets/button_widget.dart';
+import 'package:mortuary/features/death_report/presentation/widget/authorized_person/reporter_map_view.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/enums/enums.dart';
+import '../../../../../core/utils/utils.dart';
+import '../../../../../core/widgets/button_widget.dart';
 import 'death_count_screen.dart';
-import 'death_report_list_screen.dart';
+import '../common/death_report_list_screen.dart';
 
 class ReportDeathScreen extends StatelessWidget {
   final UserRole currentUserRole;

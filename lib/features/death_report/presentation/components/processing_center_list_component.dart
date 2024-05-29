@@ -12,7 +12,7 @@ import 'package:mortuary/features/death_report/presentation/get/death_report_con
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
-import '../widget/drop_process_unit_map_view.dart';
+import '../widget/transport/drop_process_unit_map_view.dart';
 
 class ProcessingCenterRowItemWidget extends StatefulWidget {
   final ProcessingCenter listItem;

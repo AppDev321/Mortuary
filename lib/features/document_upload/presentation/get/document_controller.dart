@@ -4,7 +4,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/error/errors.dart';
 import '../../../../core/popups/show_popups.dart';
-import '../../../processing_unit_report/presentation/widget/home_screen.dart';
+import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../../builder_ids.dart';
 import '../../data/data_source/upload_remote_source.dart';
 

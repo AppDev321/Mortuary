@@ -7,6 +7,8 @@ class DeathReportFormRequest {
     required this.genderId,
     required this.age,
     required this.ageGroupId,
+    required this.countryId,
+    required this.deathTypeId
   });
 
   final int deathReportId;
@@ -16,6 +18,8 @@ class DeathReportFormRequest {
   final int genderId;
   final int age;
   final int ageGroupId;
+  final int countryId;
+  final int deathTypeId;
 
 
   Map<String, dynamic> toJson() => {
@@ -26,6 +30,8 @@ class DeathReportFormRequest {
     "gender_id": genderId,
     "age": age,
     "age_group_id": ageGroupId,
+    "country_id":countryId,
+    "death_type_id":deathTypeId
   };
 
 }

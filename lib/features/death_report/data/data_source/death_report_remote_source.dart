@@ -60,16 +60,19 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
   @override
   Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole) async {
-    var code = int.tryParse(qrCode);
+
 
     final Map<String, dynamic> jsonMap = {
-      "qr_code": code ?? "-1"
+      "qr_code": qrCode
     };
 
-    var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerScanQRCodeUrl:
-        UserRole.transport == userRole?AppUrls.transportScanQRCodeUrl:
-        AppUrls.emergencyScanQRCodeUrl;
-
+    var appUrl = userRole == UserRole.volunteer
+        ? AppUrls.volunteerScanQRCodeUrl
+        : UserRole.transport == userRole
+            ? AppUrls.transportScanQRCodeUrl
+            : UserRole.emergency == userRole
+                ? AppUrls.emergencyScanQRCodeUrl
+                : AppUrls.morgueScanQRCodeUrl;
 
     return await apiManager.makeApiRequest<Map<String,dynamic>>(
       url: appUrl,
@@ -105,8 +108,13 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
   @override
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
-    var appUrl = userRole == UserRole.volunteer ? AppUrls.volunteerDeathReportListUrl:
-    userRole == UserRole.transport? AppUrls.transportDeathReportListUrl:AppUrls.emergencyDeathReportListUrl;
+    var appUrl = userRole == UserRole.volunteer
+        ? AppUrls.volunteerDeathReportListUrl
+        : userRole == UserRole.transport
+            ? AppUrls.transportDeathReportListUrl
+            : userRole == UserRole.emergency
+                ? AppUrls.emergencyDeathReportListUrl
+                : AppUrls.morgueDeathReportListUrl;
 
     return await apiManager.makeApiRequest<List<DeathReportListResponse>>(
         url: appUrl,

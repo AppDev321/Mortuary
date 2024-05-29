@@ -8,13 +8,13 @@ import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/enums/enums.dart';
-import '../../../../core/utils/utils.dart';
-import '../../../../core/widgets/button_widget.dart';
-import '../../domain/enities/death_report_alert.dart';
-import 'death_count_screen.dart';
-import 'death_report_list_screen.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/enums/enums.dart';
+import '../../../../../core/utils/utils.dart';
+import '../../../../../core/widgets/button_widget.dart';
+import '../../../domain/enities/death_report_alert.dart';
+import '../authorized_person/death_count_screen.dart';
+import '../common/death_report_list_screen.dart';
 
 class AcceptDeathAlertScreen extends StatelessWidget {
   final DeathReportAlert dataModel;

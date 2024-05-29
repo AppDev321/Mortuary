@@ -208,13 +208,16 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
                             bottom: 12, top: 12, left: 24, right: 24),
                         child: Row(
                           children: <Widget>[
+
                             Visibility(
-                              visible:widget.isFromApi,
-                              child: Image.asset(
-                              _filteredList[index].flag,
-                              // package: countryCodePackageName,
-                              width: widget.flagIconSize,
-                            ),),
+                              visible: widget.isFromApi == false,
+                              child: widget.isFromApi == false
+                                  ? Image.asset(
+                                _filteredList[index].flag,
+                                width: widget.flagIconSize,
+                              )
+                                  : const SizedBox(), // If flag is null, render an empty SizedBox
+                            ),
 
                        sizeHorizontalFieldMinPlaceHolder,
                             Expanded(

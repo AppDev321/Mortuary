@@ -9,7 +9,7 @@ import 'package:mortuary/features/death_report/domain/enities/death_report_form_
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/common/death_report_list_screen.dart';
 
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
@@ -23,7 +23,7 @@ import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 
-import '../widget/death_report_form.dart';
+import '../widget/processing_unit/death_report_form.dart';
 
 class ProcessingUnitController extends GetxController {
   final DeathReportRepo deathReportRepo;
@@ -202,7 +202,9 @@ class ProcessingUnitController extends GetxController {
         idNumber: idNumber,
         genderId: gender.id,
         age: ageNumber,
-        ageGroupId: selectedAgeGroup?.id ?? 0);
+        ageGroupId: selectedAgeGroup?.id ?? 0,
+        deathTypeId: selectedDeathType?.id ??0,
+        countryId: selectedNationality?.id ??0);
 
     onApiRequestStarted();
     deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) {

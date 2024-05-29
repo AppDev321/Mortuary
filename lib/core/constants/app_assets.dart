@@ -28,7 +28,7 @@ class AppAssets {
   static const String icReceiveDeath = 'assets/icons/ic_receive_death.svg';
   static const String icRemoveAttachment = 'assets/icons/ic_remove_attach.svg';
   static const String icReportDeath = 'assets/icons/ic_report_death.svg';
-
+  static const String icMorgueReceivedBody = 'assets/icons/ic_morgue_recieved_body.svg';
 
 
 

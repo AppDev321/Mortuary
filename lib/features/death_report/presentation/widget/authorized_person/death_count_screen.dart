@@ -8,13 +8,13 @@ import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/constants/place_holders.dart';
-import '../../../../core/enums/enums.dart';
-import '../../../../core/widgets/custom_screen_widget.dart';
-import '../../../../core/widgets/custom_text_field.dart';
-import '../../../../core/widgets/custom_text_widget.dart';
-import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/constants/place_holders.dart';
+import '../../../../../core/enums/enums.dart';
+import '../../../../../core/widgets/custom_screen_widget.dart';
+import '../../../../../core/widgets/custom_text_field.dart';
+import '../../../../../core/widgets/custom_text_widget.dart';
+import '../../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 
 class DeathCountScreen extends StatelessWidget {
   final UserRole currentUserRole;

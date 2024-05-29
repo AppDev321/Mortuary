@@ -264,8 +264,9 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                               if (widget.hapticFeedback) HapticFeedback
                                   .lightImpact();
                               log('Barcode rawValue => $code');
-                              widget.onScan(code);
                               scannedValue = code;
+                              widget.onScan(code);
+
                             });
                             if (widget.canPop && mounted &&
                                 Navigator.canPop(context)) {

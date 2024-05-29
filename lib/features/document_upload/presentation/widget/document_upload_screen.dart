@@ -11,7 +11,7 @@ import '../../../../core/enums/enums.dart';
 import '../../../../core/styles/colors.dart';
 import '../../../../core/widgets/custom_screen_widget.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
-import '../../../processing_unit_report/presentation/widget/home_screen.dart';
+import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../get/document_controller.dart';
 
 class DocumentUploadScreen extends StatelessWidget {

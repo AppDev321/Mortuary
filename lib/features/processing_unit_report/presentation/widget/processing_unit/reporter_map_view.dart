@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/features/google_map/google_map_view.dart';
 
-import '../../../../core/constants/app_strings.dart';
+import '../../../../../core/constants/app_strings.dart';
 
 class ReportMapViewScreen extends StatelessWidget {
   const ReportMapViewScreen({Key? key}) : super(key: key);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/widgets/custom_screen_widget.dart';
-import '../../domain/enities/processing_center.dart';
-import '../components/processing_center_list_component.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/widgets/custom_screen_widget.dart';
+import '../../../domain/enities/processing_center.dart';
+import '../../components/processing_center_list_component.dart';
 
 class ProcessingUnitListScreen extends StatelessWidget {
   final List<ProcessingCenter> processingCenters;

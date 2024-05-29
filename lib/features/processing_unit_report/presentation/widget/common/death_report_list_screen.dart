@@ -11,12 +11,14 @@ import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/accept_report_death_screen.dart';
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/styles/colors.dart';
-import '../../../../core/utils/utils.dart';
-import '../../../../core/widgets/load_more_listview.dart';
-import '../../domain/enities/death_report_list_reponse.dart';
+import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/styles/colors.dart';
+import '../../../../../core/utils/utils.dart';
+import '../../../../../core/widgets/load_more_listview.dart';
+import '../../../../death_report/domain/enities/death_report_list_reponse.dart';
+
 
 class DeathReportListScreen extends StatefulWidget {
   final UserRole userRole;
@@ -41,39 +43,26 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   void initState() {
     super.initState();
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var controller = Get.find<DeathReportController>();
+      var controller = Get.find<ProcessingUnitController>();
       controller.getDeathReportList(widget.userRole).then((value) {
         allReportsList = value;
         getPaginatedList();
       });
-
-      if (widget.userRole == UserRole.transport) {
-        controller.checkAnyAlerts().then((value) {
-          setState(() {
-            if (value.isNotEmpty) {
-              deathReportAlert = value.first;
-              hasAnyNotificationAlert = true;
-            }
-          });
-        });
-      }
     });
 
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DeathReportController>(
+    return GetBuilder<ProcessingUnitController>(
         initState:
-        Get.find<DeathReportController>().setUserRole(widget.userRole),
+        Get.find<ProcessingUnitController>().setUserRole(widget.userRole),
         builder: (controller) {
       return CustomScreenWidget(
           titleText: AppStrings.deathReportList.toUpperCase(),
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
             GestureDetector(
               onTap: () {
@@ -143,7 +132,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                   )),
             ),
             SizedBox(
-              height: Get.height * 0.85,
+              height: Get.height * 0.8,
               child: RefreshIndicator(
                 onRefresh: () => controller.getDeathReportList(widget.userRole),
                 child: controller.deathReportList.isEmpty &&
@@ -162,12 +151,12 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                         onLoadMore: getPaginationData,
                         child: ListView.builder(
                           physics: const ScrollPhysics(),
-                          shrinkWrap: false,
+                          shrinkWrap: true,
                           itemCount: paginatedList.length,
                           itemBuilder: (context, index) {
                             var listItem = paginatedList[index];
                             return SizedBox(
-                                height: Get.height * 0.45,
+                                height: Get.height * 0.38,
                                 child: ReportListItem(listItem: listItem));
                           },
                         ),

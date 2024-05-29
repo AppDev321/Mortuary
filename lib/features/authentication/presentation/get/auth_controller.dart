@@ -10,13 +10,14 @@ import 'package:mortuary/features/authentication/domain/enities/user_model.dart'
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/otp_verification_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/reset_password_screen.dart';
-import 'package:mortuary/features/death_report/presentation/widget/death_report_list_screen.dart';
-import 'package:mortuary/features/death_report/presentation/widget/report_death_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/common/death_report_list_screen.dart';
+import 'package:mortuary/features/death_report/presentation/widget/authorized_person/report_death_screen.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/widget/morgue/morgue_home_screen.dart';
 
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/utils/utils.dart';
-import '../../../processing_unit_report/presentation/widget/home_screen.dart';
+import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../../data/repositories/auth_repo.dart';
 
 class AuthController extends GetxController {
@@ -24,10 +25,10 @@ class AuthController extends GetxController {
 
   AuthController({required this.authUseRepo});
 
-  final fcmController  = Get.find<FCMController>();
+  final fcmController = Get.find<FCMController>();
 
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'emergency@email.com';
+  String email = 'morgue@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';
@@ -75,22 +76,23 @@ class AuthController extends GetxController {
   login(BuildContext context) async {
     onApiRequestStarted();
     await authUseRepo
-        .login(emailAddress: email, password: password,deviceFcmToken: fcmController.fcmToken.value)
+        .login(
+            emailAddress: email,
+            password: password,
+            deviceFcmToken: fcmController.fcmToken.value)
         .then((value) async {
       session = value;
       onApiResponseCompleted();
 
       if (currentUserRole == UserRole.volunteer) {
         Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole!));
-      }
-      else if (currentUserRole == UserRole.transport) {
-        Get.offAll(() =>  DeathReportListScreen(userRole: currentUserRole!));
-      }
-      else if (currentUserRole == UserRole.emergency)
-        {
-          Get.offAll(() =>  PUHomeScreen(currentUserRole: currentUserRole!));
-        }
-      else {
+      } else if (currentUserRole == UserRole.transport) {
+        Get.offAll(() => DeathReportListScreen(userRole: currentUserRole!));
+      } else if (currentUserRole == UserRole.emergency) {
+        Get.offAll(() => PUHomeScreen(currentUserRole: currentUserRole!));
+      } else if (currentUserRole == UserRole.morgue) {
+        Get.offAll(() => MorgueHomeScreen(currentUserRole: currentUserRole!));
+      } else {
         showSnackBar(context, ApiMessages.unIdentifiedRole);
       }
     }).onError<CustomError>((error, stackTrace) async {
@@ -106,23 +108,16 @@ class AuthController extends GetxController {
         .then((value) async {
       onApiResponseCompleted();
 
-
       var alertData = GeneralError(
         message: '${value.data}',
-        title:value.message,
+        title: value.message,
       );
 
-      showAppThemedDialog(
-          alertData,
-          showErrorMessage: false,
-          dissmisableDialog: false,
-          onPressed: (){
-            Get.back();
-            Go.off(() =>const  OTPVerificationScreen());
-          }
-      );
-
-
+      showAppThemedDialog(alertData,
+          showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+        Get.back();
+        Go.off(() => const OTPVerificationScreen());
+      });
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
     });
@@ -155,16 +150,10 @@ class AuthController extends GetxController {
         message: value.message,
         title: AppStrings.resetPassword,
       );
-      showAppThemedDialog(
-          alertData,
-          showErrorMessage: false,
-        dissmisableDialog: false,
-        onPressed: (){
-          Get.offAll(() => LoginScreen());
-        }
-      );
-
-
+      showAppThemedDialog(alertData,
+          showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+        Get.offAll(() => LoginScreen());
+      });
     }).onError<CustomError>((error, stackTrace) async {
       print(error.title);
       onErrorShowDialog(error);

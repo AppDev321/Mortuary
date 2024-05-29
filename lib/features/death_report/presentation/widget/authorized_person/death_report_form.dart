@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/popups/show_popups.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/utils/utils.dart';
@@ -11,32 +12,36 @@ import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
-import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
+import 'package:mortuary/features/country_picker/functions.dart';
+import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 
-import '../../../../core/constants/app_strings.dart';
-import '../../../../core/enums/enums.dart';
-import '../../../../core/utils/app_config_service.dart';
-import '../../../../core/widgets/button_widget.dart';
-import '../../../../core/widgets/custom_text_field.dart';
+import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/utils/app_config_service.dart';
+import '../../../../../core/widgets/button_widget.dart';
+import '../../../../../core/widgets/custom_text_field.dart';
+import '../../../../splash/domain/entities/splash_model.dart';
 
-class PUDeathReportFormScreen extends StatefulWidget {
+class DeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
 
-  PUDeathReportFormScreen(
+  DeathReportFormScreen(
       {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
       : super(key: key);
 
   @override
-  State<PUDeathReportFormScreen> createState() => _PUDeathReportFormScreenState();
+  State<DeathReportFormScreen> createState() => _DeathReportFormScreenState();
 }
 
-class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
+class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
   List<Gender> genders = [];
   Gender? selectedGender;
-  var puDeathReportFormKey = GlobalKey<FormState>();
+  var deathReportFormKey = GlobalKey<FormState>();
   TextEditingController groupAgeTextController = TextEditingController();
   TextEditingController visaTypeTextController = TextEditingController();
+  TextEditingController nationalityTextController = TextEditingController();
+  TextEditingController deathTypeTextController = TextEditingController();
+
 
   @override
   void initState() {
@@ -47,9 +52,9 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProcessingUnitController>(builder: (controller) {
+    return GetBuilder<DeathReportController>(builder: (controller) {
       return Form(
-        key: puDeathReportFormKey,
+        key: deathReportFormKey,
         child: CustomScreenWidget(
             titleText: AppStrings.reportDeath.toUpperCase(),
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,6 +106,31 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                 validator: EmptyFieldValidator.validator,
                 fontWeight: FontWeight.normal,
                 onChanged: controller.setIdNumber,
+              ),
+              sizeFieldMinPlaceHolder,
+              CustomTextField(
+                controller: nationalityTextController,
+                suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                headText: AppStrings.nationality,
+                borderEnable: true,
+                text: AppStrings.nationality,
+                validator: EmptyFieldValidator.validator,
+                fontWeight: FontWeight.normal,
+                readOnly: true,
+                onTap: () async {
+                 var country =  await showCountryPickerSheet(
+                     context,
+                     isFromApi: true,
+                     countryApiList: ConfigService().getCountries()
+                 );
+                 if(country != null ){
+                    controller.setNationality(country!);
+                   nationalityTextController.text =
+                       controller.selectedNationality?.nationality ?? "";
+                   controller.update();
+                 }
+
+                },
               ),
               sizeFieldMinPlaceHolder,
               const Align(
@@ -162,6 +192,32 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                   }, (itemToString) => itemToString?.name ?? "");
                 },
               ),
+              sizeFieldMinPlaceHolder,
+              CustomTextField(
+                controller: deathTypeTextController,
+                suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                headText: AppStrings.deathType,
+                borderEnable: true,
+                text: AppStrings.deathType,
+                validator: EmptyFieldValidator.validator,
+                fontWeight: FontWeight.normal,
+                readOnly: true,
+                onTap: () async {
+                  showRadioOptionDialog(
+                      context,
+                      AppStrings.selectType,
+                      ConfigService().getDeathTypes(),
+                      controller.selectedDeathType,
+                          (onChanged) => controller.selectedDeathType,
+                          (onConfirmed) {
+                        controller.setDeathType(onConfirmed!);
+                        controller.update();
+                        deathTypeTextController.text =
+                            controller.selectedDeathType?.name ?? "";
+                      }, (itemToString) => itemToString?.name ?? "");
+
+                },
+              ),
               sizeFieldLargePlaceHolder,
               ButtonWidget(
                 isLoading: controller.isApiResponseLoaded,
@@ -170,14 +226,14 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                 textStyle:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                 onPressed: () {
-                  if (puDeathReportFormKey.currentState!.validate()) {
+                  if (deathReportFormKey.currentState!.validate()) {
                     if (selectedGender == null) {
                       showSnackBar(context, AppStrings.selectGender);
                     } else {
                       controller.postDeathReportFormToServer(
                         widget.deathFormCode,
                           widget.deathBodyBandCode,
-                          selectedGender!,UserRole.emergency);
+                          selectedGender!,UserRole.volunteer);
                     }
                   }
                 },
