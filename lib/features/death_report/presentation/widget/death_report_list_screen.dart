@@ -73,6 +73,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
           titleText: AppStrings.deathReportList.toUpperCase(),
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
             GestureDetector(
               onTap: () {
@@ -142,7 +143,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                   )),
             ),
             SizedBox(
-              height: Get.height * 0.8,
+              height: Get.height * 0.85,
               child: RefreshIndicator(
                 onRefresh: () => controller.getDeathReportList(widget.userRole),
                 child: controller.deathReportList.isEmpty &&
@@ -161,12 +162,12 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                         onLoadMore: getPaginationData,
                         child: ListView.builder(
                           physics: const ScrollPhysics(),
-                          shrinkWrap: true,
+                          shrinkWrap: false,
                           itemCount: paginatedList.length,
                           itemBuilder: (context, index) {
                             var listItem = paginatedList[index];
                             return SizedBox(
-                                height: Get.height * 0.35,
+                                height: Get.height * 0.45,
                                 child: ReportListItem(listItem: listItem));
                           },
                         ),

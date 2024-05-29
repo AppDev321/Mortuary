@@ -102,9 +102,12 @@ class ReportListItem extends StatelessWidget {
                   rowData(AppStrings.qrNumber,listItem.bandCode),
                   rowData(AppStrings.idType,listItem.visaType),
                   rowData(AppStrings.idNumber,listItem.idNumber),
+                  rowData(AppStrings.nationality,listItem.nationality),
                   rowData(AppStrings.gender,listItem.gender),
                   rowData(AppStrings.age,listItem.age),
                   rowData(AppStrings.ageGroup,listItem.ageGroup),
+                  rowData(AppStrings.deathType,listItem.deathType),
+
                 ],
               ),
             ),

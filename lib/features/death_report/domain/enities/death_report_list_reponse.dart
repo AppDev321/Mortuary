@@ -11,6 +11,8 @@ class DeathReportListResponse extends Equatable {
     required this.status,
     required this.reportDate,
     required this.reportTime,
+    required this.nationality,
+    required this.deathType
   });
 
   final String bandCode;
@@ -22,6 +24,8 @@ class DeathReportListResponse extends Equatable {
   final Status status;
   final String reportDate;
   final String reportTime;
+  final String nationality;
+  final String deathType;
 
   factory DeathReportListResponse.fromJson(Map<String, dynamic> json){
     return DeathReportListResponse(
@@ -34,6 +38,8 @@ class DeathReportListResponse extends Equatable {
       status: Status.fromJson(json["status"]),
       reportDate: json["report_date"] ?? "",
       reportTime: json["report_time"] ?? "",
+      deathType: json["death_type"] ?? "",
+      nationality: json["nationality"] ?? "",
     );
   }
 

@@ -47,14 +47,20 @@ class ProcessingUnitController extends GetxController {
 
 
   RadioOption? selectedGeneralLocation;
-
   void setGeneralLocation(RadioOption loc) => selectedGeneralLocation = loc;
+
   RadioOption? selectedAgeGroup;
-
   void setAgeGroup(RadioOption ageGroup) => selectedAgeGroup = ageGroup;
-  RadioOption? selectedVisaType;
 
+  RadioOption? selectedVisaType;
   void setVisaType(RadioOption visaType) => selectedVisaType = visaType;
+
+  RadioOption? selectedDeathType;
+  void setDeathType(RadioOption deathType) => selectedDeathType = deathType;
+
+  RadioOption? selectedNationality;
+  void setNationality(RadioOption nationality) => selectedNationality = nationality;
+
 
   int ageNumber = 0;
   void setAgeNumber(String age) =>
