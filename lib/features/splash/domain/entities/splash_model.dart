@@ -12,7 +12,9 @@ class AppConfig extends Equatable {
     required this.unitTypes,
     required this.vehicleTypes,
     required this.visaTypes,
-    required this.generalLocation
+    required this.generalLocation,
+    required this.countries,
+    required this.deathTypes
   });
 
   final List<RadioOption> ageGroup;
@@ -24,7 +26,8 @@ class AppConfig extends Equatable {
   final List<RadioOption> vehicleTypes;
   final List<RadioOption> visaTypes;
   final List<RadioOption> generalLocation;
-
+  final List<RadioOption> deathTypes;
+  final List<RadioOption> countries;
 
 
   factory AppConfig.fromJson(Map<String, dynamic> json) {
@@ -65,6 +68,14 @@ class AppConfig extends Equatable {
           ? []
           : List<RadioOption>.from(
           json["generalLocations"]!.map((x) => RadioOption.fromJson(x))),
+      deathTypes: json["deathTypes"] == null
+          ? []
+          : List<RadioOption>.from(
+          json["deathTypes"]!.map((x) => RadioOption.fromJson(x))),
+      countries: json["countries"] == null
+          ? []
+          : List<RadioOption>.from(
+          json["countries"]!.map((x) => RadioOption.fromJson(x))),
     );
   }
 
@@ -78,7 +89,9 @@ class AppConfig extends Equatable {
         unitTypes,
         vehicleTypes,
         visaTypes,
-    generalLocation
+    generalLocation,
+    countries,
+    deathTypes
       ];
 }
 
@@ -86,15 +99,19 @@ class RadioOption extends Equatable {
   RadioOption({
     required this.id,
     required this.name,
+    required this.nationality
   });
 
   final int id;
   final String name;
+  final String nationality;
+
 
   factory RadioOption.fromJson(Map<String, dynamic> json) {
     return RadioOption(
       id: json["id"] ?? 0,
       name: json["name"] ?? "",
+        nationality : json["nationality"] ?? ""
     );
   }
 
@@ -102,5 +119,6 @@ class RadioOption extends Equatable {
   List<Object?> get props => [
         id,
         name,
+    nationality
       ];
 }

@@ -51,6 +51,8 @@ class AppStrings {
   static const String gender='Gender';
   static const String age='Age';
   static const String ageGroup='Age Group';
+  static const String nationality='Nationality';
+  static const String deathType='Death Type';
   static const String onWayToProcess='Ambulance on way to processing centre';
   static const String handedToProcess='Handed over to processing centre';
   static const String pickBodyToProcess='Ambulance on way to pick the body';
@@ -91,9 +93,9 @@ class AppStrings {
   static const String camera = "Camera";
   static const String gallery = "Gallery";
   static const String skip = "Skip";
-
-
-
+  static const String searchCountry = "Search Country";
+  static const String chooseCountry = "Choose Country";
+  static const String selectType = "Select Type";
 
   // Empty String
   static const String emptyString = '';

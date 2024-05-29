@@ -30,4 +30,12 @@ class ConfigService {
   List<RadioOption> getGeneralLocation() {
     return _configData!.generalLocation ;
   }
+
+  List<RadioOption> getDeathTypes() {
+    return _configData!.deathTypes ;
+  }
+
+  List<RadioOption> getCountries() {
+    return _configData!.countries ;
+  }
 }

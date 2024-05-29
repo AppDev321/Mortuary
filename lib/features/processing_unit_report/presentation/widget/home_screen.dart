@@ -18,6 +18,7 @@ import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/button_widget.dart';
 
+import '../../../country_picker/functions.dart';
 import 'death_report_list_screen.dart';
 
 class PUHomeScreen extends StatelessWidget {
@@ -98,14 +99,7 @@ class PUHomeScreen extends StatelessWidget {
                       const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   onPressed: () => Go.to(() =>  DeathReportListScreen(userRole: currentUserRole,))),
               sizeFieldMediumPlaceHolder,
-              ButtonWidget(
-                  text: AppStrings.handOverBody,
-                  buttonType: ButtonType.gradient,
-                  textStyle:
-                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                  onPressed: () => Go.to(() => const ReportMapViewScreen())),
 
-              sizeFieldMediumPlaceHolder,
             ]);
 
 

@@ -12,12 +12,14 @@ import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
+import 'package:mortuary/features/country_picker/functions.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/app_config_service.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/custom_text_field.dart';
+import '../../../splash/domain/entities/splash_model.dart';
 
 class DeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
@@ -37,6 +39,9 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
   var deathReportFormKey = GlobalKey<FormState>();
   TextEditingController groupAgeTextController = TextEditingController();
   TextEditingController visaTypeTextController = TextEditingController();
+  TextEditingController nationalityTextController = TextEditingController();
+  TextEditingController deathTypeTextController = TextEditingController();
+
 
   @override
   void initState() {
@@ -103,6 +108,28 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
                 onChanged: controller.setIdNumber,
               ),
               sizeFieldMinPlaceHolder,
+              CustomTextField(
+                controller: nationalityTextController,
+                suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                headText: AppStrings.nationality,
+                borderEnable: true,
+                text: AppStrings.nationality,
+                validator: EmptyFieldValidator.validator,
+                fontWeight: FontWeight.normal,
+                readOnly: true,
+                onTap: () async {
+                 var country =  await showCountryPickerSheet(context,isFromApi: true,countryApiList: ConfigService().getCountries()
+                 );
+                 if(country != null ){
+                    controller.setNationality(country!);
+                   nationalityTextController.text =
+                       controller.selectedNationality?.name ?? "";
+                   controller.update();
+                 }
+
+                },
+              ),
+              sizeFieldMinPlaceHolder,
               const Align(
                 alignment: Alignment.topLeft,
                 child: CustomTextWidget(
@@ -160,6 +187,32 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
                     groupAgeTextController.text =
                         controller.selectedAgeGroup?.name ?? "";
                   }, (itemToString) => itemToString?.name ?? "");
+                },
+              ),
+              sizeFieldMinPlaceHolder,
+              CustomTextField(
+                controller: deathTypeTextController,
+                suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                headText: AppStrings.deathType,
+                borderEnable: true,
+                text: AppStrings.deathType,
+                validator: EmptyFieldValidator.validator,
+                fontWeight: FontWeight.normal,
+                readOnly: true,
+                onTap: () async {
+                  showRadioOptionDialog(
+                      context,
+                      AppStrings.selectType,
+                      ConfigService().getAgeGroups(),
+                      controller.selectedDeathType,
+                          (onChanged) => controller.selectedDeathType,
+                          (onConfirmed) {
+                        controller.setDeathType(onConfirmed!);
+                        controller.update();
+                        deathTypeTextController.text =
+                            controller.selectedDeathType?.name ?? "";
+                      }, (itemToString) => itemToString?.name ?? "");
+
                 },
               ),
               sizeFieldLargePlaceHolder,
