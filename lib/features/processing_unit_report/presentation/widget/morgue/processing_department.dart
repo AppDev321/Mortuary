@@ -84,9 +84,11 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
           actions: [
             GestureDetector(
                 onTap: (){
-                  Go.to(()=>UploadPictureScreen(currentUserRole: widget.currentUserRole,deathCaseID: widget.deathCaseId));
+                  Go.to(() => UploadPictureScreen(
+                      currentUserRole: widget.currentUserRole,
+                      deathCaseID: widget.deathCaseId));
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.all(8),
                     child: Icon(Icons.attachment)))
           ],
