@@ -46,6 +46,20 @@ class AppStrings {
   static const String processingCenterLabel = "Please select a processing centre to drop body";
   static const String availableSpace = "Available Space: ";
 
+
+  static const String processingDepartment = "Processing Departments";
+  static const String cleaningStation = "Cleaning Station";
+  static const String autopsyPostMartam = "Autopsy / Post Martam";
+  static const String refrigerator = "Refrigerator";
+  static const String cementry = "Cemetry (Local Burial)";
+  static const String shipToLocal = "Ship to local country";
+
+
+  static const String inProcess = "Inprocess";
+  static const String completed = "Completed";
+
+
+
   static const String idType='ID Type';
   static const String idNumber='ID Number';
   static const String gender='Gender';
@@ -96,6 +110,10 @@ class AppStrings {
   static const String searchCountry = "Search Country";
   static const String chooseCountry = "Choose Country";
   static const String selectType = "Select Type";
+  static const String uploadPic = "Upload Picture";
+  static const String uploadPicMsgLabel = "Please upload the captured picture in order to confirm handing over the dead body to Burial Company / Courier.";
+
+
 
   // Empty String
   static const String emptyString = '';

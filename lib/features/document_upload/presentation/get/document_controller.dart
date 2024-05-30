@@ -20,7 +20,7 @@ class DocumentController extends GetxController {
   uploadImageFile(List<String> attachments, int bandCodeId,UserRole userRole) {
     onApiRequestStarted();
     uploadFileRemoteDataSource
-        .uploadImageFile(bandCodeId: '$bandCodeId', attachmentList: attachments)
+        .uploadImageFile(bandCodeId: '$bandCodeId', attachmentList: attachments,userRole:userRole)
         .then((value) {
 
       onApiResponseCompleted();
@@ -33,6 +33,26 @@ class DocumentController extends GetxController {
       onErrorShowDialog(error);
     });
   }
+
+
+  morgueUploadImageFile(List<String> attachments, int bandCodeId,UserRole userRole) {
+    onApiRequestStarted();
+    uploadFileRemoteDataSource
+        .uploadImageFile(bandCodeId: '$bandCodeId', attachmentList: attachments,userRole: userRole)
+        .then((value) {
+
+      onApiResponseCompleted();
+      var dataDialog = GeneralError(title:AppStrings.upload,message: value['message']);
+      showAppThemedDialog(dataDialog,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
+
+      });
+
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+  }
+
+
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();

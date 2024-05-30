@@ -14,7 +14,8 @@ class AppConfig extends Equatable {
     required this.visaTypes,
     required this.generalLocation,
     required this.countries,
-    required this.deathTypes
+    required this.deathTypes,
+    required this.stations
   });
 
   final List<RadioOption> ageGroup;
@@ -28,7 +29,7 @@ class AppConfig extends Equatable {
   final List<RadioOption> generalLocation;
   final List<RadioOption> deathTypes;
   final List<RadioOption> countries;
-
+  final List<Station> stations;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) {
     return AppConfig(
@@ -76,6 +77,8 @@ class AppConfig extends Equatable {
           ? []
           : List<RadioOption>.from(
           json["countries"]!.map((x) => RadioOption.fromJson(x))),
+      stations: json["stations"] == null ? [] : List<Station>.from(json["stations"]!.map((x) => Station.fromJson(x))),
+
     );
   }
 
@@ -122,3 +125,70 @@ class RadioOption extends Equatable {
     nationality
       ];
 }
+
+class Station extends Equatable {
+  Station({
+    required this.id,
+    required this.name,
+    required this.latitude,
+    required this.longitude,
+    required this.address,
+    required this.pocs,
+  });
+
+  final int id;
+  final String name;
+  final String latitude;
+  final String longitude;
+  final String address;
+  final List<Poc> pocs;
+
+  factory Station.fromJson(Map<String, dynamic> json){
+    return Station(
+      id: json["id"] ?? 0,
+      name: json["name"] ?? "",
+      latitude: json["latitude"] ?? "",
+      longitude: json["longitude"] ?? "",
+      address: json["address"] ?? "",
+      pocs: json["pocs"] == null ? [] : List<Poc>.from(json["pocs"]!.map((x) => Poc.fromJson(x))),
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    id, name, latitude, longitude, address, pocs, ];
+}
+
+class Poc extends Equatable {
+  Poc({
+    required this.id,
+    required this.name,
+    required this.contactNo,
+    required this.email,
+    required this.shiftStartTime,
+    required this.shiftEndTime,
+  });
+
+  final int id;
+  final String name;
+  final String contactNo;
+  final dynamic email;
+  final dynamic shiftStartTime;
+  final dynamic shiftEndTime;
+
+  factory Poc.fromJson(Map<String, dynamic> json){
+    return Poc(
+      id: json["id"] ?? 0,
+      name: json["name"] ?? "",
+      contactNo: json["contact_no"] ?? "",
+      email: json["email"],
+      shiftStartTime: json["shift_start_time"],
+      shiftEndTime: json["shift_end_time"],
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    id, name, contactNo, email, shiftStartTime, shiftEndTime, ];
+}
+

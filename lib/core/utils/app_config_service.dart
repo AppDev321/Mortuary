@@ -38,4 +38,8 @@ class ConfigService {
   List<RadioOption> getCountries() {
     return _configData!.countries ;
   }
+
+  List<Station> getPoliceStations() {
+    return _configData!.stations ;
+  }
 }

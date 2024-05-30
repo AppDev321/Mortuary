@@ -29,7 +29,11 @@ class AppAssets {
   static const String icRemoveAttachment = 'assets/icons/ic_remove_attach.svg';
   static const String icReportDeath = 'assets/icons/ic_report_death.svg';
   static const String icMorgueReceivedBody = 'assets/icons/ic_morgue_recieved_body.svg';
-
+  static const String icCleaningBody = 'assets/icons/ic_cleaning_body.svg';
+  static const String icAutopsy = 'assets/icons/ic_autopsy.svg';
+  static const String icCementry = 'assets/icons/ic_cementry.svg';
+  static const String icCoffin = 'assets/icons/ic_coffin.svg';
+  static const String icRefrigerator = 'assets/icons/ic_refrigerator.svg';
 
 
 
@@ -38,7 +42,7 @@ class AppAssets {
   static const String boarding2 = "assets/images/boarding2.jpg";
   static const String boarding3 = "assets/images/boarding3.jpg";
   static const String boarding4 = "assets/images/boarding4.jpg";
-
+  static const String dummyDocument = "assets/images/img_document_dummy.png";
   ///jpg images
   static const String appIcon = "assets/icons/freshly_logo.jpg";
 

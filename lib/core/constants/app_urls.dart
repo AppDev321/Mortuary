@@ -40,7 +40,7 @@ class AppUrls {
 
   static const morgueScanQRCodeUrl= '${baseUrl}morgue/received-body';
   static const morgueDeathReportListUrl = '${baseUrl}morgue/death-report';
-
+  static const morgueUploadFileUrl= '${baseUrl}morgue/attachments';
 
   /// google maps url
 

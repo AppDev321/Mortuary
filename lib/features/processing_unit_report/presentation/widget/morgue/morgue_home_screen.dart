@@ -13,6 +13,7 @@ import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/get/auth_controller.dart';
 import 'package:mortuary/features/death_report/presentation/widget/authorized_person/reporter_map_view.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/widget/morgue/processing_department.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/utils.dart';
@@ -55,7 +56,8 @@ class MorgueHomeScreen extends StatelessWidget {
                 child: GestureDetector(
                     onTap: () {
                       controller.showQRCodeScannerScreen(currentUserRole,-11,onApiCallBack: (response){
-                        print(response);
+                        print("api scanned morg:==> ${response['qr_code']}");
+                        Go.to(()=>ProcessingDepartmentScreen(currentUserRole: currentUserRole, bodyScanCode: response['qr_code']));
                       });
                     },
                     child: SvgPicture.asset(AppAssets.icMorgueReceivedBody)).wrapWithLoadingBool(controller.isApiResponseLoaded),

@@ -177,6 +177,7 @@ class ProcessingUnitController extends GetxController {
 
       onApiResponseCompleted();
       if (onApiCallBack != null) {
+        value['qr_code']= qrCode;
         onApiCallBack(value);
       }
       else{

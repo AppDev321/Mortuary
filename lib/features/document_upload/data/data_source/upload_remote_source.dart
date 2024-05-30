@@ -1,12 +1,13 @@
 import 'dart:core';
 
 import 'package:dio/dio.dart';
+import 'package:mortuary/core/enums/enums.dart';
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/network/api_manager.dart';
 
 abstract class UploadFileRemoteDataSource {
   Future<Map<String, dynamic>> uploadImageFile(
-      {required String bandCodeId, required List<String> attachmentList});
+      {required  UserRole userRole,required String bandCodeId, required List<String> attachmentList});
 }
 
 class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
@@ -18,7 +19,8 @@ class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>> uploadImageFile(
-      {required String bandCodeId,
+      {required  UserRole userRole,
+        required String bandCodeId,
       required List<String> attachmentList}) async {
     List<MultipartFile> files = [];
     await Future.forEach(attachmentList, (String filePath) async {
@@ -34,7 +36,7 @@ class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
     // Add other form fields
 
     return await apiManager.makeFileUploadRequest<Map<String, dynamic>>(
-        url: AppUrls.emergencyUploadFileUrl,
+        url: userRole == UserRole.emergency ?AppUrls.emergencyUploadFileUrl:AppUrls.morgueUploadFileUrl,
         method: RequestMethod.POST,
         data: fileData,
         fromJson: (json) => {

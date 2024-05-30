@@ -34,10 +34,12 @@ class CustomScreenWidget extends StatelessWidget {
     return Scaffold(
         // key: key,
         // drawer: drawer,
-        backgroundColor: Colors.transparent,
+
         appBar: AppBar(
+          scrolledUnderElevation: 0,
             backgroundColor:Colors.white,
             actions: actions,
+            leadingWidth: 0,
             leading: SizedBox(),
             //leading:
                 // isDrawerEnabled
@@ -65,12 +67,12 @@ class CustomScreenWidget extends StatelessWidget {
             // ),
             centerTitle: true,
             title: CustomTextWidget(
-                    maxLines: 1,
+                    maxLines: 2,
                     // Limit the title to one line
                     text: titleText,
                     textAlign: TextAlign.center,
                     fontWeight: FontWeight.w700,
-                    size: 24,
+                    size: 22,
                   )),
         body:  Container(
           width: double.maxFinite,
@@ -79,6 +81,7 @@ class CustomScreenWidget extends StatelessWidget {
             gradient: AppColors.appBackgroundColor,
           ),
           child: SingleChildScrollView(
+
             physics: const ScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.only(
