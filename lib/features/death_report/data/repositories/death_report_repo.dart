@@ -18,7 +18,7 @@ abstract class DeathReportRepo {
       required String address,
       required UserRole userRole});
 
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole);
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment);
 
   Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest, required UserRole userRole});
@@ -62,9 +62,9 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole) {
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment) {
     return apiManager.handleRequest(() async {
-      return await remoteDataSource.postQRScanCode(qrCode,userRole);
+      return await remoteDataSource.postQRScanCode(qrCode,userRole,isMorgueScannedProcessingDepartment);
     });
   }
 

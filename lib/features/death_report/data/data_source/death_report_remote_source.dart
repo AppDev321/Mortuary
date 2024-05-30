@@ -12,7 +12,7 @@ import '../../domain/enities/report_a_death_response.dart';
 abstract class DeathReportRemoteSource {
   Future<ReportDeathResponse> initiateDeathReport(
       int deathBodyCount, int locationId, double lat, double lng,String address,UserRole userRole);
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole);
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment);
 
   Future<Map<String,dynamic>> postDeathReportForm({
   required DeathReportFormRequest formRequest, required UserRole userRole});
@@ -59,7 +59,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
   @override
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole) async {
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment) async {
 
 
     final Map<String, dynamic> jsonMap = {
@@ -73,6 +73,8 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
             : UserRole.emergency == userRole
                 ? AppUrls.emergencyScanQRCodeUrl
                 : AppUrls.morgueScanQRCodeUrl;
+
+    appUrl=  isMorgueScannedProcessingDepartment == true?AppUrls.morgueScannedProcessDepartment:appUrl;
 
     return await apiManager.makeApiRequest<Map<String,dynamic>>(
       url: appUrl,

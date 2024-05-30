@@ -139,7 +139,7 @@ class AiBarcodeScanner extends StatefulWidget {
   final void Function(dynamic)? onApiCallBack;
   final UserRole? userRole;
   int deathReportId;
-
+  final bool isMorgueScannedProcessingDepartment;
 
    AiBarcodeScanner({
     super.key,
@@ -176,7 +176,8 @@ class AiBarcodeScanner extends StatefulWidget {
     this.bottomBar,
     this.appBar,
     this.userRole,
-    this.onApiCallBack
+    this.onApiCallBack,
+     this.isMorgueScannedProcessingDepartment = false
   });
 
   @override
@@ -323,7 +324,11 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
 
                       final ProcessingUnitController processingController = Get.find();
                       processingController.postQRCodeToServer(
-                          scannedValue,widget.deathReportId,widget.userRole!, widget.onApiCallBack);
+                          scannedValue,
+                          widget.deathReportId,
+                          widget.userRole!,
+                          widget.onApiCallBack,
+                          widget.isMorgueScannedProcessingDepartment);
                     }
 
 

@@ -41,9 +41,9 @@ class ProcessingDepartmentScreen extends StatelessWidget {
   List<ProcessDepartment> departmentList = [
     ProcessDepartment(id: 1,image: AppAssets.icCleaningBody,name:AppStrings.processingCenter),
     ProcessDepartment(id: 2,image: AppAssets.icAutopsy,name:AppStrings.autopsyPostMartam),
-    ProcessDepartment(id: 1,image: AppAssets.icRefrigerator,name:AppStrings.refrigerator),
-    ProcessDepartment(id: 1,image: AppAssets.icCementry,name:AppStrings.cementry),
-    ProcessDepartment(id: 1,image: AppAssets.icCoffin,name:AppStrings.shipToLocal),
+    ProcessDepartment(id: 3,image: AppAssets.icRefrigerator,name:AppStrings.refrigerator),
+    ProcessDepartment(id: 4,image: AppAssets.icCementry,name:AppStrings.cementry),
+    ProcessDepartment(id: 5,image: AppAssets.icCoffin,name:AppStrings.shipToLocal),
 
   ];
 
@@ -66,7 +66,16 @@ class ProcessingDepartmentScreen extends StatelessWidget {
             titleText:  AppStrings.processingDepartment.toUpperCase(),
             children: [
               ...departmentList.map((item) {
-                return createContainerView(item.id,item.image,item.name);
+                return GestureDetector(
+                    onTap: (){
+                      controller.showQRCodeScannerScreen(currentUserRole, -111,
+                          isMorgueScannedProcessingDepartment: true,
+                          onApiCallBack: (response){
+                        print("bodyCode =>$bodyScanCode");
+                        print("unintCode =>${response['qr_code']}");
+                      });
+                    },
+                    child: createContainerView(item.id,item.image,item.name));
               }).toList(),
 
 
@@ -80,49 +89,49 @@ class ProcessingDepartmentScreen extends StatelessWidget {
     );
   }
 
-  Widget createContainerView(int departmentCodeId,String image,String title,{String status = "" ,Color color = Colors.amber}){
-    return Container(
-      width: Get.width,
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.hexToColor("#E1E5F0"),width: 1),
-        borderRadius: BorderRadius.circular(20),
-          color: Colors.white
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-        Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            children: [
-              SvgPicture.asset(image),
-              sizeFieldMediumPlaceHolder,
-              CustomTextWidget(text: title,size: 13,fontWeight: FontWeight.w600,colorText: AppColors.secondaryTextColor,)
-            ],),
+  Widget createContainerView(int departmentCodeId, String image, String title,
+      {String status = "", Color color = Colors.amber}) {
+    return  Container(
+        width: Get.width,
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.hexToColor("#E1E5F0"),width: 1),
+          borderRadius: BorderRadius.circular(20),
+            color: Colors.white
         ),
-          Visibility(
-            visible: status != "",
-            child: Positioned(
-                right: 0,
-                top:20,
-                child: Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius:const BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20)),
-                color: color,
-              ),
-              child: Padding(
-                  padding:const EdgeInsets.only(left: 15),
-                  child:CustomTextWidget(
-                text: status,
-                colorText: Colors.white,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              children: [
+                SvgPicture.asset(image),
+                sizeFieldMediumPlaceHolder,
+                CustomTextWidget(text: title,size: 13,fontWeight: FontWeight.w600,colorText: AppColors.secondaryTextColor,)
+              ],),
+          ),
+            Visibility(
+              visible: status != "",
+              child: Positioned(
+                  right: 0,
+                  top:20,
+                  child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius:const BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20)),
+                  color: color,
+                ),
+                child: Padding(
+                    padding:const EdgeInsets.only(left: 15),
+                    child:CustomTextWidget(
+                  text: status,
+                  colorText: Colors.white,
 
+                )),
               )),
-            )),
-          )
-      ],)
-
+            )
+        ],)
     );
   }
 }

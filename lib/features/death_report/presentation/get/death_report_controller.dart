@@ -167,9 +167,8 @@ class DeathReportController extends GetxController {
 
   postQRCodeToServer(String qrCode, int deathReportId, UserRole userRole,
       void Function(dynamic)? onApiCallBack) {
-    print("QRCode ==> $qrCode");
     onApiRequestStarted();
-    deathReportRepo.postQRScanCode(qrCode,userRole).then((value) {
+    deathReportRepo.postQRScanCode(qrCode,userRole,false).then((value) {
       isScanCodeCompleted = false;
       onApiResponseCompleted();
 

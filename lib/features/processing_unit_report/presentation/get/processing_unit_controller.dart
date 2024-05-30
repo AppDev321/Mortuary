@@ -150,7 +150,7 @@ class ProcessingUnitController extends GetxController {
     });
   }
 
-  showQRCodeScannerScreen(UserRole userRole,int deathReportId,{Function(dynamic)? onApiCallBack}) {
+  showQRCodeScannerScreen(UserRole userRole,int deathReportId,{Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment = false}) {
     Go.to(() => AiBarcodeScanner(
       deathReportId: deathReportId,
            userRole: userRole,
@@ -165,12 +165,12 @@ class ProcessingUnitController extends GetxController {
         ));
   }
 
-  postQRCodeToServer(String qrCode,int deathReportId,UserRole userRole, void Function(dynamic)? onApiCallBack) {
+  postQRCodeToServer(String qrCode,int deathReportId,UserRole userRole, void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ) {
     //To update scanner Button Ui because it use DeathReportController
     deathReportController.onApiRequestStarted();
     onApiRequestStarted();
 
-    deathReportRepo.postQRScanCode(qrCode, userRole).then((value) {
+    deathReportRepo.postQRScanCode(qrCode, userRole,isMorgueScannedProcessingDepartment).then((value) {
       //To update scanner Button Ui because it use DeathReportController
       deathReportController.onApiResponseCompleted();
       isScanCodeCompleted = false;
