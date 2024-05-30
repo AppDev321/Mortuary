@@ -38,6 +38,8 @@ class SplashScreenController extends GetxController {
       ConfigService().setConfigData(value);
        Get.off(() => LoginScreen());
     }).onError<CustomError>((error, stackTrace) async {
+
+      // print(error.message);
       isApiLoading = false;
       update();
       //showAppThemedDialog(error);

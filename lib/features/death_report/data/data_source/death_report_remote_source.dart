@@ -27,7 +27,12 @@ abstract class DeathReportRemoteSource {
 
   Future<void> updateSpaceAvailabilityStatusPU({required int status}) ;
 
-
+  Future<Map<String, dynamic>> postMorgueProcessingDepartmentData(
+      {required String bodyScanCode,
+      required String departmentScanCode,
+      required String processingUnitId,
+      required String processingDepartmentID,
+      required UserRole userRole});
 }
 
 class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
@@ -76,15 +81,25 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
     appUrl=  isMorgueScannedProcessingDepartment == true?AppUrls.morgueScannedProcessDepartment:appUrl;
 
+
+
+
     return await apiManager.makeApiRequest<Map<String,dynamic>>(
       url: appUrl,
       method: RequestMethod.POST,
-      data: jsonMap,
-      fromJson: (json)=> {
-        if(userRole == UserRole.volunteer || userRole == UserRole.emergency )
-        "band_code":json['data']['band_code_id'],
-        if(userRole == UserRole.transport)
-        "processingCenters" : json['data']['processingCenters']
+      data: jsonMap, fromJson: (json) {
+      Map<String, dynamic> result = {"data": json['data']};
+      if (userRole == UserRole.volunteer || userRole == UserRole.emergency) {
+        result["band_code"] = json['data']['band_code_id'];
+      }
+      if (userRole == UserRole.transport) {
+        result["processingCenters"] = json['data']['processingCenters'];
+      }
+      if (userRole == UserRole.morgue) {
+        result["processing_center_id"] = json['data']["processing_center_id"];
+        result["death_case_id"] = json['data']['death_case_id'];
+      }
+      return result;
       },
     );
   }
@@ -212,6 +227,26 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         data: jsonMap,
         fromJson: (json)=>()
     );
+  }
+
+  @override
+  Future<Map<String, dynamic>> postMorgueProcessingDepartmentData(
+      {required String bodyScanCode,
+      required String departmentScanCode,
+      required String processingUnitId,
+      required String processingDepartmentID,
+      required UserRole userRole}) async {
+    final Map<String, dynamic> jsonMap = {
+      "dead_body_band_code_id": bodyScanCode,
+      "processing_center_id": processingUnitId,
+      "processing_unit_band_code_id": departmentScanCode,
+      "status_id": processingDepartmentID
+    };
+    return await apiManager.makeApiRequest(
+        url: AppUrls.morgueScannedProcessDepartment,
+        method: RequestMethod.POST,
+        data: jsonMap,
+        fromJson: (json)=> {"data": json['data']});
   }
 
 

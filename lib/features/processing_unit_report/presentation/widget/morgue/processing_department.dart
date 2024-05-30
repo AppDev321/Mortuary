@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,9 +20,9 @@ import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/button_widget.dart';
 import '../common/death_report_list_screen.dart';
+import 'morgue_upload_picture.dart';
 
-class ProcessDepartment{
-
+class ProcessDepartment {
   ProcessDepartment({
     required this.id,
     required this.name,
@@ -31,107 +33,158 @@ class ProcessDepartment{
   final int id;
   final String name;
   final String image;
-  final String status;
+   String status = "";
 }
 
-class ProcessingDepartmentScreen extends StatelessWidget {
+class ProcessingDepartmentScreen extends StatefulWidget {
   final UserRole currentUserRole;
   final String bodyScanCode;
+  final String processingCenterId;
+  final int deathCaseId;
 
-  List<ProcessDepartment> departmentList = [
-    ProcessDepartment(id: 1,image: AppAssets.icCleaningBody,name:AppStrings.processingCenter),
-    ProcessDepartment(id: 2,image: AppAssets.icAutopsy,name:AppStrings.autopsyPostMartam),
-    ProcessDepartment(id: 3,image: AppAssets.icRefrigerator,name:AppStrings.refrigerator),
-    ProcessDepartment(id: 4,image: AppAssets.icCementry,name:AppStrings.cementry),
-    ProcessDepartment(id: 5,image: AppAssets.icCoffin,name:AppStrings.shipToLocal),
 
-  ];
-
-  ProcessingDepartmentScreen({Key? key, required this.currentUserRole, required this.bodyScanCode})
+  const ProcessingDepartmentScreen(
+      {Key? key,
+      required this.currentUserRole,
+      required this.bodyScanCode,
+      required this.processingCenterId,
+      required this.deathCaseId})
       : super(key: key);
+
+  @override
+  State<ProcessingDepartmentScreen> createState() => _ProcessingDepartmentScreenState();
+}
+
+class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen> {
+  List<ProcessDepartment> departmentList = [
+    ProcessDepartment(
+        id: 8,
+        image: AppAssets.icCleaningBody,
+        name: AppStrings.processingCenter),
+    ProcessDepartment(
+        id: 9, image: AppAssets.icAutopsy, name: AppStrings.autopsyPostMartam),
+    ProcessDepartment(
+        id: 10, image: AppAssets.icRefrigerator, name: AppStrings.refrigerator),
+    ProcessDepartment(
+        id: 11, image: AppAssets.icCementry, name: AppStrings.cementry),
+    ProcessDepartment(
+        id: 12, image: AppAssets.icCoffin, name: AppStrings.shipToLocal),
+  ];
 
   AuthController authController = Get.find();
 
-
-
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProcessingUnitController>(
-      initState: (_){
-        Get.find<ProcessingUnitController>().currentUserRole = currentUserRole;
-      },
-      builder: (controller) {
-        return CustomScreenWidget(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            titleText:  AppStrings.processingDepartment.toUpperCase(),
-            children: [
-              ...departmentList.map((item) {
-                return GestureDetector(
-                    onTap: (){
-                      controller.showQRCodeScannerScreen(currentUserRole, -111,
-                          isMorgueScannedProcessingDepartment: true,
-                          onApiCallBack: (response){
-                        print("bodyCode =>$bodyScanCode");
-                        print("unintCode =>${response['qr_code']}");
-                      });
-                    },
-                    child: createContainerView(item.id,item.image,item.name));
-              }).toList(),
+    return GetBuilder<ProcessingUnitController>(initState: (_) {
+      Get.find<ProcessingUnitController>().currentUserRole = widget.currentUserRole;
+    }, builder: (controller) {
+      return CustomScreenWidget(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          titleText: AppStrings.processingDepartment.toUpperCase(),
+          actions: [
+            GestureDetector(
+                onTap: (){
+                  Go.to(()=>UploadPictureScreen(currentUserRole: widget.currentUserRole,deathCaseID: widget.deathCaseId));
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                    child: Icon(Icons.attachment)))
+          ],
+          children: [
+            ...departmentList.map((item) {
+              return GestureDetector(
+                  onTap: () {
+                    controller.showQRCodeScannerScreen(widget.currentUserRole, -111,
+                        isMorgueScannedProcessingDepartment: true,
+                        onApiCallBack: (scannedQRCode) {
+
+                        //After Scanning QR code of Department Unit
+                        controller.postProcessingDepartmentScanCode(
+                            scannedQRCode, widget.bodyScanCode, item.id.toString(),
+                            widget.processingCenterId, widget.currentUserRole, (response) {
+                        setState(() {
+                          response['data'].forEach((data) {
+                            if (data is Map<String, dynamic>) {
+                              int id = int.tryParse(data['id'].toString()) ?? 0;
+                              ProcessDepartment? department = departmentList
+                                  .firstWhereOrNull((dept) => dept.id == id);
+                              if (department != null) {
+                                department.status = data['progress'] ?? "";
+                              }
+                            }
+                          });
+                        });
+
+                        var dataDialog = GeneralError(title:AppStrings.scanSuccess,message:AppStrings.scanSuccessMsg);
+                              showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
+                                Get.back();
+                              });
 
 
-
-              sizeFieldMediumPlaceHolder,
-
+                        });
+                    });
+                  },
+                  child: createContainerView(item.id, item.image, item.name,
+                      status: item.status,
+                      color: item.status == "Completed"
+                          ? Colors.green
+                          : Colors.amber));
+            }).toList(),
+            sizeFieldMediumPlaceHolder,
           ]);
-
-
-      }
-    );
+    });
   }
 
   Widget createContainerView(int departmentCodeId, String image, String title,
       {String status = "", Color color = Colors.amber}) {
-    return  Container(
+    return Container(
         width: Get.width,
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.hexToColor("#E1E5F0"),width: 1),
-          borderRadius: BorderRadius.circular(20),
-            color: Colors.white
-        ),
+            border:
+                Border.all(color: AppColors.hexToColor("#E1E5F0"), width: 1),
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white),
         child: Stack(
           alignment: Alignment.center,
           children: [
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
-              children: [
-                SvgPicture.asset(image),
-                sizeFieldMediumPlaceHolder,
-                CustomTextWidget(text: title,size: 13,fontWeight: FontWeight.w600,colorText: AppColors.secondaryTextColor,)
-              ],),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                children: [
+                  SvgPicture.asset(image),
+                  sizeFieldMediumPlaceHolder,
+                  CustomTextWidget(
+                    text: title,
+                    size: 13,
+                    fontWeight: FontWeight.w600,
+                    colorText: AppColors.secondaryTextColor,
+                  )
+                ],
+              ),
+            ),
             Visibility(
               visible: status != "",
               child: Positioned(
                   right: 0,
-                  top:20,
+                  top: 20,
                   child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius:const BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20)),
-                  color: color,
-                ),
-                child: Padding(
-                    padding:const EdgeInsets.only(left: 15),
-                    child:CustomTextWidget(
-                  text: status,
-                  colorText: Colors.white,
-
-                )),
-              )),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20)),
+                      color: color,
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: CustomTextWidget(
+                          text: status,
+                          colorText: Colors.white,
+                        )),
+                  )),
             )
-        ],)
-    );
+          ],
+        ));
   }
 }

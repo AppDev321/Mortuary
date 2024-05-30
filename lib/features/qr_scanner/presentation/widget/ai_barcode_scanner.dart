@@ -320,7 +320,7 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                       deathController.postQRCodeToServer(
                           scannedValue,widget.deathReportId,widget.userRole!, widget.onApiCallBack);
                     }
-                    else  if (widget.userRole! == UserRole.emergency || widget.userRole! == UserRole.morgue) {
+                    else  if (widget.userRole! == UserRole.emergency || (widget.userRole! == UserRole.morgue)) {
 
                       final ProcessingUnitController processingController = Get.find();
                       processingController.postQRCodeToServer(
@@ -330,6 +330,7 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                           widget.onApiCallBack,
                           widget.isMorgueScannedProcessingDepartment);
                     }
+
 
 
                   }

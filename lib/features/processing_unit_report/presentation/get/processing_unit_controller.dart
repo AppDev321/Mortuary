@@ -150,12 +150,15 @@ class ProcessingUnitController extends GetxController {
     });
   }
 
-  showQRCodeScannerScreen(UserRole userRole,int deathReportId,{Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment = false}) {
+  showQRCodeScannerScreen(UserRole userRole, int deathReportId,
+      {Function(dynamic)? onApiCallBack,
+      bool isMorgueScannedProcessingDepartment = false}) {
     Go.to(() => AiBarcodeScanner(
-      deathReportId: deathReportId,
-           userRole: userRole,
+          deathReportId: deathReportId,
+          userRole: userRole,
           onApiCallBack: onApiCallBack,
           canPop: false,
+          isMorgueScannedProcessingDepartment: isMorgueScannedProcessingDepartment,
           onScan: (String value) {
             if (isScanCodeCompleted == false) {
               isScanCodeCompleted = true;
@@ -165,31 +168,73 @@ class ProcessingUnitController extends GetxController {
         ));
   }
 
-  postQRCodeToServer(String qrCode,int deathReportId,UserRole userRole, void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ) {
+  postQRCodeToServer(
+      String qrCode,int deathReportId,UserRole userRole,
+      void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ) {
+    if (isMorgueScannedProcessingDepartment) {
+      if (onApiCallBack != null) {
+        onApiCallBack(qrCode);
+      }
+    } else {
+      //To update scanner Button Ui because it use DeathReportController
+      deathReportController.onApiRequestStarted();
+      onApiRequestStarted();
+
+      deathReportRepo.postQRScanCode(
+          qrCode, userRole, isMorgueScannedProcessingDepartment).then((value) {
+        //To update scanner Button Ui because it use DeathReportController
+        deathReportController.onApiResponseCompleted();
+        isScanCodeCompleted = false;
+
+        onApiResponseCompleted();
+        if (onApiCallBack != null) {
+          value['qr_code'] = qrCode;
+          onApiCallBack(value);
+        }
+        else {
+          Go.off(() =>
+              PUDeathReportFormScreen(
+                  deathBodyBandCode: value['band_code'],
+                  deathFormCode: deathReportId));
+        }
+      }).onError<CustomError>((error, stackTrace) async {
+        //To update scanner Button Ui because it use DeathReportController
+        deathReportController.onApiResponseCompleted();
+        isScanCodeCompleted = false;
+        onErrorShowDialog(error);
+      });
+    }
+  }
+
+
+  postProcessingDepartmentScanCode(
+    String departmentScanCode,
+    String bodyScannedCode,
+    String departmentId,
+    String processingUnitId,
+    UserRole userRole,
+    void Function(dynamic)? onApiCallBack,
+  ) {
     //To update scanner Button Ui because it use DeathReportController
     deathReportController.onApiRequestStarted();
+
     onApiRequestStarted();
-
-    deathReportRepo.postQRScanCode(qrCode, userRole,isMorgueScannedProcessingDepartment).then((value) {
-      //To update scanner Button Ui because it use DeathReportController
+    deathReportRepo
+        .postMorgueProcessingDepartmentData(
+      bodyScanCode: bodyScannedCode,
+      departmentScanCode: departmentScanCode,
+      userRole: userRole,
+      processingUnitId: processingUnitId,
+      processingDepartmentID: departmentId,
+    ).then((value) {
       deathReportController.onApiResponseCompleted();
-      isScanCodeCompleted = false;
-
       onApiResponseCompleted();
       if (onApiCallBack != null) {
-        value['qr_code']= qrCode;
         onApiCallBack(value);
       }
-      else{
-        Go.off(() => PUDeathReportFormScreen(
-            deathBodyBandCode: value['band_code'],
-            deathFormCode: deathReportId));
-      }
-
     }).onError<CustomError>((error, stackTrace) async {
-      //To update scanner Button Ui because it use DeathReportController
       deathReportController.onApiResponseCompleted();
-      isScanCodeCompleted = false;
+
       onErrorShowDialog(error);
     });
   }

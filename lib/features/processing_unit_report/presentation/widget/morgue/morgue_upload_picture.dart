@@ -18,10 +18,10 @@ import '../../../../../core/widgets/button_widget.dart';
 
 class UploadPictureScreen extends StatefulWidget {
   final UserRole currentUserRole;
-  final int bandCodeId;
+  final int deathCaseID;
 
   UploadPictureScreen(
-      {Key? key, required this.currentUserRole, required this.bandCodeId})
+      {Key? key, required this.currentUserRole, required this.deathCaseID})
       : super(key: key);
 
   @override
@@ -83,7 +83,7 @@ class _UploadPictureScreenState extends State<UploadPictureScreen> {
                   buttonType: ButtonType.gradient,
                   onPressed: () {
                     controller.uploadImageFile([imageFile!.path.toString()],
-                        widget.bandCodeId, widget.currentUserRole);
+                        widget.deathCaseID, widget.currentUserRole);
                   }),
             ),
             sizeFieldMediumPlaceHolder,

@@ -32,6 +32,7 @@ class AppConfig extends Equatable {
   final List<Station> stations;
 
   factory AppConfig.fromJson(Map<String, dynamic> json) {
+
     return AppConfig(
       ageGroup: json["age_groups"] == null
           ? []

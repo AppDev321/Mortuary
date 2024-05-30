@@ -29,10 +29,19 @@ class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
       files.add(file);
     });
     var fileData = FormData();
-    fileData.fields.addAll({'band_code_id': bandCodeId}.entries);
-    for (int i = 0; i < files.length; i++) {
-      fileData.files.addAll({'attachments_${i + 1}': files[i]}.entries);
+    if(userRole == UserRole.morgue){
+      fileData.fields.addAll({'death_case_id': bandCodeId}.entries);
+      for (int i = 0; i < files.length; i++) {
+        fileData.files.addAll({'attachments': files[i]}.entries);
+      }
+    }else {
+      fileData.fields.addAll({'band_code_id': bandCodeId}.entries);
+      for (int i = 0; i < files.length; i++) {
+        fileData.files.addAll({'attachments_${i + 1}': files[i]}.entries);
+      }
     }
+
+
     // Add other form fields
 
     return await apiManager.makeFileUploadRequest<Map<String, dynamic>>(

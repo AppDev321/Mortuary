@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/enums.dart';
@@ -18,6 +19,8 @@ class DocumentController extends GetxController {
   bool get isApiResponseLoaded => apiResponseLoaded == LoadingState.loading;
 
   uploadImageFile(List<String> attachments, int bandCodeId,UserRole userRole) {
+    print("files==>${attachments}");
+
     onApiRequestStarted();
     uploadFileRemoteDataSource
         .uploadImageFile(bandCodeId: '$bandCodeId', attachmentList: attachments,userRole:userRole)
@@ -26,7 +29,11 @@ class DocumentController extends GetxController {
       onApiResponseCompleted();
       var dataDialog = GeneralError(title:AppStrings.upload,message: value['message']);
       showAppThemedDialog(dataDialog,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
-        Get.offAll(()=>PUHomeScreen(currentUserRole: userRole,));
+        if(userRole == UserRole.morgue){
+          Get.back();
+        }else {
+          Get.offAll(() => PUHomeScreen(currentUserRole: userRole,));
+        }
       });
 
     }).onError<CustomError>((error, stackTrace) async {

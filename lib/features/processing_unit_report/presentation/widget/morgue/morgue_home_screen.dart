@@ -38,8 +38,6 @@ class MorgueHomeScreen extends StatelessWidget {
       builder: (controller) {
         return CustomScreenWidget(
             crossAxisAlignment: CrossAxisAlignment.center,
-
-
             children: [
 
               CustomTextWidget(
@@ -55,9 +53,13 @@ class MorgueHomeScreen extends StatelessWidget {
                 height: Get.height * 0.4,
                 child: GestureDetector(
                     onTap: () {
-                      controller.showQRCodeScannerScreen(currentUserRole,-11,onApiCallBack: (response){
-                        print("api scanned morg:==> ${response['qr_code']}");
-                        Go.to(()=>ProcessingDepartmentScreen(currentUserRole: currentUserRole, bodyScanCode: response['qr_code']));
+                      controller.showQRCodeScannerScreen(currentUserRole,-111,onApiCallBack: (response){
+                        Get.off(()=>ProcessingDepartmentScreen(
+                          currentUserRole: currentUserRole,
+                          bodyScanCode: response['qr_code'],
+                          processingCenterId: response['processing_center_id'],
+                          deathCaseId: response['death_case_id']
+                        ));
                       });
                     },
                     child: SvgPicture.asset(AppAssets.icMorgueReceivedBody)).wrapWithLoadingBool(controller.isApiResponseLoaded),

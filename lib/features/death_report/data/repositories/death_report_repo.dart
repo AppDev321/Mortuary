@@ -35,7 +35,12 @@ abstract class DeathReportRepo {
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
   Future<void> updateSpaceAvailabilityStatusPU({required int status});
 
-
+  Future<Map<String, dynamic>> postMorgueProcessingDepartmentData(
+      {required String bodyScanCode,
+      required String departmentScanCode,
+      required String processingUnitId,
+      required String processingDepartmentID,
+      required UserRole userRole});
 }
 
 class DeathReportRepoImpl extends DeathReportRepo {
@@ -134,6 +139,22 @@ class DeathReportRepoImpl extends DeathReportRepo {
       return await remoteDataSource.updateSpaceAvailabilityStatusPU(
           status:status
       );
+    });
+  }
+
+  @override
+  Future<Map<String, dynamic>> postMorgueProcessingDepartmentData({
+    required String bodyScanCode,
+    required String departmentScanCode,
+    required String processingUnitId, required String processingDepartmentID,
+    required UserRole userRole}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.postMorgueProcessingDepartmentData(
+          bodyScanCode: bodyScanCode,
+          departmentScanCode: departmentScanCode,
+          processingUnitId: processingUnitId,
+          processingDepartmentID: processingDepartmentID,
+          userRole: userRole);
     });
   }
 }
