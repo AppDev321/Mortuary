@@ -29,9 +29,7 @@ class PoliceStationScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
 
-  PoliceStationScreen(
-      {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
-      : super(key: key);
+  PoliceStationScreen({Key? key, required this.deathBodyBandCode, required this.deathFormCode}) : super(key: key);
 
   @override
   State<PoliceStationScreen> createState() => _PoliceStationScreenState();
@@ -45,8 +43,7 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProcessingUnitController>
-      (builder: (controller) {
+    return GetBuilder<ProcessingUnitController>(builder: (controller) {
       return Form(
         key: policeStationFormKey,
         child: CustomScreenWidget(
@@ -60,7 +57,6 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
                 textAlign: TextAlign.center,
               ),
               sizeFieldLargePlaceHolder,
-
               CustomTextField(
                 controller: policeStationTextController,
                 suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
@@ -71,57 +67,36 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
                 fontWeight: FontWeight.normal,
                 readOnly: true,
                 onTap: () {
-                  showRadioOptionDialog(
-                      context,
-                      AppStrings.selectPoliceStation,
-                      ConfigService().getPoliceStations(),
-                      controller.selectedPoliceStation,
-                      (onChanged) => controller.selectedPoliceStation,
-                      (onConfirmed) {
-
+                  showRadioOptionDialog(context, AppStrings.selectPoliceStation, ConfigService().getPoliceStations(),
+                      controller.selectedPoliceStation, (onChanged) => controller.selectedPoliceStation, (onConfirmed) {
                     controller.setPoliceStation(onConfirmed!);
                     controller.update();
-                    policeStationTextController.text =
-                        controller.selectedPoliceStation?.name ?? "";
+                    policeStationTextController.text = controller.selectedPoliceStation?.name ?? "";
                     setState(() {
                       pocItemList.clear();
-                      pocItemList= List.generate(onConfirmed.pocs.length, (index) => CheckedBoxItem(onConfirmed.pocs[index], true));
-                      
+                      pocItemList = List.generate(
+                          onConfirmed.pocs.length, (index) => CheckedBoxItem(onConfirmed.pocs[index], true));
                     });
-                    
                   }, (itemToString) => itemToString?.name ?? "");
-                  
-                  
                 },
               ),
-
-              controller.selectedPoliceStation !=null ?
-              representativesView(context,pocItemList ):
-                  sizeFieldMinPlaceHolder,
+              controller.selectedPoliceStation != null
+                  ? representativesView(context, pocItemList)
+                  : sizeFieldMinPlaceHolder,
               sizeFieldLargePlaceHolder,
               ButtonWidget(
                 isLoading: controller.isApiResponseLoaded,
                 text: AppStrings.next,
                 buttonType: ButtonType.gradient,
-                textStyle:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                onPressed: () {
+                textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                onPressed: ()  {
                   if (policeStationFormKey.currentState!.validate()) {
-                     controller
-                        .updatePoliceStation(
-                            widget.deathBodyBandCode.toString(),
-                            controller.selectedPoliceStation!.id,
-                            widget.deathFormCode,
-                            getCheckedStations(pocItemList))
-                        .then((value) => {
-                              if (value)
-                                {
-                                  Go.to(() => PUDeathReportFormScreen(
-                                      deathBodyBandCode:
-                                          widget.deathBodyBandCode,
-                                      deathFormCode: widget.deathFormCode))
-                                }
-                            });
+                    controller
+                        .updatePoliceStation(widget.deathBodyBandCode.toString(), controller.selectedPoliceStation!.id,
+                            widget.deathFormCode, getCheckedStations(pocItemList),(){
+                         Go.to(() => PUDeathReportFormScreen(
+                             deathBodyBandCode: widget.deathBodyBandCode, deathFormCode: widget.deathFormCode));
+                       });
                   }
                 },
               ),
@@ -131,8 +106,7 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
     });
   }
 
-  Widget representativesView(BuildContext context,List<CheckedBoxItem> listPocs)
-  {
+  Widget representativesView(BuildContext context, List<CheckedBoxItem> listPocs) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,27 +114,28 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
         sizeFieldMediumPlaceHolder,
         Align(
           alignment: Alignment.centerLeft,
-          child: CustomTextWidget(text: AppStrings.policeRepresentative,
-          fontWeight: FontWeight.w600,textAlign: TextAlign.start,size: 16,),
+          child: CustomTextWidget(
+            text: AppStrings.policeRepresentative,
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.start,
+            size: 16,
+          ),
         ),
-          sizeFieldMediumPlaceHolder,
-        listPocs.isNotEmpty ?
-            Column(
-
-              children: [
-                ...listPocs.map((e) {
-                  return rowItem(context,e);
-                }).toList()
-              ],
-            )
-        : const Center(child:CustomTextWidget(text:ApiMessages.dataNotFound))
-
+        sizeFieldMediumPlaceHolder,
+        listPocs.isNotEmpty
+            ? Column(
+                children: [
+                  ...listPocs.map((e) {
+                    return rowItem(context, e);
+                  }).toList()
+                ],
+              )
+            : const Center(child: CustomTextWidget(text: ApiMessages.dataNotFound))
       ],
     );
   }
 
-  Widget rowItem(BuildContext context,CheckedBoxItem item)
-  {
+  Widget rowItem(BuildContext context, CheckedBoxItem item) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -168,68 +143,62 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-               // SvgPicture.asset(AppAssets.icPoliceCheckBox),
+              // SvgPicture.asset(AppAssets.icPoliceCheckBox),
               Checkbox(
                 value: item.isChecked,
                 onChanged: (value) {
                   setState(() {
-                    pocItemList.firstWhere((element) => element.stationPoc.id == item.stationPoc.id).isChecked = !item.isChecked;
+                    pocItemList.firstWhere((element) => element.stationPoc.id == item.stationPoc.id).isChecked =
+                        !item.isChecked;
                   });
-
                 },
                 activeColor: Colors.green,
-
                 tristate: false,
               ),
               sizeHorizontalFieldMinPlaceHolder,
               Expanded(
                 child: Table(
-
                   children: [
-                    TableRow(
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppAssets.icPerson),
-                            sizeHorizontalFieldMinPlaceHolder,
-                            const CustomTextWidget(text: AppStrings.name,
-                            colorText: AppColors.secondaryTextColor,),
-                          ],
-                        ),
-                        CustomTextWidget(text: item.stationPoc.name,colorText: Colors.grey),
-                      ]
-                    ),
-                    TableRow(
+                    TableRow(children: [
+                      Row(
                         children: [
-                          sizeFieldMinPlaceHolder,
-                          sizeFieldMinPlaceHolder,
-                        ]
-                    ),
-                    TableRow(
-
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppAssets.icTelephone),
-                              sizeHorizontalFieldMinPlaceHolder,
-                              const CustomTextWidget(text: AppStrings.contact,
-                                  colorText: AppColors.secondaryTextColor),
-                            ],
+                          SvgPicture.asset(AppAssets.icPerson),
+                          sizeHorizontalFieldMinPlaceHolder,
+                          const CustomTextWidget(
+                            text: AppStrings.name,
+                            colorText: AppColors.secondaryTextColor,
                           ),
-
-                          GestureDetector(
-                              onTap: (){openDialPad(context, item.stationPoc.contactNo);},
-                              child: CustomTextWidget(text: item.stationPoc.contactNo,colorText: Colors.grey)),
-
-                        ]
-                    )
+                        ],
+                      ),
+                      CustomTextWidget(text: item.stationPoc.name, colorText: Colors.grey),
+                    ]),
+                    TableRow(children: [
+                      sizeFieldMinPlaceHolder,
+                      sizeFieldMinPlaceHolder,
+                    ]),
+                    TableRow(children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppAssets.icTelephone),
+                          sizeHorizontalFieldMinPlaceHolder,
+                          const CustomTextWidget(text: AppStrings.contact, colorText: AppColors.secondaryTextColor),
+                        ],
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            openDialPad(context, item.stationPoc.contactNo);
+                          },
+                          child: CustomTextWidget(text: item.stationPoc.contactNo, colorText: Colors.grey)),
+                    ])
                   ],
                 ),
               )
             ],
           ),
           sizeFieldMediumPlaceHolder,
-          const DashedLineSeprator(color:AppColors.secondaryTextColor,) // Add vertical space if needed
+          const DashedLineSeprator(
+            color: AppColors.secondaryTextColor,
+          ) // Add vertical space if needed
         ],
       ),
     );
@@ -243,11 +212,9 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
   }
 }
 
-
 class CheckedBoxItem {
   StationPoc stationPoc;
   bool isChecked;
 
   CheckedBoxItem(this.stationPoc, this.isChecked);
 }
-

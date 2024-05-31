@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
@@ -10,7 +12,8 @@ import '../../domain/enities/death_report_list_reponse.dart';
 
 class ReportListItem extends StatelessWidget {
   final DeathReportListResponse listItem;
-  const ReportListItem({Key? key, required this.listItem}) : super(key: key);
+  final UserRole userRole;
+  const ReportListItem({Key? key, required this.listItem,required this.userRole}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,43 +83,49 @@ class ReportListItem extends StatelessWidget {
 
   Widget containerReportData()
   {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: AppColors.hexToColor(listItem.status.color),
-      ),
+    return GestureDetector(
+      onTap: (){
+final ProcessingUnitController controller = Get.find();
+controller.getDetailOfReport(userRole,listItem.id);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: AppColors.hexToColor(listItem.status.color),
+        ),
 
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(width: 1,color: Color(0xFFE1E5F0)),
-              color: Colors.white,
-            ),
-            margin: EdgeInsets.only(bottom: 10),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Table(
-                children: [
-                  rowData(AppStrings.qrNumber,listItem.bandCode),
-                  rowData(AppStrings.idType,listItem.visaType),
-                  rowData(AppStrings.idNumber,listItem.idNumber),
-                  rowData(AppStrings.nationality,listItem.nationality),
-                  rowData(AppStrings.gender,listItem.gender),
-                  rowData(AppStrings.age,listItem.age),
-                  rowData(AppStrings.ageGroup,listItem.ageGroup),
-                  rowData(AppStrings.deathType,listItem.deathType),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(width: 1,color: Color(0xFFE1E5F0)),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.only(bottom: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Table(
+                  children: [
+                    rowData(AppStrings.qrNumber,listItem.bandCode),
+                    rowData(AppStrings.idType,listItem.visaType),
+                    rowData(AppStrings.idNumber,listItem.idNumber),
+                    rowData(AppStrings.nationality,listItem.nationality),
+                    rowData(AppStrings.gender,listItem.gender),
+                    rowData(AppStrings.age,listItem.age),
+                    rowData(AppStrings.ageGroup,listItem.ageGroup),
+                    rowData(AppStrings.deathType,listItem.deathType),
 
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const Padding(
-            padding:  EdgeInsets.only(left: 8.0,right: 8,bottom: 8),
-            child: CustomTextWidget(text: AppStrings.onWayToProcess,textAlign:TextAlign.center,colorText: AppColors.whiteAccent,fontWeight: FontWeight.w500,size: 14,),
-          ),
-        ],
+            const Padding(
+              padding:  EdgeInsets.only(left: 8.0,right: 8,bottom: 8),
+              child: CustomTextWidget(text: AppStrings.onWayToProcess,textAlign:TextAlign.center,colorText: AppColors.whiteAccent,fontWeight: FontWeight.w500,size: 14,),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -9,10 +9,11 @@ import 'features/splash/init_splash.dart';
 
 initMain() {
   Get.lazyPut<FCMController>(() => FCMController(), fenix: true);
+  initUpload();
   initSplash();
   initGoogleMaps();
   initDeathReport();
-  initUpload();
+
 }
 
 removeAll() {

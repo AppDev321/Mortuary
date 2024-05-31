@@ -26,7 +26,7 @@ class AppUrls {
   static const transportScanQRCodeUrl= '${baseUrl}transportation/scan-qr';
   static const processUnitDetailUrl= '${baseUrl}transportation/select-processing-unit';
   static const dropBodyToProcessUnitUrl= '${baseUrl}transportation/close-death-report';
-
+  static const transportDeathReportDetailUrl= '${baseUrl}transportation/death-detailed-report/';
 
 
 
@@ -36,12 +36,17 @@ class AppUrls {
   static const emergencyUploadFileUrl= '${baseUrl}emergency/attachments';
   static const emergencyAvailabilityStatus= '${baseUrl}emergency/change-status';
   static const emergencyDeathReportListUrl = '${baseUrl}emergency/death-report';
+  static const emergencyDeathReportDetailUrl= '${baseUrl}emergency/death-detailed-report/';
   static const updatePoliceStation = '${baseUrl}emergency/police-station-form';
+
+
+
 
   static const morgueScanQRCodeUrl= '${baseUrl}morgue/received-body';
   static const morgueDeathReportListUrl = '${baseUrl}morgue/death-report';
   static const morgueUploadFileUrl= '${baseUrl}morgue/attachments';
   static const morgueScannedProcessDepartment= '${baseUrl}morgue/scan-processing-unit';
+  static const morgueDeathReportDetailUrl= '${baseUrl}morgue/death-detailed-report/';
 
 
   /// google maps url

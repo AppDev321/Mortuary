@@ -3,6 +3,7 @@ import 'package:mortuary/features/authentication/domain/enities/user_model.dart'
 import '../../../../core/enums/enums.dart';
 import '../../../../core/network/api_manager.dart';
 import '../../domain/enities/death_report_alert.dart';
+import '../../domain/enities/death_report_detail_response.dart';
 import '../../domain/enities/death_report_form_params.dart';
 import '../../domain/enities/death_report_list_reponse.dart';
 import '../../domain/enities/processing_center.dart';
@@ -24,11 +25,9 @@ abstract class DeathReportRepo {
       {required DeathReportFormRequest formRequest, required UserRole userRole});
 
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
+  Future<DeathReportDetailResponse> getDeathReportDetailsById({required int deathReportId,required UserRole userRole});
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
-
-  Future<DeathReportAlert> getDeathReportDetailsById(
-      {required int deathReportId});
 
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
   Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId}) ;
@@ -101,11 +100,12 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<DeathReportAlert> getDeathReportDetailsById(
-      {required int deathReportId}) {
+  Future<DeathReportDetailResponse> getDeathReportDetailsById(
+      {required int deathReportId,required UserRole userRole}) {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.getDeathReportDetailsById(
-          deathReportId: deathReportId);
+          deathReportId: deathReportId,
+      userRole: userRole);
     });
   }
 

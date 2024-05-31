@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class DeathReportListResponse extends Equatable {
   DeathReportListResponse({
+    required this.id,
     required this.bandCode,
     required this.visaType,
     required this.idNumber,
@@ -14,7 +15,7 @@ class DeathReportListResponse extends Equatable {
     required this.nationality,
     required this.deathType
   });
-
+  final int id;
   final String bandCode;
   final String visaType;
   final String idNumber;
@@ -29,6 +30,7 @@ class DeathReportListResponse extends Equatable {
 
   factory DeathReportListResponse.fromJson(Map<String, dynamic> json){
     return DeathReportListResponse(
+      id:json['id']??0,
       bandCode: json["band_code"] ?? "",
       visaType: json["visa_type"] ?? "",
       idNumber: json["id_number"] ?? "",

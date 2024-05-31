@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/utils/utils.dart';
@@ -12,17 +14,18 @@ import '../../../../core/styles/colors.dart';
 import '../../../../core/widgets/custom_screen_widget.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
 import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
+import '../../domain/entity/attachment_type.dart';
 import '../get/document_controller.dart';
 
 class DocumentUploadScreen extends StatelessWidget {
   final UserRole currentUserRole;
   final int bandCodeId;
+  final List<AttachmentType> attachmentsTypes;
 
   DocumentUploadScreen(
-      {Key? key, required this.currentUserRole, required this.bandCodeId})
+      {Key? key, required this.currentUserRole, required this.bandCodeId, required this.attachmentsTypes})
       : super(key: key);
 
-  List<String> attachment = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,50 +44,38 @@ class DocumentUploadScreen extends StatelessWidget {
                   ),
                 ),
                 sizeFieldLargePlaceHolder,
-                UploadContainerWidget(
-                  headTitle: "${AppStrings.document} 1",
-                  currentUserRole: currentUserRole,
-                  bandCodeId: bandCodeId,
-                  onFileSelected: (file) {
-                    attachment.add(file.path);
-                  },
-                  onFileCanceled: (file) {
-                    attachment.remove(file.path);
-                  },
-                  containerId: 0,
+
+                Column(
+                  children: attachmentsTypes.map((item) =>
+                      Column(
+                        children:[
+                          sizeFieldMediumPlaceHolder,
+                          UploadContainerWidget(
+                            headTitle: item.name,
+                            currentUserRole: currentUserRole,
+                            bandCodeId: bandCodeId,
+                            onFileSelected: (file) {
+                              item.path = file.path;
+                            },
+                            onFileCanceled: (file) {
+                              item.path = "";
+                            },
+                            containerId: item.id,
+                          ),
+                        ]
+
+                      )
+                  ).toList(),
                 ),
-                sizeFieldMediumPlaceHolder,
-                UploadContainerWidget(
-                  headTitle: "${AppStrings.document} 2",
-                  currentUserRole: currentUserRole,
-                  bandCodeId: bandCodeId,
-                  onFileSelected: (file) {
-                    attachment.add(file.path);
-                  },
-                  onFileCanceled: (file) {
-                    attachment.remove(file.path);
-                  },
-                  containerId: 1,
-                ),
-                sizeFieldMediumPlaceHolder,
-                UploadContainerWidget(
-                  headTitle: "${AppStrings.document} 2",
-                  currentUserRole: currentUserRole,
-                  bandCodeId: bandCodeId,
-                  onFileSelected: (file) {
-                    attachment.add(file.path);
-                  },
-                  onFileCanceled: (file) {
-                    attachment.remove(file.path);
-                  },
-                  containerId: 2,
-                ),
+
                 sizeFieldLargePlaceHolder,
                 ButtonWidget(
                   text: AppStrings.skip,
                   buttonType: ButtonType.transparent,
                   onPressed: () {
-                    Get.offAll(()=>PUHomeScreen(currentUserRole: currentUserRole,));
+                    Get.offAll(() => PUHomeScreen(
+                          currentUserRole: currentUserRole,
+                        ));
                   },
                 ),
                 sizeFieldMediumPlaceHolder,
@@ -93,15 +84,24 @@ class DocumentUploadScreen extends StatelessWidget {
                   text: AppStrings.submit,
                   buttonType: ButtonType.gradient,
                   onPressed: () {
-                    if (attachment.isEmpty) {
-                      showSnackBar(context,
-                          "Please select any document first to upload");
-                    } else {
-                      controller.uploadImageFile(attachment, bandCodeId,currentUserRole);
+                     if (hasPathValue(attachmentsTypes)==false) {
+                        showSnackBar(context, "Please select any document first to upload");
+                     } else {
+
+                      controller.uploadAttachmentTypes(attachmentsTypes, bandCodeId, currentUserRole);
                     }
                   },
                 ),
               ]);
         });
+  }
+
+  bool hasPathValue(List<AttachmentType> attachmentsTypes) {
+    for (var attachmentType in attachmentsTypes) {
+      if (attachmentType.path.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 }

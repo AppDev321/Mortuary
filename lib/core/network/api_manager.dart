@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' as GETX;
@@ -40,6 +42,7 @@ class ApiManager {
     required String url,
     required RequestMethod method,
     Map<String, dynamic>? data,
+    bool sendJSONFormatRequest = false,
     dynamic files,
   }) async {
     try {
@@ -59,9 +62,14 @@ class ApiManager {
           break;
         case RequestMethod.POST:
           if (files != null) {
-            print(files.fields);
             response = await _dio.post(url, options: options, data: files);
-          }else {
+          }
+          else if(sendJSONFormatRequest)
+            {
+              response = await _dio.post(url,
+                  options: options, data: jsonEncode(data ?? {}));
+            }
+          else {
             response = await _dio.post(url,
                 options: options, data: FormData.fromMap(data ?? {}));
           }
@@ -122,8 +130,11 @@ class ApiManager {
     required RequestMethod method,
     Map<String, dynamic>? data,
     required T Function(Map<String, dynamic>) fromJson,
+    bool sendJSONFormatRequest = false,
+
   }) async {
     final response = await callNetworkApiRequest<ApiResponse>(
+        sendJSONFormatRequest: sendJSONFormatRequest,
         url: url, method: method, data: data);
 
     if (response.error != null) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../death_report/data/repositories/death_report_repo.dart';
 import '../../../death_report/domain/enities/death_report_alert.dart';
+import '../../../document_upload/domain/entity/attachment_type.dart';
 import '../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
@@ -257,6 +260,8 @@ class ProcessingUnitController extends GetxController {
         deathTypeId: selectedDeathType?.id ??0,
         countryId: selectedNationality?.id ??0);
 
+
+
     onApiRequestStarted();
     deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) {
       onApiResponseCompleted();
@@ -275,7 +280,13 @@ class ProcessingUnitController extends GetxController {
       //   }
       // });
 
-      Get.off(()=>DocumentUploadScreen(currentUserRole: role,bandCodeId: bandCodeId,));
+     // print("document attachment list ==>${response['attachmentTypes']}");
+      Get.to(() => DocumentUploadScreen(
+            currentUserRole: role,
+            bandCodeId: bandCodeId,
+            attachmentsTypes: getList(),
+          ));
+
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
@@ -308,6 +319,16 @@ class ProcessingUnitController extends GetxController {
     return deathReportList;
   }
 
+  getDetailOfReport(UserRole userRole, int reportId) async {
+    onApiRequestStarted();
+    await deathReportRepo.getDeathReportDetailsById(userRole: userRole, deathReportId: reportId).then((response) {
+      print(response);
+      onApiResponseCompleted();
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+  }
+
   updateAvailabilityStatus(int status) async {
     onApiRequestStarted();
     await deathReportRepo
@@ -317,18 +338,18 @@ class ProcessingUnitController extends GetxController {
   }
 
 
- Future<bool> updatePoliceStation(String bandCodeId, int stationId,int deathReportID,List<int> stationPocIds) async {
+  updatePoliceStation(String bandCodeId, int stationId,int deathReportID,List<int> stationPocIds,VoidCallback onSuccess) async {
     onApiRequestStarted();
     await deathReportRepo
         .updatePoliceStation(stationId: stationId,deathReportId: deathReportID,bandCodeID: bandCodeId,stationPocIds: stationPocIds)
         .then((value){
           onApiResponseCompleted();
-          return true;
+          onSuccess();
         })
-        .onError((error, stackTrace){ onErrorShowDialog(error);
-        return false;
+        .onError((error, stackTrace){
+          onErrorShowDialog(error);
         });
-    return false;
+
   }
 
 
@@ -356,4 +377,56 @@ class ProcessingUnitController extends GetxController {
     update([updateDeathReportScreen]);
     //update([updatedAuthWrapper, updateEmailScreen, updateOTPScreen]);
   }
+
+
+
+  List<AttachmentType> getList() {
+    String jsonString = '''
+[
+    {
+        "id": 8,
+        "name": "Mortality Department Letter"
+    },
+    {
+        "id": 9,
+        "name": "Passport or Iqama"
+    },
+    {
+        "id": 10,
+        "name": "Death Notification"
+    },
+    {
+        "id": 11,
+        "name": "Proof of recipient's identity"
+    },
+    {
+        "id": 12,
+        "name": "Approval letter from the embassy or consulate"
+    },
+    {
+        "id": 13,
+        "name": "Police form"
+    },
+    {
+        "id": 14,
+        "name": "Handover letter to the authorized person by the police"
+    },
+    {
+        "id": 15,
+        "name": "Death certificate"
+    }
+]
+''';
+
+    List<dynamic> jsonList = json.decode(jsonString);
+
+    List<AttachmentType> attachmentTypes = jsonList.map((json) => AttachmentType.fromJson(json)).toList();
+
+    // Output the parsed data
+    attachmentTypes.forEach((attachmentType) {
+      print('ID: ${attachmentType.id}, Name: ${attachmentType.name}, Path: ${attachmentType.path}');
+    });
+    return attachmentTypes;
+  }
+
 }

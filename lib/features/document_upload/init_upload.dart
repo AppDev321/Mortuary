@@ -6,16 +6,9 @@ import '../../core/services/image_service.dart';
 import '../../core/services/picker_decider.dart';
 
 initUpload() async {
-  Get.lazyPut<UploadFileRepo>(
-      () =>
-          UploadFileRepoImpl(remoteDataSource: Get.find(), apiManager: Get.find()),
-      fenix: true);
-
-  Get.lazyPut<UploadFileRemoteDataSource>(
-      () => UploadFileRemoteDataSourceImpl(Get.find()),
-      fenix: true);
-
-  Get.lazyPut<DocumentController>(()=> DocumentController(uploadFileRemoteDataSource: Get.find()));
+  Get.lazyPut<UploadFileRemoteDataSource>(() => UploadFileRemoteDataSourceImpl(Get.find()), fenix: true);
+  Get.lazyPut<UploadFileRepo>(() => UploadFileRepoImpl(remoteDataSource: Get.find(), apiManager: Get.find()), fenix: true);
+  Get.lazyPut<DocumentController>(() => DocumentController(uploadFileRepo: Get.find()));
   Get.lazyPut<FileChooserService>(() => FileChooserServiceImpl());
   Get.lazyPut<ImageService>(() => ImageServiceImpl());
 }
