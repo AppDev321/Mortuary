@@ -10,7 +10,8 @@ class AppStrings {
   static const String verificationLabelMsg = 'Please verify your phone number below. We will send you a 6-digit OTP in order to reset your password';
   static const String verificationScreenLabelMsg = 'Please enter the 6-digit OTP sent to your phone number';
   static const String email='Email';
-
+  static const String name='Name';
+  static const String contact='Contact';
   static const String phoneNumber='Phone Number';
   static const String requestCode = 'Request Code';
   static const String verify = 'Verify';
@@ -28,7 +29,9 @@ class AppStrings {
   static const String viewDeathReportList='View List of Death Reports';
   static const String deathReportList='Death Reports List';
 
-
+  static const String policeStation = "Police station";
+  static const String policeFormDesc='Please select the police station in order to continue';
+  static const String policeRepresentative = "Police Representatives";
 
   static const String processCenterLoc = 'Processing centre\nlocation';
   static const String pickupMapLoc = 'Pick up location';
@@ -87,6 +90,7 @@ class AppStrings {
   static const String qrNumber = "QR Number";
   static const String selectAgeGroup = "Select Age Group";
   static const String selectVisaType = "Select Visa Type";
+  static const String selectPoliceStation = "Select Police Station";
   static const String selectGender = "Select Gender";
   static const String allDeathReportsPosted = "You have complete your Report task";
   static const String deathAlert='Death Alert';

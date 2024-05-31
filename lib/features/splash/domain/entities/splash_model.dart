@@ -142,7 +142,7 @@ class Station extends Equatable {
   final String latitude;
   final String longitude;
   final String address;
-  final List<Poc> pocs;
+  final List<StationPoc> pocs;
 
   factory Station.fromJson(Map<String, dynamic> json){
     return Station(
@@ -151,7 +151,7 @@ class Station extends Equatable {
       latitude: json["latitude"] ?? "",
       longitude: json["longitude"] ?? "",
       address: json["address"] ?? "",
-      pocs: json["pocs"] == null ? [] : List<Poc>.from(json["pocs"]!.map((x) => Poc.fromJson(x))),
+      pocs: json["pocs"] == null ? [] : List<StationPoc>.from(json["pocs"]!.map((x) => StationPoc.fromJson(x))),
     );
   }
 
@@ -160,8 +160,8 @@ class Station extends Equatable {
     id, name, latitude, longitude, address, pocs, ];
 }
 
-class Poc extends Equatable {
-  Poc({
+class StationPoc extends Equatable {
+  StationPoc({
     required this.id,
     required this.name,
     required this.contactNo,
@@ -177,8 +177,8 @@ class Poc extends Equatable {
   final dynamic shiftStartTime;
   final dynamic shiftEndTime;
 
-  factory Poc.fromJson(Map<String, dynamic> json){
-    return Poc(
+  factory StationPoc.fromJson(Map<String, dynamic> json){
+    return StationPoc(
       id: json["id"] ?? 0,
       name: json["name"] ?? "",
       contactNo: json["contact_no"] ?? "",

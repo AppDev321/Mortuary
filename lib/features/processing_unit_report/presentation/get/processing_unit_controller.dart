@@ -24,6 +24,7 @@ import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 
 import '../widget/processing_unit/death_report_form.dart';
+import '../widget/processing_unit/police_station_screen.dart';
 
 class ProcessingUnitController extends GetxController {
   final DeathReportRepo deathReportRepo;
@@ -60,6 +61,10 @@ class ProcessingUnitController extends GetxController {
 
   RadioOption? selectedNationality;
   void setNationality(RadioOption nationality) => selectedNationality = nationality;
+
+
+  Station? selectedPoliceStation;
+  void setPoliceStation(Station station) => selectedPoliceStation = station;
 
 
   int ageNumber = 0;
@@ -193,7 +198,7 @@ class ProcessingUnitController extends GetxController {
         }
         else {
           Go.off(() =>
-              PUDeathReportFormScreen(
+              PoliceStationScreen(
                   deathBodyBandCode: value['band_code'],
                   deathFormCode: deathReportId));
         }
@@ -310,6 +315,22 @@ class ProcessingUnitController extends GetxController {
         .then((value) => onApiResponseCompleted())
         .onError((error, stackTrace) => onErrorShowDialog(error));
   }
+
+
+ Future<bool> updatePoliceStation(String bandCodeId, int stationId,int deathReportID,List<int> stationPocIds) async {
+    onApiRequestStarted();
+    await deathReportRepo
+        .updatePoliceStation(stationId: stationId,deathReportId: deathReportID,bandCodeID: bandCodeId,stationPocIds: stationPocIds)
+        .then((value){
+          onApiResponseCompleted();
+          return true;
+        })
+        .onError((error, stackTrace){ onErrorShowDialog(error);
+        return false;
+        });
+    return false;
+  }
+
 
   ////////////// Emnergency Api Section Close/////////////////
 

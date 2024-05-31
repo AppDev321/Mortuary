@@ -24,6 +24,7 @@ class PUDeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
 
+
   PUDeathReportFormScreen(
       {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
       : super(key: key);

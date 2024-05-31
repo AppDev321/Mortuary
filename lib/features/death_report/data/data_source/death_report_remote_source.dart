@@ -26,6 +26,7 @@ abstract class DeathReportRemoteSource {
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
 
   Future<void> updateSpaceAvailabilityStatusPU({required int status}) ;
+  Future<void> updatePoliceStation({required int stationId,required int deathReportId,required String bandCodeID,required List<int> stationPocIds}) ;
 
   Future<Map<String, dynamic>> postMorgueProcessingDepartmentData(
       {required String bodyScanCode,
@@ -244,6 +245,20 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
     };
     return await apiManager.makeApiRequest(
         url: AppUrls.morgueScannedProcessDepartment,
+        method: RequestMethod.POST,
+        data: jsonMap,
+        fromJson: (json)=> {"data": json['data']});
+  }
+
+  @override
+  Future<void> updatePoliceStation({required int stationId, required int deathReportId, required String bandCodeID,required List<int> stationPocIds})async {
+    final Map<String, dynamic> jsonMap = {
+      "band_code_id": bandCodeID,
+      "police_station_id": stationId,
+      "poc_ids":stationPocIds
+    };
+    return await apiManager.makeApiRequest(
+        url: AppUrls.updatePoliceStation,
         method: RequestMethod.POST,
         data: jsonMap,
         fromJson: (json)=> {"data": json['data']});

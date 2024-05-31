@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../error/errors.dart';
 import '../services/network_service.dart';
 import 'package:flutter/services.dart';
@@ -319,7 +320,14 @@ bool shouldShowBackButton(BuildContext context) {
   return true;
 }
 
-
+openDialPad(BuildContext context,String phoneNumber) async {
+  Uri url = Uri(scheme: "tel", path: phoneNumber);
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
+    showSnackBar(context, "Unable to open dial pad");
+  }
+}
 
 class Go {
   static Future<dynamic> to(dynamic page, {dynamic arguments}) async {

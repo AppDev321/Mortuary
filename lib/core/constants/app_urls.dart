@@ -36,7 +36,7 @@ class AppUrls {
   static const emergencyUploadFileUrl= '${baseUrl}emergency/attachments';
   static const emergencyAvailabilityStatus= '${baseUrl}emergency/change-status';
   static const emergencyDeathReportListUrl = '${baseUrl}emergency/death-report';
-
+  static const updatePoliceStation = '${baseUrl}emergency/death-report';
 
   static const morgueScanQRCodeUrl= '${baseUrl}morgue/received-body';
   static const morgueDeathReportListUrl = '${baseUrl}morgue/death-report';

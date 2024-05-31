@@ -165,13 +165,6 @@ class PickupMapScreen extends StatelessWidget {
       );
   }
 
-  openDialPad(BuildContext context,String phoneNumber) async {
-    Uri url = Uri(scheme: "tel", path: phoneNumber);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-     showSnackBar(context, "Unable to open dial pad");
-    }
-  }
+
 
 }

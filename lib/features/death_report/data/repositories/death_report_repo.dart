@@ -41,6 +41,10 @@ abstract class DeathReportRepo {
       required String processingUnitId,
       required String processingDepartmentID,
       required UserRole userRole});
+
+
+  Future<void> updatePoliceStation({required int stationId,required int deathReportId,required String bandCodeID,required List<int> stationPocIds}) ;
+
 }
 
 class DeathReportRepoImpl extends DeathReportRepo {
@@ -155,6 +159,17 @@ class DeathReportRepoImpl extends DeathReportRepo {
           processingUnitId: processingUnitId,
           processingDepartmentID: processingDepartmentID,
           userRole: userRole);
+    });
+  }
+
+  @override
+  Future<void> updatePoliceStation({required int stationId, required int deathReportId, required String bandCodeID,required List<int> stationPocIds}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.updatePoliceStation(
+          stationId: stationId,
+          deathReportId: deathReportId,
+          bandCodeID: bandCodeID,
+      stationPocIds: stationPocIds);
     });
   }
 }
