@@ -255,8 +255,10 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
     final Map<String, dynamic> jsonMap = {
       "band_code_id": bandCodeID,
       "police_station_id": stationId,
-      "poc_ids":stationPocIds
+      "poc_ids":stationPocIds//.map((id) => id.toString()).join(",")
     };
+
+    print(jsonMap);
     return await apiManager.makeApiRequest(
         url: AppUrls.updatePoliceStation,
         method: RequestMethod.POST,
