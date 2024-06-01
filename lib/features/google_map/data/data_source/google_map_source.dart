@@ -74,17 +74,17 @@ class GoogleMapDataSourceImpl implements GoogleMapDataSource {
     url: url,
     method: RequestMethod.GET,
     fromJson: (json) {
-      Map<String, dynamic> data = json['data'];
       List<LatLng> coordinates = [];
-      List steps = data["routes"][0]["legs"][0]["steps"];
-      var distance = data["routes"][0]["legs"][0]['distance']['text'];
-      var duration = data["routes"][0]["legs"][0]['duration']['text'];
+      List steps = json["routes"][0]["legs"][0]["steps"];
+      var distance = json["routes"][0]["legs"][0]['distance']['text'];
+      var duration = json["routes"][0]["legs"][0]['duration']['text'];
 
       for (int i = 0; i < steps.length; i++) {
         String encodedPolyline = steps[i]["polyline"]["points"];
         List<LatLng> segmentCoordinates = _decodePoly(encodedPolyline);
         coordinates.addAll(segmentCoordinates);
       }
+
       return {
         'polylines': coordinates,
         'distance': distance,

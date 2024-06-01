@@ -15,10 +15,12 @@ import 'package:mortuary/features/death_report/domain/enities/death_report_alert
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 import 'package:mortuary/features/death_report/presentation/widget/transport/processing_centers_list.dart';
+import 'package:mortuary/features/google_map/get/google_map_controller.dart';
 import 'package:mortuary/features/google_map/google_map_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/constants/app_strings.dart';
+import '../../../../google_map/builder_ids.dart';
 
 class PickupMapScreen extends StatelessWidget {
   final DeathReportAlert dataModel;
@@ -33,7 +35,130 @@ class PickupMapScreen extends StatelessWidget {
           // Use a function to initialize the state
           Get.find<DeathReportController>().transportScannedBodyCount = int.parse(dataModel.noOfDeaths);
         }, builder: (controller) {
-        return CustomScreenWidget(
+        return Scaffold(
+          appBar: AppBar(
+            leading: SizedBox(width: 0),
+            centerTitle: true,
+            title:  CustomTextWidget(text:AppStrings.pickupMapLoc.toUpperCase(),size: 24,fontWeight: FontWeight.bold,),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
+                sizeFieldMinPlaceHolder,
+                Container(
+                  height: Get.height * 0.4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: GoogleMapViewWidget(didShowDirectionButton: true,showDestinationPolyLines: true,
+                      destinationPoints: LatLng(dataModel.latitude,dataModel.longitude),),
+                  ),
+                ),
+                sizeFieldLargePlaceHolder,
+
+                Row(
+                  children: [
+                    SvgPicture.asset(AppAssets.icVolunteerLoc),
+                    sizeHorizontalFieldMediumPlaceHolder,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          createInfoRow(AppAssets.icPerson,"${AppStrings.noOfDeath}:", dataModel.noOfDeaths),
+                          createInfoRow(AppAssets.icCalender,AppStrings.date, dataModel.reportDate),
+                          createInfoRow(AppAssets.icTime,AppStrings.time, dataModel.reportTime),
+                          createInfoRow(AppAssets.icLocation,AppStrings.generalLocation,dataModel.generalLocation),
+                          createInfoRow(AppAssets.icCalender,AppStrings.address, dataModel.address ??"N/A")
+                        ],),
+                    )
+                  ],
+                ),
+                sizeFieldMediumPlaceHolder,
+                GetBuilder<GoogleMapScreenController>(
+                  id:updateGoogleMapScreen,
+                  builder: (googleController) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(AppAssets.icLoc),
+                          sizeHorizontalMinPlaceHolder,
+                           CustomTextWidget(
+                            text: googleController.distance,
+                            colorText: AppColors.secondaryTextColor,
+                            size: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          sizeHorizontalFieldLargePlaceHolder,
+                          SvgPicture.asset(AppAssets.icClock),
+                          sizeHorizontalMinPlaceHolder,
+                           CustomTextWidget(
+                            text: googleController.travelTime,
+                            colorText: AppColors.secondaryTextColor,
+                            size: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                ),
+                sizeFieldMediumPlaceHolder,
+                GestureDetector(
+                  onTap: (){
+                    openDialPad(context,dataModel.volunteerContactNumber);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(AppAssets.icPhoneCall),
+                      sizeHorizontalMinPlaceHolder,
+                      const CustomTextWidget(text: AppStrings.callVolunteer,fontWeight: FontWeight.bold,),
+                    ],
+                  ),
+                ),
+                sizeFieldMinPlaceHolder,
+                ButtonWidget(text: AppStrings.arrived, buttonType: ButtonType.gradient,
+                  icon: SvgPicture.asset(AppAssets.icTick),
+                  onPressed: (){
+                    controller.showQRCodeScannerScreen(
+                        dataModel.deathReportId,
+                        onApiCallBack: (data){
+                          if(controller.transportScannedBodyCount > 1) {
+                            controller.transportScannedBodyCount--;
+                            var dataDialog = GeneralError(
+                                message: AppStrings.scanNextBody,
+                                title: AppStrings.scanSuccess
+                            );
+                            showAppThemedDialog(dataDialog,showErrorMessage: false);
+                          }
+                          else
+                          {
+                            var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
+                            Go.to(() => ProcessingUnitListScreen(
+                              processingCenters: list,
+                              deathReportId: dataModel.deathReportId,
+                              deathCaseId: dataModel.deathCaseId,
+                            ));
+                          }
+                        });
+                  },
+                ),
+                sizeFieldLargePlaceHolder,
+              ],
+            ),
+          ),
+        );
+
+
+
+
+          CustomScreenWidget(
           crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             titleText: AppStrings.pickupMapLoc.toUpperCase(),
@@ -144,7 +269,7 @@ class PickupMapScreen extends StatelessWidget {
       }
     );
   }
-  
+
   createInfoRow(String assets, String title, String body) {
     return  Row(
       mainAxisSize: MainAxisSize.max,

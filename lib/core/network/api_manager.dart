@@ -83,7 +83,8 @@ class ApiManager {
       final Map<String, dynamic> decodedJson = response.data;
 
       if (response.statusCode == 200) {
-        return ApiResponse(decodedJson, null, true, decodedJson['message']);
+       // return ApiResponse(decodedJson, null, true, decodedJson['message']);
+        return ApiResponse(decodedJson, null, true,"");
       } else if (response.data != null) {
 
         var error = decodedJson['errors'] as String;
@@ -109,11 +110,10 @@ class ApiManager {
 
   Future<T> handleRequest<T>(Future<T> Function() request) async {
     await checkNetwork(networkInfo);
-
     try {
       return await request();
     } on GeneralError catch (error) {
-      logDebug('OnParseError: $error');
+      logDebug('OnParseError: ${error.message}');
       return Future.error(error);
     } catch (exception, stackTrace) {
       logDebug('OnParseError: $stackTrace');

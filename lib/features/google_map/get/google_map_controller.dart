@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mortuary/core/network/request_interceptor.dart';
 import 'package:mortuary/features/google_map/domain/entities/user_location_model.dart';
 
 import '../../../core/error/errors.dart';
@@ -13,13 +14,16 @@ class GoogleMapScreenController extends GetxController {
 
   GoogleMapScreenController({required this.googleMapRepo});
 
-  String mapKey = 'key';
+  String mapKey = 'AIzaSyC_-QEoMjifhaoXliUxgOHlS5USjHONfCA';
 
   late GoogleMapController googleMapController;
 
   String travelDistance = "N/A";
   List<LatLng> polyLines = List.empty();
   Set<Marker> locationMarkers = const <Marker>{};
+
+  String distance = "";
+  String travelTime = "";
 
   Future<Position> getPositionPoints() async {
     await Geolocator.requestPermission();
@@ -45,8 +49,7 @@ class GoogleMapScreenController extends GetxController {
           CameraPosition(target: latLngPosition, zoom: 15);
       googleMapController
           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-      if (didPolyLinesShow) {
+     if (didPolyLinesShow) {
         getRouteCoordinates(latLngPosition,destination);
       }
 
@@ -57,34 +60,43 @@ class GoogleMapScreenController extends GetxController {
   }
 
   getRouteCoordinates(LatLng start, LatLng destination) async {
-    var responseData =
-        await googleMapRepo.getMapDetailsByLatLng(start, destination, mapKey);
-    polyLines = responseData['polylines'];
-    travelDistance = "${responseData['duration']} (${responseData['distance']})";
 
-    final Marker marker = Marker(
-      markerId: const MarkerId('you'),
-      position: start,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      // Customize the marker icon if needed
-      infoWindow: const InfoWindow(title: "You", snippet: '*'),
-      onTap: () {
-        // Handle marker tap event if needed
-      },
-    );
+    googleMapRepo.getMapDetailsByLatLng(start, destination, mapKey).then((responseData){
 
-    final Marker marker2 = Marker(
-      markerId: const MarkerId('Destination'),
-      position: destination,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      // Customize the marker icon if needed
-      infoWindow: const InfoWindow(title: "Destination", snippet: '*'),
-      onTap: () {
-        // Handle marker tap event if needed
-      },
-    );
-    locationMarkers = {marker, marker2};
+      polyLines = responseData['polylines'];
+      travelDistance = "${responseData['duration']} (${responseData['distance']})";
+      distance = responseData['distance'];
+      travelTime = responseData['duration'];
 
-    update([updateGoogleMapScreen]);
+
+      final Marker marker = Marker(
+        markerId: const MarkerId('you'),
+        position: start,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        // Customize the marker icon if needed
+        infoWindow: const InfoWindow(title: "You", snippet: '*'),
+        onTap: () {
+          // Handle marker tap event if needed
+        },
+      );
+
+      final Marker marker2 = Marker(
+        markerId: const MarkerId('Destination'),
+        position: destination,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        // Customize the marker icon if needed
+        infoWindow: const InfoWindow(title: "Destination", snippet: '*'),
+        onTap: () {
+          // Handle marker tap event if needed
+        },
+      );
+      locationMarkers = { marker2};
+
+      update([updateGoogleMapScreen]);
+    }).onError<CustomError>((error, stackTrace) {
+      print('coordinate find error --> ${error.message}');
+    });
+
+
   }
 }

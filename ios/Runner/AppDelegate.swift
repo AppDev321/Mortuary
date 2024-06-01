@@ -11,7 +11,7 @@ import Firebase
   ) -> Bool {
       FirebaseApp.configure()
 
-     GMSServices.provideAPIKey("keey")
+     GMSServices.provideAPIKey("AIzaSyC_-QEoMjifhaoXliUxgOHlS5USjHONfCA")
        if #available(iOS 10.0, *) {
            UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
          }
