@@ -17,9 +17,10 @@ import '../widget/transport/drop_process_unit_map_view.dart';
 class ProcessingCenterRowItemWidget extends StatefulWidget {
   final ProcessingCenter listItem;
   final int deathReportId;
+  final int deathCaseId;
 
   const ProcessingCenterRowItemWidget(
-      {Key? key, required this.listItem, required this.deathReportId})
+      {Key? key, required this.listItem, required this.deathReportId, required this.deathCaseId})
       : super(key: key);
 
   @override
@@ -95,12 +96,17 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
                           isApiLoading = true;
                         });
 
-                        ProcessingCenter? processingCenter = await controller.getDetailOfProcessUnit(widget.deathReportId,
-                            widget.listItem.processingCenterId);
+                        ProcessingCenter? processingCenter = await controller.getDetailOfProcessUnit(
+                            widget.deathReportId,
+                            widget.listItem.processingCenterId,
+                            widget.deathCaseId);
+
+
                         if (processingCenter != null) {
                           Go.to(() => DropProcessUnitMapScreen(
                             dataModel: processingCenter,
                             deathReportId: widget.deathReportId,
+                            deathCaseID:  widget.deathCaseId,
                           ));
                         }
 

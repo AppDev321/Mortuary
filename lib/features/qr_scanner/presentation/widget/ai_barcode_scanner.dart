@@ -140,7 +140,7 @@ class AiBarcodeScanner extends StatefulWidget {
   final UserRole? userRole;
   int deathReportId;
   final bool isMorgueScannedProcessingDepartment;
-
+  final bool isEmergencyReceivedABody;
    AiBarcodeScanner({
     super.key,
     required this.onScan,
@@ -177,7 +177,8 @@ class AiBarcodeScanner extends StatefulWidget {
     this.appBar,
     this.userRole,
     this.onApiCallBack,
-     this.isMorgueScannedProcessingDepartment = false
+     this.isMorgueScannedProcessingDepartment = false,
+     this.isEmergencyReceivedABody = false
   });
 
   @override
@@ -328,7 +329,8 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                           widget.deathReportId,
                           widget.userRole!,
                           widget.onApiCallBack,
-                          widget.isMorgueScannedProcessingDepartment);
+                          widget.isMorgueScannedProcessingDepartment,
+                           widget.isEmergencyReceivedABody);
                     }
 
 

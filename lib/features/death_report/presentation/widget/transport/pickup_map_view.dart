@@ -128,9 +128,13 @@ class PickupMapScreen extends StatelessWidget {
                   }
                   else
                     {
-                      var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
-                      Go.to(()=>ProcessingUnitListScreen(processingCenters: list,deathReportId: dataModel.deathReportId,));
-                    }
+                     var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
+                    Go.to(() => ProcessingUnitListScreen(
+                          processingCenters: list,
+                          deathReportId: dataModel.deathReportId,
+                          deathCaseId: dataModel.deathCaseId,
+                        ));
+                  }
                 });
               },
               ),

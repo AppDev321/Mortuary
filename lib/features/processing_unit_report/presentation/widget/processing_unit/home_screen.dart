@@ -69,7 +69,9 @@ class PUHomeScreen extends StatelessWidget {
                 height: Get.height * 0.18,
                 child: GestureDetector(
                     onTap: () {
-                    controller.showQRCodeScannerScreen(currentUserRole, -111,
+                    controller.showQRCodeScannerScreen(
+                        currentUserRole, -111,
+                        isEmergencyReceivedABody:true,
                         onApiCallBack: (response) {
                       var dataDialog = GeneralError(
                           title: AppStrings.scanSuccess,

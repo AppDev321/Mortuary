@@ -19,7 +19,7 @@ abstract class DeathReportRepo {
       required String address,
       required UserRole userRole});
 
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment);
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment,bool isEmergencyReceivedABody);
 
   Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest, required UserRole userRole});
@@ -29,9 +29,9 @@ abstract class DeathReportRepo {
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
 
-  Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId});
-  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId}) ;
-  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId}) ;
+  Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId,required int deathCaseID});
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId,required int deathCaseID}) ;
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId , required int deathCaseID}) ;
   Future<void> updateSpaceAvailabilityStatusPU({required int status});
 
   Future<Map<String, dynamic>> postMorgueProcessingDepartmentData(
@@ -70,9 +70,11 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,bool isMorgueScannedProcessingDepartment) {
+  Future<Map<String,dynamic>> postQRScanCode(String qrCode,UserRole userRole,
+      bool isMorgueScannedProcessingDepartment,
+         bool isEmergencyReceivedABody) {
     return apiManager.handleRequest(() async {
-      return await remoteDataSource.postQRScanCode(qrCode,userRole,isMorgueScannedProcessingDepartment);
+      return await remoteDataSource.postQRScanCode(qrCode,userRole,isMorgueScannedProcessingDepartment,isEmergencyReceivedABody);
     });
   }
 
@@ -110,29 +112,32 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<Map<String, dynamic>> acceptDeathReportAlertByTransport({required int deathReportId}) {
+  Future<Map<String, dynamic>> acceptDeathReportAlertByTransport({required int deathReportId,required int deathCaseID}) {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.acceptDeathReportAlertByTransport(
-          deathReportId: deathReportId);
+          deathReportId: deathReportId,
+          deathCaseID: deathCaseID);
     });
   }
 
   @override
-  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId, required int processingUnitId}) {
+  Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId, required int processingUnitId,required int deathCaseID}) {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.dropBodyToProcessUnityByTransport(
           deathReportId: deathReportId,
-        processingUnitId: processingUnitId
+        processingUnitId: processingUnitId,
+        deathCaseID: deathCaseID
       );
     });
   }
 
   @override
-  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId, required int processingUnitId}) {
+  Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId, required int processingUnitId,required int deathCaseID}) {
     return apiManager.handleRequest(() async {
       return await remoteDataSource.getDetailOfProcessUnit(
           deathReportId: deathReportId,
-          processingUnitId: processingUnitId
+          processingUnitId: processingUnitId,
+          deathCaseID: deathCaseID
       );
     });
   }

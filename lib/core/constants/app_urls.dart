@@ -38,6 +38,7 @@ class AppUrls {
   static const emergencyDeathReportListUrl = '${baseUrl}emergency/death-report';
   static const emergencyDeathReportDetailUrl= '${baseUrl}emergency/death-detailed-report/';
   static const updatePoliceStation = '${baseUrl}emergency/police-station-form';
+  static const scanAmbulanceBodyUrl = '${baseUrl}emergency/received-body';
 
 
 

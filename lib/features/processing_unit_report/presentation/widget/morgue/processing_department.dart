@@ -60,7 +60,7 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
     ProcessDepartment(
         id: 8,
         image: AppAssets.icCleaningBody,
-        name: AppStrings.processingCenter),
+        name: AppStrings.cleaningStation),
     ProcessDepartment(
         id: 9, image: AppAssets.icAutopsy, name: AppStrings.autopsyPostMartam),
     ProcessDepartment(

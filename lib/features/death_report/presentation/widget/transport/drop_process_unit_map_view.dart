@@ -24,9 +24,10 @@ import '../../../../../core/constants/app_strings.dart';
 class DropProcessUnitMapScreen extends StatefulWidget {
   final ProcessingCenter dataModel;
   final int deathReportId;
+  final int deathCaseID;
 
   const DropProcessUnitMapScreen(
-      {Key? key, required this.dataModel, required this.deathReportId})
+      {Key? key, required this.dataModel, required this.deathReportId , required this.deathCaseID})
       : super(key: key);
 
   @override
@@ -157,8 +158,9 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
                   icon: SvgPicture.asset(AppAssets.icTick),
                   onPressed: () {
                     controller.dropBodyToProcessingUnitByTransport(
-                        widget.deathReportId,
-                        widget.dataModel.processingCenterId);
+                    deathReportId: widget.deathReportId,
+                    deathCaseId: widget.deathCaseID,
+                    processingUnitID: widget.dataModel.processingCenterId);
                   },
                 ),
                 sizeFieldLargePlaceHolder,

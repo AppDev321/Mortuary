@@ -12,11 +12,12 @@ class DeathReportAlert extends Equatable {
     required this.noOfDeaths,
     required this.reportDate,
     required this.reportTime,
-    required this.volunteerContactNumber
+    required this.volunteerContactNumber,
+    required this.deathCaseId
   });
-
+  final int deathCaseId;
   final int deathReportId;
-  final String volunteerId;
+  final int volunteerId;
   final String generalLocation;
   final double latitude;
   final double longitude;
@@ -28,8 +29,9 @@ class DeathReportAlert extends Equatable {
 
   factory DeathReportAlert.fromJson(Map<String, dynamic> json){
     return DeathReportAlert(
+      deathCaseId:json['death_case_id'] ?? 0,
       deathReportId: json["death_report_id"] ?? 0,
-      volunteerId: json["volunteer_id"] ?? "",
+      volunteerId: json["volunteer_id"] ?? 0,
       generalLocation: json["general_location"] ?? "",
       latitude: json["latitude"] ?? 0.0,
       longitude: json["longitude"] ?? 0.0,

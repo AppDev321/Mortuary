@@ -50,7 +50,7 @@ class DeathAlertDetail extends Equatable {
   final String idNumber;
   final String nationality;
   final String gender;
-  final int age;
+  final String age;
   final String ageGroup;
   final String deathType;
   final String generalizeLocation;
@@ -97,8 +97,8 @@ class EmergencyDetail extends Equatable {
   final String pocName;
   final String pocPhone;
   final String pocEmail;
-  final int totalSpace;
-  final int availableSpace;
+  final String totalSpace;
+  final String availableSpace;
   final String address;
 
   factory EmergencyDetail.fromJson(Map<String, dynamic> json){
@@ -134,8 +134,8 @@ class MorgueDetail extends Equatable {
   final String pocName;
   final String pocPhone;
   final String pocEmail;
-  final int totalSpace;
-  final int availableSpace;
+  final String totalSpace;
+  final String availableSpace;
   final String address;
 
   factory MorgueDetail.fromJson(Map<String, dynamic> json){

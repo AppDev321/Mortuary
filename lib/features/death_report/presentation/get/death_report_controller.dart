@@ -168,7 +168,7 @@ class DeathReportController extends GetxController {
   postQRCodeToServer(String qrCode, int deathReportId, UserRole userRole,
       void Function(dynamic)? onApiCallBack) {
     onApiRequestStarted();
-    deathReportRepo.postQRScanCode(qrCode,userRole,false).then((value) {
+    deathReportRepo.postQRScanCode(qrCode,userRole,false,false).then((value) {
       isScanCodeCompleted = false;
       onApiResponseCompleted();
 
@@ -278,14 +278,14 @@ class DeathReportController extends GetxController {
   acceptDeathReportByTransport(DeathReportAlert deathReportAlert) async {
     onApiRequestStarted();
     await deathReportRepo.acceptDeathReportAlertByTransport(
-        deathReportId: deathReportAlert.deathReportId)
+        deathReportId: deathReportAlert.deathReportId, deathCaseID: deathReportAlert.deathCaseId)
         .then((response) {
       onApiResponseCompleted();
       var dialogData = GeneralError(
         title: response['title'],
         message: response['message']
       );
-      showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
+      showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: () {
        Go.off(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
       });
 
@@ -294,12 +294,13 @@ class DeathReportController extends GetxController {
     });
   }
 
-  Future<ProcessingCenter?> getDetailOfProcessUnit(int deathReportId, int processingUnitID) async {
+  Future<ProcessingCenter?> getDetailOfProcessUnit(int deathReportId, int processingUnitID, int deathCaseID) async {
     try {
       onApiRequestStarted();
       ProcessingCenter response = await deathReportRepo.getDetailOfProcessUnit(
         deathReportId: deathReportId,
         processingUnitId: processingUnitID,
+        deathCaseID: deathCaseID
       );
       onApiResponseCompleted();
       return response;
@@ -314,10 +315,15 @@ class DeathReportController extends GetxController {
   }
 
 
- dropBodyToProcessingUnitByTransport(int deathReportId,int processingUnitID) async {
+ dropBodyToProcessingUnitByTransport(
+  {
+    required   int deathReportId,
+  required int processingUnitID,
+  required int deathCaseId
+}) async {
     onApiRequestStarted();
     await deathReportRepo.dropBodyToProcessUnityByTransport(
-        deathReportId: deathReportId,processingUnitId: processingUnitID)
+        deathReportId: deathReportId,processingUnitId: processingUnitID,deathCaseID: deathCaseId)
         .then((response) {
       onApiResponseCompleted();
       var dialogData = GeneralError(

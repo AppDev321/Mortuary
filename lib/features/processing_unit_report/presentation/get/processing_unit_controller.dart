@@ -20,6 +20,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../death_report/data/repositories/death_report_repo.dart';
 import '../../../death_report/domain/enities/death_report_alert.dart';
 import '../../../document_upload/domain/entity/attachment_type.dart';
+import '../../../document_upload/init_upload.dart';
 import '../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
@@ -27,6 +28,7 @@ import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 
 import '../widget/processing_unit/death_report_form.dart';
+import '../widget/processing_unit/home_screen.dart';
 import '../widget/processing_unit/police_station_screen.dart';
 
 class ProcessingUnitController extends GetxController {
@@ -159,13 +161,17 @@ class ProcessingUnitController extends GetxController {
   }
 
   showQRCodeScannerScreen(UserRole userRole, int deathReportId,
-      {Function(dynamic)? onApiCallBack,
-      bool isMorgueScannedProcessingDepartment = false}) {
+      { Function(dynamic)? onApiCallBack,
+      bool isMorgueScannedProcessingDepartment = false,
+      bool isEmergencyReceivedABody = false
+
+      }) {
     Go.to(() => AiBarcodeScanner(
           deathReportId: deathReportId,
           userRole: userRole,
           onApiCallBack: onApiCallBack,
           canPop: false,
+           isEmergencyReceivedABody :isEmergencyReceivedABody,
           isMorgueScannedProcessingDepartment: isMorgueScannedProcessingDepartment,
           onScan: (String value) {
             if (isScanCodeCompleted == false) {
@@ -178,7 +184,10 @@ class ProcessingUnitController extends GetxController {
 
   postQRCodeToServer(
       String qrCode,int deathReportId,UserRole userRole,
-      void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ) {
+      void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ,
+      bool isEmergencyReceivedABody)
+
+  {
     if (isMorgueScannedProcessingDepartment) {
       if (onApiCallBack != null) {
         onApiCallBack(qrCode);
@@ -189,7 +198,7 @@ class ProcessingUnitController extends GetxController {
       onApiRequestStarted();
 
       deathReportRepo.postQRScanCode(
-          qrCode, userRole, isMorgueScannedProcessingDepartment).then((value) {
+          qrCode, userRole, isMorgueScannedProcessingDepartment,isEmergencyReceivedABody).then((value) {
         //To update scanner Button Ui because it use DeathReportController
         deathReportController.onApiResponseCompleted();
         isScanCodeCompleted = false;
@@ -263,7 +272,7 @@ class ProcessingUnitController extends GetxController {
 
 
     onApiRequestStarted();
-    deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) {
+    deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) async{
       onApiResponseCompleted();
       deathNumberCount--;
       // var customError = GeneralError(
@@ -280,13 +289,24 @@ class ProcessingUnitController extends GetxController {
       //   }
       // });
 
-     // print("document attachment list ==>${response['attachmentTypes']}");
-      Get.to(() => DocumentUploadScreen(
-            currentUserRole: role,
-            bandCodeId: bandCodeId,
-            attachmentsTypes: getList(),
-          ));
-
+      var attachmentList = response['attachmentType'] as List<AttachmentType>;
+      if(attachmentList.isNotEmpty) {
+        await initUpload();
+        Get.to(() =>
+            DocumentUploadScreen(
+                currentUserRole: role,
+                bandCodeId: bandCodeId,
+                attachmentsTypes: attachmentList
+            ));
+      }
+      else{
+        var dialog = GeneralError(title: response['title'], message: response['message']);
+        showAppThemedDialog(dialog, showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+          Get.offAll(() => PUHomeScreen(
+                currentUserRole: role,
+              ));
+        });
+      }
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
@@ -378,55 +398,5 @@ class ProcessingUnitController extends GetxController {
     //update([updatedAuthWrapper, updateEmailScreen, updateOTPScreen]);
   }
 
-
-
-  List<AttachmentType> getList() {
-    String jsonString = '''
-[
-    {
-        "id": 8,
-        "name": "Mortality Department Letter"
-    },
-    {
-        "id": 9,
-        "name": "Passport or Iqama"
-    },
-    {
-        "id": 10,
-        "name": "Death Notification"
-    },
-    {
-        "id": 11,
-        "name": "Proof of recipient's identity"
-    },
-    {
-        "id": 12,
-        "name": "Approval letter from the embassy or consulate"
-    },
-    {
-        "id": 13,
-        "name": "Police form"
-    },
-    {
-        "id": 14,
-        "name": "Handover letter to the authorized person by the police"
-    },
-    {
-        "id": 15,
-        "name": "Death certificate"
-    }
-]
-''';
-
-    List<dynamic> jsonList = json.decode(jsonString);
-
-    List<AttachmentType> attachmentTypes = jsonList.map((json) => AttachmentType.fromJson(json)).toList();
-
-    // Output the parsed data
-    attachmentTypes.forEach((attachmentType) {
-      print('ID: ${attachmentType.id}, Name: ${attachmentType.name}, Path: ${attachmentType.path}');
-    });
-    return attachmentTypes;
-  }
 
 }

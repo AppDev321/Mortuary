@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' as GETX;
 import 'package:mortuary/core/network/dio_client.dart';
 import 'package:mortuary/core/network/dio_exception.dart';
+import 'package:mortuary/core/network/request_interceptor.dart';
 
 import '../../features/authentication/presentation/get/auth_controller.dart';
 import '../error/errors.dart';
@@ -112,8 +113,10 @@ class ApiManager {
     try {
       return await request();
     } on GeneralError catch (error) {
+      logDebug('OnParseError: $error');
       return Future.error(error);
     } catch (exception, stackTrace) {
+      logDebug('OnParseError: $stackTrace');
       return Future.error(GeneralError(
         message: exception is DioError
             ? exception.message

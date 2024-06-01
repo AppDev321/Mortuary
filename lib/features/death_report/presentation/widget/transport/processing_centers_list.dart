@@ -9,9 +9,10 @@ import '../../components/processing_center_list_component.dart';
 class ProcessingUnitListScreen extends StatelessWidget {
   final List<ProcessingCenter> processingCenters;
   final int deathReportId;
+  final int deathCaseId;
 
   const ProcessingUnitListScreen(
-      {Key? key, required this.processingCenters, required this.deathReportId})
+      {Key? key, required this.processingCenters, required this.deathReportId , required this.deathCaseId})
       : super(key: key);
 
   @override
@@ -30,9 +31,11 @@ class ProcessingUnitListScreen extends StatelessWidget {
                   physics: const ScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+
                     return ProcessingCenterRowItemWidget(
                       listItem: processingCenters[index],
                       deathReportId: deathReportId,
+                      deathCaseId: deathCaseId,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
