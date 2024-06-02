@@ -70,7 +70,7 @@ class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
       for (int i = 0; i < files.length; i++) {
         fileData.files.addAll({'attachments_${attachmentId[i]}': files[i]}.entries);
       }
-
+    print(fileData.fields);
       print(fileData.files);
 
     // Add other form fields

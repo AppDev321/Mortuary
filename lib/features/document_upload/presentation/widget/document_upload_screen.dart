@@ -21,11 +21,15 @@ class DocumentUploadScreen extends StatelessWidget {
   final UserRole currentUserRole;
   final int bandCodeId;
   final List<AttachmentType> attachmentsTypes;
+  bool closeOnlyDocumentScreen = false;
 
   DocumentUploadScreen(
-      {Key? key, required this.currentUserRole, required this.bandCodeId, required this.attachmentsTypes})
+      {Key? key,
+      required this.currentUserRole,
+      required this.bandCodeId,
+      required this.attachmentsTypes,
+      this.closeOnlyDocumentScreen = false})
       : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,50 +48,48 @@ class DocumentUploadScreen extends StatelessWidget {
                   ),
                 ),
                 sizeFieldLargePlaceHolder,
-
                 Column(
-                  children: attachmentsTypes.map((item) =>
-                      Column(
-                        children:[
-                          sizeFieldMediumPlaceHolder,
-                          UploadContainerWidget(
-                            headTitle: item.name,
-                            currentUserRole: currentUserRole,
-                            bandCodeId: bandCodeId,
-                            onFileSelected: (file) {
-                              item.path = file.path;
-                            },
-                            onFileCanceled: (file) {
-                              item.path = "";
-                            },
-                            containerId: item.id,
-                          ),
-                        ]
-
-                      )
-                  ).toList(),
+                  children: attachmentsTypes
+                      .map((item) => Column(children: [
+                            sizeFieldMediumPlaceHolder,
+                            UploadContainerWidget(
+                              headTitle: item.name,
+                              currentUserRole: currentUserRole,
+                              bandCodeId: bandCodeId,
+                              onFileSelected: (file) {
+                                item.path = file.path;
+                              },
+                              onFileCanceled: (file) {
+                                item.path = "";
+                              },
+                              containerId: item.id,
+                            ),
+                          ]))
+                      .toList(),
                 ),
-
                 sizeFieldLargePlaceHolder,
                 ButtonWidget(
-                  text: AppStrings.next,
+                  text: closeOnlyDocumentScreen ? AppStrings.cancelButtonText : AppStrings.skip,
                   buttonType: ButtonType.transparent,
                   onPressed: () {
-                    Get.offAll(() => PUHomeScreen(
-                          currentUserRole: currentUserRole,
-                        ));
+                    if (closeOnlyDocumentScreen) {
+                      Get.back();
+                    } else {
+                      Get.offAll(() => PUHomeScreen(
+                            currentUserRole: currentUserRole,
+                          ));
+                    }
                   },
                 ),
                 sizeFieldMediumPlaceHolder,
                 ButtonWidget(
                   isLoading: controller.isApiResponseLoaded,
-                  text: AppStrings.submit,
+                  text: AppStrings.uploadDocument,
                   buttonType: ButtonType.gradient,
                   onPressed: () {
-                     if (hasPathValue(attachmentsTypes)==false) {
-                        showSnackBar(context, "Please select any document first to upload");
-                     } else {
-
+                    if (hasPathValue(attachmentsTypes) == false) {
+                      showSnackBar(context, "Please select any document first to upload");
+                    } else {
                       controller.uploadAttachmentTypes(attachmentsTypes, bandCodeId, currentUserRole);
                     }
                   },

@@ -121,10 +121,12 @@ class AppStrings {
   static const String document = "Document";
   static const String documentsLabel = "Please upload the documents mentioned below";
   static const String upload = "Upload";
+  static const String uploadDocument = "Upload Document";
   static const String selectImageSource = "Select Image Source";
   static const String camera = "Camera";
   static const String gallery = "Gallery";
   static const String skip = "Skip";
+  static const String search = "Search";
   static const String searchCountry = "Search Country";
   static const String chooseCountry = "Choose Country";
   static const String selectType = "Select Type";

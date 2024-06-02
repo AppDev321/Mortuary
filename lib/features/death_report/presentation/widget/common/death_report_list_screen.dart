@@ -15,6 +15,7 @@ import 'package:mortuary/features/death_report/presentation/widget/transport/acc
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
+import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/load_more_listview.dart';
 import '../../../domain/enities/death_report_list_reponse.dart';
 
@@ -33,6 +34,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   int listPageCount = 0;
   List<DeathReportListResponse> paginatedList = [];
   List<DeathReportListResponse> allReportsList = [];
+  List<DeathReportListResponse> filteredList = [];
 
   bool hasAnyNotificationAlert = false;
   DeathReportAlert? deathReportAlert;
@@ -142,6 +144,25 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                     ),
                   )),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomTextField(
+                suffixIcon: const Icon(Icons.search),
+                borderEnable: true,
+                text: AppStrings.search,
+                fontWeight: FontWeight.normal,
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    filterSearchResults(value);
+                  } else {
+                    setState(() {
+                      paginatedList = filteredList;
+                    });
+                  }
+                },
+              ),
+            ),
+            sizeFieldMinPlaceHolder,
             SizedBox(
               height: Get.height * 0.85,
               child: RefreshIndicator(
@@ -193,7 +214,21 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
     setState(() {
       paginatedList.clear();
       paginatedList = allReportsList.take(startIndex + listCount).toList();
+      filteredList = paginatedList;
       listPageCount++;
     });
   }
+
+  void filterSearchResults(String query) {
+    List<DeathReportListResponse> searchResult = allReportsList
+        .where((item) =>
+    item.idNumber.toLowerCase().contains(query.toLowerCase()) ||
+        item.bandCode.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    setState(() {
+      paginatedList = searchResult;
+    });
+  }
+
 }

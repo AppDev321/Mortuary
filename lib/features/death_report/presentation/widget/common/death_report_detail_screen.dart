@@ -20,6 +20,7 @@ import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/load_more_listview.dart';
 import '../../../../document_upload/domain/entity/attachment_type.dart';
+import '../../../../document_upload/init_upload.dart';
 import '../../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../../processing_unit_report/builder_ids.dart';
 import '../../../domain/enities/death_report_list_reponse.dart';
@@ -60,43 +61,36 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                       ? Column(
                           children: [
                             CustomExpansionTile(tileText: AppStrings.alertDetail, children: [
-                              controller.deathReportDetailResponse!.alerts !=null?
-                              alertDetailTileComponent(controller.deathReportDetailResponse!.alerts!)
+                              controller.deathReportDetailResponse!.alerts != null
+                                  ? alertDetailTileComponent(controller.deathReportDetailResponse!.alerts!)
                                   : noDataContainer(),
                             ]),
-
-
                             sizeFieldMediumPlaceHolder,
-
                             CustomExpansionTile(tileText: AppStrings.transportDetail, children: [
-                              controller.deathReportDetailResponse!.transport !=null?
-                              transportDetailTileComponent(controller.deathReportDetailResponse!.transport!)
+                              controller.deathReportDetailResponse!.transport != null
+                                  ? transportDetailTileComponent(controller.deathReportDetailResponse!.transport!)
                                   : noDataContainer(),
                             ]),
-
-
                             sizeFieldMediumPlaceHolder,
-
                             CustomExpansionTile(tileText: AppStrings.emergencyDetail, children: [
-                              controller.deathReportDetailResponse!.emergency !=null?
-                              emergencyDetailTileComponent(controller.deathReportDetailResponse!.emergency!)
-                               : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-
-                            CustomExpansionTile(tileText: AppStrings.morgueDetail, children: [
-                              controller.deathReportDetailResponse!.morgue !=null?
-                              morgueDetailTileComponent(controller.deathReportDetailResponse!.morgue!)
-                              : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-
-                            CustomExpansionTile(tileText: AppStrings.documents, children: [
-                              controller.deathReportDetailResponse!.attachments.isNotEmpty?
-                              attachmentsDetailTileComponent(controller.deathReportDetailResponse!.alerts!.bandCodeId,controller.deathReportDetailResponse!.attachments)
+                              controller.deathReportDetailResponse!.emergency != null
+                                  ? emergencyDetailTileComponent(controller.deathReportDetailResponse!.emergency!)
                                   : noDataContainer(),
                             ]),
-
+                            sizeFieldMediumPlaceHolder,
+                            CustomExpansionTile(tileText: AppStrings.morgueDetail, children: [
+                              controller.deathReportDetailResponse!.morgue != null
+                                  ? morgueDetailTileComponent(controller.deathReportDetailResponse!.morgue!)
+                                  : noDataContainer(),
+                            ]),
+                            sizeFieldMediumPlaceHolder,
+                            CustomExpansionTile(tileText: AppStrings.documents, children: [
+                              controller.deathReportDetailResponse!.attachments.isNotEmpty
+                                  ? attachmentsDetailTileComponent(
+                                      controller.deathReportDetailResponse!.alerts!.bandCodeId,
+                                      controller.deathReportDetailResponse!.attachments)
+                                  : noDataContainer(),
+                            ]),
                           ],
                         )
                       : const Center(
@@ -108,139 +102,129 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
         });
   }
 
-
-
-  Widget alertDetailTileComponent(DeathAlertDetail alertDetail)
-  {
-    return  Table(
-      children: [
-        tableComponent(AppAssets.icQR,AppStrings.qrNumber,alertDetail.bandCode),
-        rowSpaces(),
-        tableComponent(AppAssets.icIDType,AppStrings.idType,alertDetail.visaType),
-        rowSpaces(),
-        tableComponent(AppAssets.icIDNumber,AppStrings.idNumber,alertDetail.idNumber),
-        rowSpaces(),
-        tableComponent(AppAssets.icNationality,AppStrings.nationality,alertDetail.nationality),
-        rowSpaces(),
-        tableComponent(AppAssets.icGender,AppStrings.gender,alertDetail.gender),
-        rowSpaces(),
-        tableComponent(AppAssets.icAge,AppStrings.age,alertDetail.age),
-        rowSpaces(),
-        tableComponent(AppAssets.icAge,AppStrings.ageGroup,alertDetail.ageGroup),
-        rowSpaces(),
-        tableComponent(AppAssets.icDeathType,AppStrings.deathType,alertDetail.deathType),
-        rowSpaces(),
-        tableComponent(AppAssets.icAddress,AppStrings.generalLocation,alertDetail.generalizeLocation),
-        rowSpaces(),
-        tableComponent(AppAssets.icDate,AppStrings.date,convertAppStyleDate(alertDetail.reportDate)),
-        rowSpaces(),
-        tableComponent(AppAssets.icTime,AppStrings.time,alertDetail.reportTime),
-        rowSpaces(),
-        tableComponent(AppAssets.icAddress,AppStrings.address,alertDetail.address),
-
-
-      ]);
+  Widget alertDetailTileComponent(DeathAlertDetail alertDetail) {
+    return Table(children: [
+      tableComponent(AppAssets.icQR, AppStrings.qrNumber, alertDetail.bandCode),
+      rowSpaces(),
+      tableComponent(AppAssets.icIDType, AppStrings.idType, alertDetail.visaType),
+      rowSpaces(),
+      tableComponent(AppAssets.icIDNumber, AppStrings.idNumber, alertDetail.idNumber),
+      rowSpaces(),
+      tableComponent(AppAssets.icNationality, AppStrings.nationality, alertDetail.nationality),
+      rowSpaces(),
+      tableComponent(AppAssets.icGender, AppStrings.gender, alertDetail.gender),
+      rowSpaces(),
+      tableComponent(AppAssets.icAge, AppStrings.age, alertDetail.age),
+      rowSpaces(),
+      tableComponent(AppAssets.icAge, AppStrings.ageGroup, alertDetail.ageGroup),
+      rowSpaces(),
+      tableComponent(AppAssets.icDeathType, AppStrings.deathType, alertDetail.deathType),
+      rowSpaces(),
+      tableComponent(AppAssets.icAddress, AppStrings.generalLocation, alertDetail.generalizeLocation),
+      rowSpaces(),
+      tableComponent(AppAssets.icDate, AppStrings.date, convertAppStyleDate(alertDetail.reportDate)),
+      rowSpaces(),
+      tableComponent(AppAssets.icTime, AppStrings.time, alertDetail.reportTime),
+      rowSpaces(),
+      tableComponent(AppAssets.icAddress, AppStrings.address, alertDetail.address),
+    ]);
   }
 
-  Widget transportDetailTileComponent(TransportDetail alertDetail)
-  {
-    return  Table(
-        children: [
-          tableComponent(AppAssets.icDriver,AppStrings.driverName,alertDetail.driverName),
-          rowSpaces(),
-          tableComponent(AppAssets.icCall,AppStrings.contact,alertDetail.contactNo),
-          rowSpaces(),
-          tableComponent(AppAssets.icVehicle,AppStrings.email,alertDetail.email),
-          rowSpaces(),
-          tableComponent(AppAssets.icVehicle,AppStrings.vehicleNo,alertDetail.vehicleNo),
-          rowSpaces(),
-          tableComponent(AppAssets.icVehicle,AppStrings.capacity,alertDetail.bodyCapacity),
-
-        ]);
+  Widget transportDetailTileComponent(TransportDetail alertDetail) {
+    return Table(children: [
+      tableComponent(AppAssets.icDriver, AppStrings.driverName, alertDetail.driverName),
+      rowSpaces(),
+      tableComponent(AppAssets.icCall, AppStrings.contact, alertDetail.contactNo),
+      rowSpaces(),
+      tableComponent(AppAssets.icVehicle, AppStrings.email, alertDetail.email),
+      rowSpaces(),
+      tableComponent(AppAssets.icVehicle, AppStrings.vehicleNo, alertDetail.vehicleNo),
+      rowSpaces(),
+      tableComponent(AppAssets.icVehicle, AppStrings.capacity, alertDetail.bodyCapacity),
+    ]);
   }
 
-
-  Widget emergencyDetailTileComponent(EmergencyDetail alertDetail)
-  {
-    return  Table(
-        children: [
-          tableComponent(AppAssets.icDepartment,AppStrings.emergencyDepartment,alertDetail.processingCenter),
-          rowSpaces(),
-          tableComponent(AppAssets.icGender,AppStrings.pocName,alertDetail.pocName),
-          rowSpaces(),
-          tableComponent(AppAssets.icCall,AppStrings.contact,alertDetail.pocPhone),
-          rowSpaces(),
-          tableComponent(AppAssets.icVehicle,AppStrings.email,alertDetail.pocEmail),
-          rowSpaces(),
-          tableComponent(AppAssets.icSpace,AppStrings.totalSpace,alertDetail.totalSpace),
-          rowSpaces(),
-          tableComponent(AppAssets.icSpace,AppStrings.availableSpace,alertDetail.availableSpace),
-          rowSpaces(),
-          tableComponent(AppAssets.icAddress,AppStrings.address,alertDetail.address),
-          rowSpaces(),
-          tableComponent(AppAssets.icGender,AppStrings.policeRepresentative,""),
-          rowSpaces(),
-          tableComponent(AppAssets.icCall,AppStrings.contact,""),
-        ]);
+  Widget emergencyDetailTileComponent(EmergencyDetail alertDetail) {
+    return Table(children: [
+      tableComponent(AppAssets.icDepartment, AppStrings.emergencyDepartment, alertDetail.processingCenter),
+      rowSpaces(),
+      tableComponent(AppAssets.icGender, AppStrings.pocName, alertDetail.pocName),
+      rowSpaces(),
+      tableComponent(AppAssets.icCall, AppStrings.contact, alertDetail.pocPhone),
+      rowSpaces(),
+      tableComponent(AppAssets.icVehicle, AppStrings.email, alertDetail.pocEmail),
+      rowSpaces(),
+      tableComponent(AppAssets.icSpace, AppStrings.totalSpace, alertDetail.totalSpace),
+      rowSpaces(),
+      tableComponent(AppAssets.icSpace, AppStrings.availableSpace, alertDetail.availableSpace),
+      rowSpaces(),
+      tableComponent(AppAssets.icAddress, AppStrings.address, alertDetail.address),
+      rowSpaces(),
+      tableComponent(AppAssets.icGender, AppStrings.policeRepresentative, ""),
+      rowSpaces(),
+      tableComponent(AppAssets.icCall, AppStrings.contact, ""),
+    ]);
   }
 
-
-  Widget morgueDetailTileComponent(MorgueDetail alertDetail)
-  {
-    return  Table(
-        children: [
-          tableComponent(AppAssets.icDepartment,AppStrings.morgueDepartment,alertDetail.processingCenter),
-          rowSpaces(),
-          tableComponent(AppAssets.icGender,AppStrings.pocName,alertDetail.pocName),
-          rowSpaces(),
-          tableComponent(AppAssets.icCall,AppStrings.contact,alertDetail.pocPhone),
-          rowSpaces(),
-          tableComponent(AppAssets.icVehicle,AppStrings.email,alertDetail.pocEmail),
-          rowSpaces(),
-          tableComponent(AppAssets.icSpace,AppStrings.totalSpace,alertDetail.totalSpace),
-          rowSpaces(),
-          tableComponent(AppAssets.icSpace,AppStrings.availableSpace,alertDetail.availableSpace),
-          rowSpaces(),
-          tableComponent(AppAssets.icAddress,AppStrings.address,alertDetail.address),
-          rowSpaces(),
-          tableComponent(AppAssets.icGender,AppStrings.policeRepresentative,""),
-          rowSpaces(),
-          tableComponent(AppAssets.icCall,AppStrings.contact,""),
-        ]);
+  Widget morgueDetailTileComponent(MorgueDetail alertDetail) {
+    return Table(children: [
+      tableComponent(AppAssets.icDepartment, AppStrings.morgueDepartment, alertDetail.processingCenter),
+      rowSpaces(),
+      tableComponent(AppAssets.icGender, AppStrings.pocName, alertDetail.pocName),
+      rowSpaces(),
+      tableComponent(AppAssets.icCall, AppStrings.contact, alertDetail.pocPhone),
+      rowSpaces(),
+      tableComponent(AppAssets.icVehicle, AppStrings.email, alertDetail.pocEmail),
+      rowSpaces(),
+      tableComponent(AppAssets.icSpace, AppStrings.totalSpace, alertDetail.totalSpace),
+      rowSpaces(),
+      tableComponent(AppAssets.icSpace, AppStrings.availableSpace, alertDetail.availableSpace),
+      rowSpaces(),
+      tableComponent(AppAssets.icAddress, AppStrings.address, alertDetail.address),
+      rowSpaces(),
+      tableComponent(AppAssets.icGender, AppStrings.policeRepresentative, ""),
+      rowSpaces(),
+      tableComponent(AppAssets.icCall, AppStrings.contact, ""),
+    ]);
   }
 
-  Widget attachmentsDetailTileComponent(int bandCodeId,List<AttachmentType> alertDetail)
-  {
-    return  Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-        ...alertDetail.map((attachment) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CustomTextWidget(text: attachment.type,  colorText: AppColors.secondaryTextColor,),
-              const SizedBox(height: 3,),
-              attachment.path.isNotEmpty?
-                GestureDetector(
-                    onTap:(){
-                      openUrl(context,attachment.path);
-                      },
+  Widget attachmentsDetailTileComponent(int bandCodeId, List<AttachmentType> alertDetail) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+      ...alertDetail.map((attachment) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CustomTextWidget(
+              text: attachment.type,
+              colorText: AppColors.secondaryTextColor,
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            attachment.path.isNotEmpty
+                ? GestureDetector(
+                    onTap: () async {
+                      //  openUrl(context,attachment.path);
+                      await showDialog(
+                          context: context, builder: (_) => imageDialog(attachment.type, attachment.path, context));
+                    },
                     child: CustomTextWidget(
                       text: attachment.path,
                       colorText: AppColors.hexToColor("#72AB66"),
                       textDecoration: TextDecoration.underline,
                     ))
                 : GestureDetector(
-                  onTap:(){
-                    attachment.name = attachment.type;
-                     if (widget.userRole == UserRole.emergency) {
-                        Go.to(()=>DocumentUploadScreen(currentUserRole: widget.userRole,
-                          attachmentsTypes: [
-                            attachment
-                          ],
-                          bandCodeId: bandCodeId,));
+                    onTap: () async {
+                      attachment.name = attachment.type;
+                      if (widget.userRole == UserRole.emergency) {
+                        await initUpload();
+                        Go.to(() => DocumentUploadScreen(
+                              closeOnlyDocumentScreen: true,
+                              currentUserRole: widget.userRole,
+                              attachmentsTypes: [attachment],
+                              bandCodeId: bandCodeId,
+                            ));
                       }
                     },
                     child: CustomTextWidget(
@@ -249,18 +233,11 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                       textDecoration: widget.userRole == UserRole.emergency ? TextDecoration.underline : null,
                     )),
             sizeFieldMediumPlaceHolder,
-
-
-            ],
-          );
-        })
-
-        ]);
+          ],
+        );
+      })
+    ]);
   }
-
-
-
-
 
   TableRow tableComponent(String icon, String title, String value) {
     return TableRow(children: [
@@ -291,9 +268,69 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
     ]);
   }
 
-  noDataContainer()
-  {
-    return const SizedBox(height: 80,
-      child: Center(child: CustomTextWidget(text: ApiMessages.dataNotFound,)),);
+  noDataContainer() {
+    return const SizedBox(
+      height: 80,
+      child: Center(
+          child: CustomTextWidget(
+        text: ApiMessages.dataNotFound,
+      )),
+    );
+  }
+
+  Widget imageDialog(text, path, context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0.0),
+      ),
+      backgroundColor: AppColors.blackColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left:8.0,top: 10,bottom: 10),
+                  child: CustomTextWidget(
+                    text: text,
+                    fontWeight: FontWeight.w500,
+                    size: 18,
+                    colorText: Colors.white,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.close_rounded),
+                color: Colors.redAccent,
+              ),
+            ],
+          ),
+          SizedBox(
+
+            child: Image.network('$path', fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
