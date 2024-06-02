@@ -5,6 +5,7 @@ import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/services/notification_service.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
+import 'package:mortuary/features/death_report/domain/enities/death_report_detail_response.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
@@ -69,10 +70,8 @@ class DeathReportController extends GetxController {
 
 
   int transportScannedBodyCount = 1;
-
-
-
   List<DeathReportListResponse> deathReportList = [];
+  DeathReportDetailResponse? deathReportDetailResponse;
 
 
 
@@ -253,7 +252,19 @@ class DeathReportController extends GetxController {
     return deathReportList;
   }
 
-  ////////////// Volunteer Api Section Close/////////////////
+  getDetailOfReport(UserRole userRole, int reportId) async {
+    onApiRequestStarted();
+    await deathReportRepo.getDeathReportDetailsById(userRole: userRole, deathReportId: reportId).then((response) {
+      deathReportDetailResponse = response;
+      onApiResponseCompleted();
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+  }
+
+
+
+  //********* Volunteer Api Section Close/////////////////
 
 
   /// ***********  Transport Api Section  *****************

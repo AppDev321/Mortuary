@@ -161,10 +161,11 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
   @override
   Future<DeathReportDetailResponse> getDeathReportDetailsById({required UserRole userRole,required int deathReportId}) async {
-
-    var url = userRole == UserRole.emergency?AppUrls.emergencyDeathReportDetailUrl:
-    userRole == UserRole.transport?AppUrls.transportDeathReportDetailUrl:
-        AppUrls.morgueDeathReportDetailUrl;
+    var url = userRole == UserRole.emergency
+        ? AppUrls.emergencyDeathReportDetailUrl
+        : userRole == UserRole.transport
+            ? AppUrls.transportDeathReportDetailUrl
+            : AppUrls.morgueDeathReportDetailUrl;
 
     url = url + deathReportId.toString();
 

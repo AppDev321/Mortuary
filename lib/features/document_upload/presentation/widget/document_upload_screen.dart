@@ -70,7 +70,7 @@ class DocumentUploadScreen extends StatelessWidget {
 
                 sizeFieldLargePlaceHolder,
                 ButtonWidget(
-                  text: AppStrings.skip,
+                  text: AppStrings.next,
                   buttonType: ButtonType.transparent,
                   onPressed: () {
                     Get.offAll(() => PUHomeScreen(

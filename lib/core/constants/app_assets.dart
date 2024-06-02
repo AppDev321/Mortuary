@@ -37,6 +37,22 @@ class AppAssets {
   static const String icPoliceCheckBox = 'assets/icons/ic_police_checkbox.svg';
   static const String icTelephone = 'assets/icons/ic_telephone.svg';
 
+  static const String icAddress = 'assets/icons/ic_address.svg';
+  static const String icAge = 'assets/icons/ic_age.svg';
+  static const String icDate = 'assets/icons/ic_date.svg';
+  static const String icDeathType = 'assets/icons/ic_death_typ.svg';
+  static const String icIDNumber = 'assets/icons/ic_id_number.svg';
+  static const String icIDType = 'assets/icons/ic_id_type.svg';
+  static const String icNationality = 'assets/icons/ic_nationality.svg';
+  static const String icQR = 'assets/icons/ic_qr.svg';
+  static const String icGender = 'assets/icons/ic_gender.svg';
+
+
+
+
+
+
+
 
 
   static const String boarding1 = "assets/images/boarding1.jpg";

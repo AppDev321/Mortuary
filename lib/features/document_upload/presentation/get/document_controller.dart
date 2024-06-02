@@ -49,14 +49,14 @@ class DocumentController extends GetxController {
         .then((value) {
 
       onApiResponseCompleted();
-      // var dataDialog = GeneralError(title:AppStrings.upload,message: value['message']);
-      // showAppThemedDialog(dataDialog,showErrorMessage: false,dissmisableDialog: false,onPressed: (){
-      //   if(userRole == UserRole.morgue){
-      //     Get.back();
-      //   }else {
-      //     Get.offAll(() => PUHomeScreen(currentUserRole: userRole,));
-      //   }
-      // });
+      var dataDialog = GeneralError(title:AppStrings.upload,message: value['message']);
+      showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
+        // if(userRole == UserRole.morgue){
+        //   Get.back();
+        // }else {
+        //   Get.offAll(() => PUHomeScreen(currentUserRole: userRole,));
+        // }
+      });
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);

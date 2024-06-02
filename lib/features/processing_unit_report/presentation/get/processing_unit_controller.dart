@@ -339,15 +339,15 @@ class ProcessingUnitController extends GetxController {
     return deathReportList;
   }
 
-  getDetailOfReport(UserRole userRole, int reportId) async {
-    onApiRequestStarted();
-    await deathReportRepo.getDeathReportDetailsById(userRole: userRole, deathReportId: reportId).then((response) {
-      print(response);
-      onApiResponseCompleted();
-    }).onError<CustomError>((error, stackTrace) async {
-      onErrorShowDialog(error);
-    });
-  }
+  // getDetailOfReport(UserRole userRole, int reportId) async {
+  //   onApiRequestStarted();
+  //   await deathReportRepo.getDeathReportDetailsById(userRole: userRole, deathReportId: reportId).then((response) {
+  //     print(response);
+  //     onApiResponseCompleted();
+  //   }).onError<CustomError>((error, stackTrace) async {
+  //     onErrorShowDialog(error);
+  //   });
+  // }
 
   updateAvailabilityStatus(int status) async {
     onApiRequestStarted();

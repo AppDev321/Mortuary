@@ -29,6 +29,16 @@ class AppStrings {
   static const String viewDeathReportList='View List of Death Reports';
   static const String deathReportList='Death Reports List';
 
+
+
+  static const String detailReport = "Death report Details";
+  static const String alertDetail = "Death Alert Details";
+  static const String transportDetail = "Transport Details";
+  static const String emergencyDetail = "Emergency Department Details";
+  static const String morgueDetail = "Morgue Department Details";
+
+
+
   static const String policeStation = "Police station";
   static const String policeFormDesc='Please select the police station in order to continue';
   static const String policeRepresentative = "Police Representatives";
