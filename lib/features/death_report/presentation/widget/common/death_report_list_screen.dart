@@ -8,6 +8,7 @@ import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/authentication/presentation/get/auth_controller.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
@@ -52,6 +53,9 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
       });
 
       if (widget.userRole == UserRole.transport) {
+        final AuthController authController = Get.find();
+        var driverID = authController.session!.loggedUserID;
+        controller.startLocationService("$driverID");
         controller.checkAnyAlerts().then((value) {
           setState(() {
             if (value.isNotEmpty) {

@@ -212,7 +212,8 @@ class ProcessingUnitController extends GetxController {
           Go.off(() =>
               PoliceStationScreen(
                   deathBodyBandCode: value['band_code'],
-                  deathFormCode: deathReportId));
+                  deathFormCode: deathReportId,
+                isBodyReceivedFromAmbulance: false,));
         }
       }).onError<CustomError>((error, stackTrace) async {
         //To update scanner Button Ui because it use DeathReportController

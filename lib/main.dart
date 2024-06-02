@@ -18,17 +18,14 @@ import 'features/processing_unit_report/presentation/widget/morgue/processing_de
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // await Firebase.initializeApp();
-  debugPrint("background notification");
+  print("background notification");
   PushNotifications().firebaseMessagingBackgroundHandler(message);
 }
-
-
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   FlutterNativeSplash.remove();
   initCore();
@@ -46,14 +43,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      navigatorKey: Get.key,
-      debugShowCheckedModeBanner: false,
-      theme:  ThemeData(
-        colorScheme: lightColorScheme,
-        textTheme: lightTextTheme,
-      ),
-      home:  SplashScreen()
-    );
+        navigatorKey: Get.key,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: lightColorScheme,
+          textTheme: lightTextTheme,
+        ),
+        home: SplashScreen());
   }
 }
-

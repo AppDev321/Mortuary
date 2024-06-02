@@ -54,7 +54,7 @@ class PushNotifications {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      debugPrint('======= On App Open Message =======');
+      print('======= On App Open Message =======');
       setStreamData(message);
     });
 
@@ -64,17 +64,17 @@ class PushNotifications {
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     //   await Firebase.initializeApp();
-    debugPrint('======= On Background Message =======');
+    print('======= On Background Message =======');
     setStreamData(message, userStream: false);
   }
 
   setStreamData(RemoteMessage message, {bool userStream = true}) {
-  debugPrint('Handling a foreground message: ${message.messageId}');
-    debugPrint('Message data: ${message.data}');
-  debugPrint('Message notification: ${message.notification?.title}');
-  debugPrint('Message notification: ${message.notification?.body}');
+    print('Handling a foreground message: ${message.messageId}');
+    print('Message data: ${message.data}');
+    print('Message notification: ${message.notification?.title}');
+    print('Message notification: ${message.notification?.body}');
 
-    debugPrint('===== STREAM NOTIFICATION =====');
+    print('===== STREAM NOTIFICATION =====');
 
     if (userStream) {
       _notificationStreamController.sink.add(message);
@@ -83,11 +83,11 @@ class PushNotifications {
     try {
       var body = message.notification?.body;
       var json = jsonEncode(body);
-      debugPrint(json);
+      print(json);
       final data = NotificationBodyClass.fromJson(jsonDecode(body.toString()));
       notificationBody = data.message;
     } catch (e) {
-      debugPrint('The provided string is not valid JSON');
+      print('The provided string is not valid JSON');
     }
 
     NotificationService().newNotification(

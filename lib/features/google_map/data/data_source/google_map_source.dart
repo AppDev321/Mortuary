@@ -29,7 +29,7 @@ class GoogleMapDataSourceImpl implements GoogleMapDataSource {
   Future<UserLocationModel> getUserCurrentLocation(
       Position position, String mapKey) async {
     var url =
-        '${AppUrls.urlGetUserLocation}${position.longitude},${position.latitude}&key=$mapKey';
+        '${AppUrls.urlGetUserLocation}${position.latitude},${position.longitude}&key=$mapKey';
 
     return await apiManager.makeApiRequest<UserLocationModel>(
       url: url,

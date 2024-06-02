@@ -14,7 +14,7 @@ class ReportDeathResponse extends Equatable {
       required this.address});
 
   final int deathReportId;
-  final int volunteerId;
+  final dynamic volunteerId;
   final int generalLocationId;
   final double latitude;
   final double longitude;
@@ -28,7 +28,7 @@ class ReportDeathResponse extends Equatable {
       Map<String, dynamic> json, String message) {
     return ReportDeathResponse(
       deathReportId: json["death_report_id"] ?? 0,
-      volunteerId: json["volunteer_id"] ?? 0,
+      volunteerId: json["volunteer_id"] ,
       generalLocationId: int.parse(json["general_location_id"]?? "0" ),
       latitude: json["latitude"] ?? 0.0,
       longitude: json["longitude"] ?? 0.0,

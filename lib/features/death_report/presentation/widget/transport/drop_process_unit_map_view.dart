@@ -20,6 +20,8 @@ import 'package:mortuary/features/google_map/google_map_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/constants/app_strings.dart';
+import '../../../../google_map/builder_ids.dart';
+import '../../../../google_map/get/google_map_controller.dart';
 
 class DropProcessUnitMapScreen extends StatefulWidget {
   final ProcessingCenter dataModel;
@@ -93,30 +95,35 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
                   ],
                 ),
                 sizeFieldMediumPlaceHolder,
-                Align(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(AppAssets.icLoc),
-                      sizeHorizontalMinPlaceHolder,
-                      const CustomTextWidget(
-                        text: "10Km",
-                        colorText: AppColors.secondaryTextColor,
-                        size: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      sizeHorizontalFieldLargePlaceHolder,
-                      SvgPicture.asset(AppAssets.icClock),
-                      sizeHorizontalMinPlaceHolder,
-                      const CustomTextWidget(
-                        text: "23 min",
-                        colorText: AppColors.secondaryTextColor,
-                        size: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
+                GetBuilder<GoogleMapScreenController>(
+                    id:updateGoogleMapScreen,
+                    builder: (googleController) {
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(AppAssets.icLoc),
+                            sizeHorizontalMinPlaceHolder,
+                            CustomTextWidget(
+                              text: googleController.distance,
+                              colorText: AppColors.secondaryTextColor,
+                              size: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            sizeHorizontalFieldLargePlaceHolder,
+                            SvgPicture.asset(AppAssets.icClock),
+                            sizeHorizontalMinPlaceHolder,
+                            CustomTextWidget(
+                              text: googleController.travelTime,
+                              colorText: AppColors.secondaryTextColor,
+                              size: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                 ),
                 sizeFieldLargePlaceHolder,
                 GestureDetector(

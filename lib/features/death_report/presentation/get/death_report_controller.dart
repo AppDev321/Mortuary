@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
+import 'package:mortuary/core/services/location/firestore_service.dart';
 import 'package:mortuary/core/services/notification_service.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_detail_response.dart';
@@ -14,6 +19,7 @@ import 'package:mortuary/features/death_report/presentation/widget/authorized_pe
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/services/location/location_stream_service.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
@@ -73,6 +79,7 @@ class DeathReportController extends GetxController {
   List<DeathReportListResponse> deathReportList = [];
   DeathReportDetailResponse? deathReportDetailResponse;
 
+   StreamSubscription<Position>? locationStreamSubscription;
 
 
   /// ********  Volunteer Api Section Started ///////////
@@ -352,6 +359,29 @@ class DeathReportController extends GetxController {
 
   }
   ////////////     Transport Api Section End /////////////
+
+
+
+
+
+  //Location Service Pushed
+
+  startLocationService(String ambulanceID) async{
+    if(locationStreamSubscription == null) {
+      print("locationConsumer ==> started");
+      await Geolocator.requestPermission();
+      locationStreamSubscription = StreamLocationService.onLocationChanged?.listen(
+            (position) async {
+              print(position);
+          await FireStoreService.updateUserLocation(
+            ambulanceID,
+            LatLng(position.latitude, position.longitude),
+          );
+        },
+      );
+    }
+    print("locationConsumer ==> $locationStreamSubscription");
+  }
 
   onErrorShowDialog(error) {
     onApiResponseCompleted();

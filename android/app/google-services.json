@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "666443230483",
-    "project_id": "mortuaryapp-79756",
-    "storage_bucket": "mortuaryapp-79756.appspot.com"
+    "project_number": "780919972997",
+    "project_id": "mortuaryapp-cf3fe",
+    "storage_bucket": "mortuaryapp-cf3fe.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:666443230483:android:fc4a272c0e7188e064fee6",
+        "mobilesdk_app_id": "1:780919972997:android:5bc2141a44c44d099cf5ec",
         "android_client_info": {
           "package_name": "com.mortuaryapp.mortuary"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBxcsC4HLi3jNiMt8ZuhnsoOsQCwVulcW0"
+          "current_key": "AIzaSyDz6wSBQkyaBI-g9V6e2io-NJVd9WU9MgY"
         }
       ],
       "services": {

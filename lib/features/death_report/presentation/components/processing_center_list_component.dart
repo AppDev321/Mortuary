@@ -37,7 +37,6 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
     return GetBuilder<DeathReportController>(
       builder: (controller) {
         return Container(
-
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),

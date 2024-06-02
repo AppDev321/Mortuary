@@ -109,6 +109,11 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
           result["processing_center_id"] = json['data']["processing_center_id"];
           result["death_case_id"] = json['data']['death_case_id'];
         }
+        if(UserRole.emergency == userRole && isEmergencyReceivedABody == true )
+          {
+          result["attachmentType"] =
+              List<AttachmentType>.from(json["data"]["attachmentType"].map((x) => AttachmentType.fromJson(x)));
+        }
         return result;
       },
     );

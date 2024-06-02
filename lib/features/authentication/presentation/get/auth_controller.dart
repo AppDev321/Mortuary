@@ -28,7 +28,7 @@ class AuthController extends GetxController {
   final fcmController = Get.find<FCMController>();
 
 //  Rxn<User> userData = Rxn<User>();
-  String email = 'emergency@email.com';
+  String email = 'jawad@email.com';
   String password = '123456';
 
   String forgotPasswordEmail = '';
