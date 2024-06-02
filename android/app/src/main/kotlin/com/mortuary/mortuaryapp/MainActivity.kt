@@ -1,4 +1,4 @@
-package com.mortuaryapp.mortuary
+package com.mortuary.mortuaryapp
 
 import io.flutter.embedding.android.FlutterActivity
 

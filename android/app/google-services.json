@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "780919972997",
+    "firebase_url": "https://mortuaryapp-cf3fe-default-rtdb.firebaseio.com",
     "project_id": "mortuaryapp-cf3fe",
     "storage_bucket": "mortuaryapp-cf3fe.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:780919972997:android:5bc2141a44c44d099cf5ec",
+        "mobilesdk_app_id": "1:780919972997:android:02e89208826f00839cf5ec",
         "android_client_info": {
-          "package_name": "com.mortuaryapp.mortuary"
+          "package_name": "com.mortuary.mortuaryapp"
         }
       },
       "oauth_client": [],

@@ -33,7 +33,7 @@ apply plugin: 'com.google.gms.google-services'
 
 
 android {
-    namespace "com.mortuaryapp.mortuary"
+    namespace "com.mortuary.mortuaryapp"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -52,7 +52,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.mortuaryapp.mortuary"
+        applicationId "com.mortuary.mortuaryapp"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
