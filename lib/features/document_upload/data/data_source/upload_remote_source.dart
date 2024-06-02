@@ -57,8 +57,8 @@ class UploadFileRemoteDataSourceImpl implements UploadFileRemoteDataSource {
     List<MultipartFile> files = [];
     List<int> attachmentId = [];
     for (var attachment in attachmentList) {
-      if (attachment.path.isNotEmpty) {
-        MultipartFile file = await MultipartFile.fromFile(attachment.path, filename: 'files');
+      if (attachment.path.toString().isNotEmpty) {
+        MultipartFile file = await MultipartFile.fromFile(attachment.path.toString(), filename: 'files');
         files.add(file);
         attachmentId.add(attachment.id);
       }

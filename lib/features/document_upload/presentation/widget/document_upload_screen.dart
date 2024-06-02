@@ -98,7 +98,7 @@ class DocumentUploadScreen extends StatelessWidget {
 
   bool hasPathValue(List<AttachmentType> attachmentsTypes) {
     for (var attachmentType in attachmentsTypes) {
-      if (attachmentType.path.isNotEmpty) {
+      if (attachmentType.path.toString().isNotEmpty) {
         return true;
       }
     }

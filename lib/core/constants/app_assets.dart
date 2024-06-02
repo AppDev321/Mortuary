@@ -49,6 +49,11 @@ class AppAssets {
 
 
 
+  static const String icCall = 'assets/icons/ic_call.svg';
+  static const String icDepartment = 'assets/icons/ic_department.svg';
+  static const String icSpace = 'assets/icons/ic_space.svg';
+  static const String icVehicle = 'assets/icons/ic_vehicle.svg';
+  static const String icDriver = 'assets/icons/ic_driver.svg';
 
 
 

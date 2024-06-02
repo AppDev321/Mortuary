@@ -8,9 +8,11 @@ class DeathReportDetailResponse extends Equatable {
     required this.emergency,
     required this.morgue,
     required this.attachments,
+    required this.transport
   });
 
   final DeathAlertDetail? alerts;
+  final TransportDetail? transport;
   final EmergencyDetail? emergency;
   final MorgueDetail? morgue;
   final List<AttachmentType> attachments;
@@ -18,6 +20,7 @@ class DeathReportDetailResponse extends Equatable {
   factory DeathReportDetailResponse.fromJson(Map<String, dynamic> json){
     return DeathReportDetailResponse(
       alerts: json["Alerts"] == null ? null : DeathAlertDetail.fromJson(json["Alerts"]),
+      transport: json["Transport"] == null ? null : TransportDetail.fromJson(json["Transport"]),
       emergency: json["Emergency"] == null ? null : EmergencyDetail.fromJson(json["Emergency"]),
       morgue: json["Morgue"] == null ? null : MorgueDetail.fromJson(json["Morgue"]),
       attachments: json["Attachments"] == null ? [] : List<AttachmentType>.from(json["Attachments"]!.map((x) => AttachmentType.fromJson(x))),
@@ -43,8 +46,9 @@ class DeathAlertDetail extends Equatable {
     required this.reportDate,
     required this.reportTime,
     required this.address,
+    required this.bandCodeId
   });
-
+  final int bandCodeId;
   final String bandCode;
   final String visaType;
   final String idNumber;
@@ -60,6 +64,7 @@ class DeathAlertDetail extends Equatable {
 
   factory DeathAlertDetail.fromJson(Map<String, dynamic> json){
     return DeathAlertDetail(
+      bandCodeId:json['band_code_id'] ?? 0,
       bandCode: json["band_code"] ?? "",
       visaType: json["visa_type"] ?? "",
       idNumber: json["id_number"] ?? "",
@@ -153,4 +158,34 @@ class MorgueDetail extends Equatable {
   @override
   List<Object?> get props => [
     processingCenter, pocName, pocPhone, pocEmail, totalSpace, availableSpace, address, ];
+}
+
+class TransportDetail extends Equatable {
+  TransportDetail({
+    required this.driverName,
+    required this.contactNo,
+    required this.email,
+    required this.vehicleNo,
+    required this.bodyCapacity,
+  });
+
+  final String driverName;
+  final String contactNo;
+  final String email;
+  final String vehicleNo;
+  final String bodyCapacity;
+
+  factory TransportDetail.fromJson(Map<String, dynamic> json){
+    return TransportDetail(
+      driverName: json["driver_name"] ?? "",
+      contactNo: json["contact_no"] ?? "",
+      email: json["email"] ?? "",
+      vehicleNo: json["vehicle_no"] ?? "",
+      bodyCapacity: json["body_capacity"] ?? "",
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    driverName, contactNo, email, vehicleNo, bodyCapacity, ];
 }

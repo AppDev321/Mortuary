@@ -329,6 +329,15 @@ openDialPad(BuildContext context,String phoneNumber) async {
   }
 }
 
+openUrl(BuildContext context,String url) async {
+  Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    showSnackBar(context, "Unable to open ");
+  }
+}
+
 class Go {
   static Future<dynamic> to(dynamic page, {dynamic arguments}) async {
     Get.to(

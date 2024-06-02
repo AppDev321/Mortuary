@@ -28,16 +28,20 @@ class AppStrings {
   static const String liveMap='Live Map';
   static const String viewDeathReportList='View List of Death Reports';
   static const String deathReportList='Death Reports List';
-
-
+  static const String driverName = "Driver Name";
+  static const String vehicleNo = "Vehicle No";
+  static const String capacity = "Capacity";
 
   static const String detailReport = "Death report Details";
   static const String alertDetail = "Death Alert Details";
   static const String transportDetail = "Transport Details";
   static const String emergencyDetail = "Emergency Department Details";
   static const String morgueDetail = "Morgue Department Details";
-
-
+  static const String emergencyDepartment = "Emergency Department";
+  static const String morgueDepartment = "Morgue Department";
+  static const String pocName= "POC Name";
+  static const String totalSpace = "Total Space";
+  static const String clickToUpload = "Click here to upload";
 
   static const String policeStation = "Police station";
   static const String policeFormDesc='Please select the police station in order to continue';
