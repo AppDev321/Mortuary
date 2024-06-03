@@ -113,12 +113,12 @@ class AuthController extends GetxController {
         message: '${value.data}',
         title: value.message,
       );
-
-      showAppThemedDialog(alertData,
-          showErrorMessage: false, dissmisableDialog: false, onPressed: () {
-        Get.back();
-        Go.off(() => const OTPVerificationScreen());
-      });
+      Go.off(() => const OTPVerificationScreen());
+      // showAppThemedDialog(alertData,
+      //     showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+      //   Get.back();
+      //   Go.off(() => const OTPVerificationScreen());
+      // });
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);
     });
