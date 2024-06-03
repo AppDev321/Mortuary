@@ -17,6 +17,7 @@ import 'package:mortuary/features/processing_unit_report/presentation/widget/mor
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/utils/utils.dart';
+import '../../../../main.dart';
 import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../../data/repositories/auth_repo.dart';
 
@@ -83,7 +84,7 @@ class AuthController extends GetxController {
         .then((value) async {
       session = value;
       onApiResponseCompleted();
-
+      isUserLoggedIn = true;
       if (currentUserRole == UserRole.volunteer) {
         Get.offAll(() => ReportDeathScreen(currentUserRole: currentUserRole!));
       } else if (currentUserRole == UserRole.transport) {

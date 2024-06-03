@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/death_report/domain/enities/death_report_alert.dart';
 import 'notification_service.dart';
 
 
@@ -84,14 +85,15 @@ class PushNotifications {
       var body = message.notification?.body;
       var json = jsonEncode(body);
       print(json);
-      final data = NotificationBodyClass.fromJson(jsonDecode(body.toString()));
-      notificationBody = data.message;
+       final data = NotificationBodyClass.fromJson(jsonDecode(body.toString()));
+      //final data = DeathReportAlert.fromJson(jsonDecode(body.toString()));
+      notificationBody = jsonEncode(data);
     } catch (e) {
       print('The provided string is not valid JSON');
     }
 
     NotificationService().newNotification(
-        message.notification!.title.toString(), notificationBody, false);
+        message.notification!.title.toString(), notificationBody,message.data.isEmpty ? null : jsonEncode(message.data), false);
   }
 
   saveDeviceToken(token) {

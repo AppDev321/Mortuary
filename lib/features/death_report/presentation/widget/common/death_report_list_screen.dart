@@ -79,7 +79,14 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
           titleText: AppStrings.deathReportList.toUpperCase(),
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-
+          actions: widget.userRole == UserRole.transport ?[
+            GestureDetector(
+              onTap: ()=>controller.checkAnyAlerts(),
+              child: Padding(padding: const EdgeInsets.all(8),
+              child:
+              SvgPicture.asset(AppAssets.icRefresh,width: 30,height: 30,)),
+            )
+          ]:null,
           children: [
             GestureDetector(
               onTap: () {

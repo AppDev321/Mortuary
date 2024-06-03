@@ -109,16 +109,16 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                                   Row(
                                     children: [
                                       SvgPicture.asset(AppAssets.icLoc),
-                                      const CustomTextWidget(
-                                        text: "10Km",
+                                       CustomTextWidget(
+                                        text: deathReportAlert!.distance,
                                         colorText: AppColors.secondaryTextColor,
                                         size: 14,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       sizeHorizontalFieldLargePlaceHolder,
                                       SvgPicture.asset(AppAssets.icClock),
-                                      const CustomTextWidget(
-                                        text: "23 min",
+                                       CustomTextWidget(
+                                        text: deathReportAlert!.duration ,
                                         colorText: AppColors.secondaryTextColor,
                                         size: 14,
                                         fontWeight: FontWeight.w500,

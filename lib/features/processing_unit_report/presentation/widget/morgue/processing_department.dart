@@ -88,9 +88,9 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
                       currentUserRole: widget.currentUserRole,
                       deathCaseID: widget.deathCaseId));
                 },
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                    child: Icon(Icons.attachment)))
+                child:  Padding(
+                  padding: const EdgeInsets.all(8),
+                    child: SvgPicture.asset(AppAssets.icAttachmentIcon,width:30,height:30)))
           ],
           children: [
             ...departmentList.map((item) {

@@ -1,10 +1,19 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:mortuary/core/enums/enums.dart';
+import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
+import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
+import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
+
+import '../../features/authentication/presentation/get/auth_controller.dart';
+import '../../main.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -12,6 +21,7 @@ class NotificationService {
   factory NotificationService() => _instance;
 
   late FlutterLocalNotificationsPlugin plugin;
+
 
   NotificationService._internal() {
     tz.initializeTimeZones();
@@ -43,13 +53,23 @@ class NotificationService {
     final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
       print('notification payload: $payload');
+
+      if (isUserLoggedIn) {
+        final AuthController authController = Get.find();
+        if (authController.session != null &&
+            authController.session!.userRoleType == UserRole.transport) {
+            Map<String, dynamic> payloadMap = json.decode(payload.toString());
+            var deathAlert = DeathReportAlert.fromJson(payloadMap);
+            Get.to(() => AcceptDeathAlertScreen(dataModel: deathAlert, userRole: UserRole.transport, onReportHistoryButton: () {}));
+          }
+      }
     }
   }
 
   void onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) {}
 
-  Future<void> newNotification(String title,String msg, bool vibration,{bool sound =true}) async {
+  Future<void> newNotification(String title,String msg,String? payload, bool vibration,{bool sound =true}) async {
     // Define vibration pattern
     var vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
@@ -59,7 +79,7 @@ class NotificationService {
 
     AndroidNotificationDetails androidNotificationDetails;
 
-    final channelName = 'Text messages';
+    const channelName = 'Text messages';
 
     androidNotificationDetails = AndroidNotificationDetails(
 
@@ -81,7 +101,7 @@ class NotificationService {
         android: androidNotificationDetails,iOS: iosNotificationDetails);
 
     try {
-      await plugin.show(notificationID++, title, msg, notificationDetails);
+      await plugin.show(notificationID++, title, msg, notificationDetails,payload:payload );
     } catch (ex) {
       print("notificaiton exception ==>"+ex.toString());
     }

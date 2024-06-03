@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -284,7 +285,7 @@ class DeathReportController extends GetxController {
       onApiResponseCompleted();
       if(alertList.isNotEmpty) {
         var pickFirstNotificationAlert = alertList.first;
-        NotificationService().newNotification("Death Alert at ${pickFirstNotificationAlert.address}", "", true);
+        NotificationService().newNotification("Death Alert at ${pickFirstNotificationAlert.address}", "",jsonEncode(pickFirstNotificationAlert.toJson()), true);
       }
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);

@@ -5,9 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class FireStoreService {
   static final fireStore = FirebaseFirestore.instance;
 
-  static Future<void> updateUserLocation(String ambulanceId, LatLng location) async {
+  static Future<void> updateUserLocation(String userId, LatLng location) async {
     try {
-     await fireStore.collection('Ambulances').doc(ambulanceId).set({
+     await fireStore.collection('Users').doc(userId).set({
         'location': {'lat': location.latitude, 'lng': location.longitude},
       }, SetOptions(merge: true));
     } on FirebaseException catch (e) {

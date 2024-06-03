@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -145,6 +146,8 @@ String convertAppStyleDate(String date) {
   String monthYear = outputFormat.format(parsedDate);
   return "$dayWithSuffix $monthYear";
 }
+
+
 
 String getDayWithSuffix(String day) {
   if (day.endsWith('11') || day.endsWith('12') || day.endsWith('13')) {
@@ -318,6 +321,27 @@ bool shouldShowBackButton(BuildContext context) {
     }
   }
   return true;
+}
+
+
+double convertToDouble(dynamic value) {
+  if (value is double) {
+    return value;
+  } else if (value is String) {
+    return double.parse(value) ;
+  } else {
+    return 0;
+  }
+}
+
+int convertToInt(dynamic value) {
+  if (value is int) {
+    return value;
+  } else if (value is String) {
+    return int.parse(value);
+  } else {
+    return 0;
+  }
 }
 
 openDialPad(BuildContext context,String phoneNumber) async {

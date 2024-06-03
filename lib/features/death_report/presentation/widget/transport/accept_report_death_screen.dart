@@ -45,8 +45,8 @@ class AcceptDeathAlertScreen extends StatelessWidget {
                 ),
               ),
               sizeFieldMediumPlaceHolder,
-              Center(
-                child: const CustomTextWidget(
+              const Center(
+                child: CustomTextWidget(
                   text: AppStrings.newDeathLabelMsg,
                   size: 13,
                   colorText: AppColors.secondaryTextColor,

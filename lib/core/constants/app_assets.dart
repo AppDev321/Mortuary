@@ -36,6 +36,8 @@ class AppAssets {
   static const String icRefrigerator = 'assets/icons/ic_refrigerator.svg';
   static const String icPoliceCheckBox = 'assets/icons/ic_police_checkbox.svg';
   static const String icTelephone = 'assets/icons/ic_telephone.svg';
+  static const String icRefresh = 'assets/icons/ic_refresh.svg';
+  static const String icAttachmentIcon = 'assets/icons/ic_refresh.svg';
 
   static const String icAddress = 'assets/icons/ic_address.svg';
   static const String icAge = 'assets/icons/ic_age.svg';

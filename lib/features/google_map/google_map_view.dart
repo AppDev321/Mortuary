@@ -62,7 +62,7 @@ class GoogleMapViewWidget extends StatelessWidget {
                           await MapLauncher.installedMaps;
 
                           await availableMaps.first.showDirections(
-                              destination: Coords(destinationPoints.longitude, destinationPoints.longitude));
+                              destination: Coords(destinationPoints.latitude, destinationPoints.longitude));
 
                         },
                         child: Card(
