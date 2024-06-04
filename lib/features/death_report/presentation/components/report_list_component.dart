@@ -80,10 +80,17 @@ class ReportListItem extends StatelessWidget {
   Widget containerReportData() {
     return GestureDetector(
       onTap: () {
-        Go.to(() => DeathReportDetailScreen(
-              userRole: userRole,
-              reportId: listItem.id,
-            ));
+        if(userRole != UserRole.transport) {
+          Go.to(() =>
+              DeathReportDetailScreen(
+                userRole: userRole,
+                reportId: listItem.id,
+              ));
+        }else
+          {
+           final DeathReportController controller = Get.find();
+           controller.getDeathAlertDetailById(deathCaseID: listItem.deathCaseID);
+          }
       },
       child: Container(
         decoration: BoxDecoration(

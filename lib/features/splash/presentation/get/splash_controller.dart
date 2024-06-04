@@ -41,8 +41,9 @@ class SplashScreenController extends GetxController {
 
       // print(error.message);
       isApiLoading = false;
+      update([updatedSplash]);
       update();
-      //showAppThemedDialog(error);
+      showAppThemedDialog(error);
     });
   }
 

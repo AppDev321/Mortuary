@@ -29,6 +29,7 @@ import '../../builder_ids.dart';
 import '../../data/repositories/death_report_repo.dart';
 import '../../domain/enities/death_report_alert.dart';
 import '../widget/authorized_person/death_report_form.dart';
+import '../widget/transport/accept_report_death_screen.dart';
 import '../widget/transport/pickup_map_view.dart';
 
 class DeathReportController extends GetxController {
@@ -293,6 +294,19 @@ class DeathReportController extends GetxController {
     return alertList;
   }
 
+   getDeathAlertDetailById({required int deathCaseID}) async {
+    onApiRequestStarted();
+    await deathReportRepo.getDeathAlertDetail(deathCaseID: deathCaseID).then((response) {
+      onApiResponseCompleted();
+      Get.to(() => AcceptDeathAlertScreen(dataModel: response,
+          userRole: UserRole.transport,
+          onReportHistoryButton: () {}));
+
+    }).onError<CustomError>((error, stackTrace) async {
+      onErrorShowDialog(error);
+    });
+  }
+
 
   acceptDeathReportByTransport(DeathReportAlert deathReportAlert) async {
     onApiRequestStarted();
@@ -305,7 +319,7 @@ class DeathReportController extends GetxController {
         message: response['message']
       );
       showAppThemedDialog(dialogData,showErrorMessage: false,dissmisableDialog: false,onPressed: () {
-       Go.off(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
+       Get.to(()=>PickupMapScreen(dataModel: DeathReportAlert.fromJson(response['data'])));
       });
 
     }).onError<CustomError>((error, stackTrace) async {

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mortuary/core/utils/utils.dart';
 
 class DeathReportListResponse extends Equatable {
   DeathReportListResponse({
@@ -13,7 +14,8 @@ class DeathReportListResponse extends Equatable {
     required this.reportDate,
     required this.reportTime,
     required this.nationality,
-    required this.deathType
+    required this.deathType,
+    required this.deathCaseID
   });
   final int id;
   final String bandCode;
@@ -27,6 +29,7 @@ class DeathReportListResponse extends Equatable {
   final String reportTime;
   final String nationality;
   final String deathType;
+  final int deathCaseID;
 
   factory DeathReportListResponse.fromJson(Map<String, dynamic> json){
     return DeathReportListResponse(
@@ -42,6 +45,8 @@ class DeathReportListResponse extends Equatable {
       reportTime: json["report_time"] ?? "",
       deathType: json["death_type"] ?? "",
       nationality: json["nationality"] ?? "",
+      deathCaseID: convertToInt(json['death_case_id'])
+
     );
   }
 

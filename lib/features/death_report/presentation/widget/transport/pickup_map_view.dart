@@ -48,7 +48,7 @@ class PickupMapScreen extends StatelessWidget {
               const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
               sizeFieldMinPlaceHolder,
               Container(
-                height: Get.height * 0.4,
+                height: Get.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),

@@ -69,7 +69,7 @@ class AcceptDeathAlertScreen extends StatelessWidget {
                   createInfoRow(AppAssets.icLocation, AppStrings.generalLocation,
                       dataModel.generalLocation),
                   rowSpacer,
-                  createInfoRow(AppAssets.icCalender,AppStrings.date,convertAppStyleDate(dataModel.reportDate)),
+                  createInfoRow(AppAssets.icCalender,AppStrings.date,dataModel.reportDate),
                   rowSpacer,
                   createInfoRow(
                       AppAssets.icTime, AppStrings.time, dataModel.reportTime),

@@ -81,7 +81,11 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           actions: widget.userRole == UserRole.transport ?[
             GestureDetector(
-              onTap: ()=>controller.checkAnyAlerts(),
+              onTap: (){
+                controller.getDeathReportList(widget.userRole);
+                controller.checkAnyAlerts();
+
+                },
               child: Padding(padding: const EdgeInsets.all(8),
               child:
               SvgPicture.asset(AppAssets.icRefresh,width: 30,height: 30,)),

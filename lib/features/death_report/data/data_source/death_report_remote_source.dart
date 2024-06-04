@@ -27,6 +27,7 @@ abstract class DeathReportRemoteSource {
   Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
+  Future<DeathReportAlert> getDeathAlertDetail({required int deathCaseID});
 
   Future<DeathReportDetailResponse> getDeathReportDetailsById({required int deathReportId,required UserRole userRole});
 
@@ -175,6 +176,21 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
               alertList.add(DeathReportAlert.fromJson(json["data"]["alerts"]));
             }
           return alertList;
+        });
+  }
+
+  @override
+  Future<DeathReportAlert> getDeathAlertDetail({required int deathCaseID}) async {
+
+    final Map<String, dynamic> jsonMap = {
+      "death_case_id":deathCaseID
+    };
+    return await apiManager.makeApiRequest<DeathReportAlert>(
+        url: AppUrls.getDeathReportByIdUrl,
+        method: RequestMethod.POST,
+        data: jsonMap,
+        fromJson: (json) {
+          return DeathReportAlert.fromJson(json['data']);
         });
   }
 

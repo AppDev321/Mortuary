@@ -40,7 +40,7 @@ class DeathReportAlert extends Equatable {
     int noOfDeaths = convertToInt(json['no_of_deaths']);
     int volunteerId = convertToInt(json['volunteer_id']);
     double lat = convertToDouble(json['latitude']);
-    double lng = convertToDouble(json['latitude']);
+    double lng = convertToDouble(json['longitude']);
 
 
     return DeathReportAlert(

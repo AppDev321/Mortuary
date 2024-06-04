@@ -28,7 +28,7 @@ abstract class DeathReportRepo {
   Future<DeathReportDetailResponse> getDeathReportDetailsById({required int deathReportId,required UserRole userRole});
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
-
+  Future<DeathReportAlert> getDeathAlertDetail({required int deathCaseID});
   Future<Map<String,dynamic>> acceptDeathReportAlertByTransport({required int deathReportId,required int deathCaseID});
   Future<ProcessingCenter> getDetailOfProcessUnit({required int deathReportId,required  int processingUnitId,required int deathCaseID}) ;
   Future<Map<String, dynamic>> dropBodyToProcessUnityByTransport({required int deathReportId,required  int processingUnitId , required int deathCaseID}) ;
@@ -101,6 +101,12 @@ class DeathReportRepoImpl extends DeathReportRepo {
     });
   }
 
+  @override
+  Future<DeathReportAlert> getDeathAlertDetail({required int deathCaseID}) {
+    return apiManager.handleRequest(() async {
+      return await remoteDataSource.getDeathAlertDetail(deathCaseID: deathCaseID);
+    });
+  }
   @override
   Future<DeathReportDetailResponse> getDeathReportDetailsById(
       {required int deathReportId,required UserRole userRole}) {
