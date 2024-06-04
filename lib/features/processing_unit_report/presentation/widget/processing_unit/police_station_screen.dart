@@ -32,13 +32,14 @@ class PoliceStationScreen extends StatefulWidget {
   final int deathFormCode;
   final bool isBodyReceivedFromAmbulance;
   final List<AttachmentType> attachmentList;
+  final List<Station> policeStationList;
 
   PoliceStationScreen({
     Key? key,
     required this.deathBodyBandCode,
     required this.deathFormCode,
     required this.isBodyReceivedFromAmbulance,
-    List<AttachmentType>? attachmentList,
+    List<AttachmentType>? attachmentList, required this.policeStationList,
   })  : this.attachmentList = attachmentList ?? [],
         // Assign default value here
         super(key: key);
@@ -76,7 +77,7 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
             fontWeight: FontWeight.normal,
             readOnly: true,
             onTap: () {
-              showRadioOptionDialog(context, AppStrings.selectPoliceStation, ConfigService().getPoliceStations(), controller.selectedPoliceStation,
+              showRadioOptionDialog(context, AppStrings.selectPoliceStation, widget.policeStationList, controller.selectedPoliceStation,
                   (onChanged) => controller.selectedPoliceStation, (onConfirmed) {
                 controller.setPoliceStation(onConfirmed!);
                 controller.update();

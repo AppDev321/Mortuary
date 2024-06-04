@@ -46,8 +46,9 @@ class ApiManager {
     bool sendJSONFormatRequest = false,
     dynamic files,
   }) async {
+
+    Response? response;
     try {
-      Response response;
       var options = Options(
         contentType: "application/json",
         validateStatus: (status) {
@@ -86,7 +87,6 @@ class ApiManager {
        // return ApiResponse(decodedJson, null, true, decodedJson['message']);
         return ApiResponse(decodedJson, null, true,"");
       } else if (response.data != null) {
-
         var error = decodedJson['errors'] as String;
         error.replaceAll("###", "\n");
         return ApiResponse(
@@ -95,15 +95,23 @@ class ApiManager {
             false,
             "Failed to get data");
       } else {
-
         throw DioExceptions.fromDioError(DioError(
           response: response,
           requestOptions: RequestOptions(path: url),
         ));
       }
     } catch (e) {
-      return ApiResponse(null, GeneralError(message: e.toString()), false,
+      if(response!=null)
+        {
+        throw  DioExceptions.fromDioError(DioError(
+            response: response,
+            requestOptions: RequestOptions(path: url),
+          ));
+        }
+     else {
+        return ApiResponse(null, GeneralError(message: e.toString()), false,
           "Failed to get data");
+      }
     }
   }
 
@@ -116,7 +124,7 @@ class ApiManager {
       logDebug('OnParseError: ${error.message}');
       return Future.error(error);
     } catch (exception, stackTrace) {
-      logDebug('OnParseError: $stackTrace');
+      logDebug('OnParseException: $stackTrace');
       return Future.error(GeneralError(
         message: exception is DioError
             ? exception.message

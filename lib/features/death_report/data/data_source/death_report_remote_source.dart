@@ -1,6 +1,9 @@
+import 'package:flutter_launcher_icons/config/config.dart';
+import 'package:mortuary/core/utils/app_config_service.dart';
 import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/document_upload/domain/entity/attachment_type.dart';
+import 'package:mortuary/features/splash/domain/entities/splash_model.dart';
 
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/enums/enums.dart';
@@ -102,6 +105,12 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         if (userRole == UserRole.volunteer || userRole == UserRole.emergency) {
           result["band_code"] = json['data']['band_code_id'];
         }
+        if(userRole == UserRole.emergency){
+         // result["stations"] = List<Station>.from(json["data"]["stations"].map((x) => Station.fromJson(x)));
+          List<Station> stations = [];
+          stations.add(Station.fromJson(json["data"]["stations"]));
+          result["stations"] = stations;
+        }
         if (userRole == UserRole.transport) {
           result["processingCenters"] = json['data']['processingCenters'];
         }
@@ -111,7 +120,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         }
         if(UserRole.emergency == userRole && isEmergencyReceivedABody == true )
           {
-          result["attachmentType"] =
+           result["attachmentType"] =
               List<AttachmentType>.from(json["data"]["attachmentType"].map((x) => AttachmentType.fromJson(x)));
         }
         return result;
@@ -160,7 +169,12 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         url: AppUrls.transportAlertUrl,
         method: RequestMethod.GET,
         fromJson: (json) {
-          return List.from(json["data"]["alerts"].map((x) => DeathReportAlert.fromJson(x)));
+          List<DeathReportAlert> alertList = [];
+          if(json["data"]["alerts"] != null)
+            {
+              alertList.add(DeathReportAlert.fromJson(json["data"]["alerts"]));
+            }
+          return alertList;
         });
   }
 

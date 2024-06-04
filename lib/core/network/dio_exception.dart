@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:mortuary/core/network/request_interceptor.dart';
 
 class DioExceptions implements Exception {
   late String message;
 
   DioExceptions.fromDioError(DioError dioError) {
-
+    logDebug(dioError.type.toString());
     switch (dioError.type) {
       case DioErrorType.cancel:
         message = "Request to API server was cancelled";
@@ -45,6 +46,7 @@ class DioExceptions implements Exception {
   }
 
   String _handleError(int? statusCode, dynamic error) {
+    logDebug(statusCode.toString());
     switch (statusCode) {
       case 400:
         return error['errors'];
@@ -52,6 +54,7 @@ class DioExceptions implements Exception {
         return 'Unauthorized';
       case 403:
         return 'Forbidden';
+      case 503:
       case 404:
         return 'Server is currently down. Please try again later.';
       case 422:
@@ -60,6 +63,7 @@ class DioExceptions implements Exception {
         return 'Internal server error';
       case 502:
         return 'Bad gateway';
+
       default:
         return 'Oops something went wrong';
     }

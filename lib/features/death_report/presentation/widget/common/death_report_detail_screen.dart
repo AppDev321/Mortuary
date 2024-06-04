@@ -9,21 +9,16 @@ import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_expansion_tile.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
-import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_detail_response.dart';
-import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
-import '../../../../../core/widgets/load_more_listview.dart';
 import '../../../../document_upload/domain/entity/attachment_type.dart';
 import '../../../../document_upload/init_upload.dart';
 import '../../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../../processing_unit_report/builder_ids.dart';
-import '../../../domain/enities/death_report_list_reponse.dart';
 
 class DeathReportDetailScreen extends StatefulWidget {
   final UserRole userRole;
@@ -51,54 +46,45 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
     return GetBuilder<DeathReportController>(
         id: updateDeathReportScreen,
         builder: (controller) {
-          return CustomScreenWidget(
-              titleText: AppStrings.detailReport.toUpperCase(),
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
+          return CustomScreenWidget(titleText: AppStrings.detailReport.toUpperCase(), crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+            controller.isApiResponseLoaded
+                ? SizedBox(height: Get.height,child: const Center(child: CircularProgressIndicator(),),)
+                : Container(
                   child: controller.deathReportDetailResponse != null
-                      ? Column(
-                          children: [
-                            CustomExpansionTile(tileText: AppStrings.alertDetail, children: [
-                              controller.deathReportDetailResponse!.alerts != null
-                                  ? alertDetailTileComponent(controller.deathReportDetailResponse!.alerts!)
-                                  : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-                            CustomExpansionTile(tileText: AppStrings.transportDetail, children: [
-                              controller.deathReportDetailResponse!.transport != null
-                                  ? transportDetailTileComponent(controller.deathReportDetailResponse!.transport!)
-                                  : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-                            CustomExpansionTile(tileText: AppStrings.emergencyDetail, children: [
-                              controller.deathReportDetailResponse!.emergency != null
-                                  ? emergencyDetailTileComponent(controller.deathReportDetailResponse!.emergency!)
-                                  : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-                            CustomExpansionTile(tileText: AppStrings.morgueDetail, children: [
-                              controller.deathReportDetailResponse!.morgue != null
-                                  ? morgueDetailTileComponent(controller.deathReportDetailResponse!.morgue!)
-                                  : noDataContainer(),
-                            ]),
-                            sizeFieldMediumPlaceHolder,
-                            CustomExpansionTile(tileText: AppStrings.documents, children: [
-                              controller.deathReportDetailResponse!.attachments.isNotEmpty
-                                  ? attachmentsDetailTileComponent(
-                                      controller.deathReportDetailResponse!.alerts!.bandCodeId,
-                                      controller.deathReportDetailResponse!.attachments)
-                                  : noDataContainer(),
-                            ]),
-                          ],
-                        )
-                      : const Center(
-                          child: CustomTextWidget(
-                          text: ApiMessages.dataNotFound,
-                        )),
-                ).wrapWithLoadingBool(controller.isApiResponseLoaded)
-              ]);
+                  ? Column(
+                      children: [
+                        CustomExpansionTile(tileText: AppStrings.alertDetail, children: [
+                          controller.deathReportDetailResponse!.alerts != null ? alertDetailTileComponent(controller.deathReportDetailResponse!.alerts!) : noDataContainer(),
+                        ]),
+                        sizeFieldMediumPlaceHolder,
+                        CustomExpansionTile(tileText: AppStrings.transportDetail, children: [
+                          controller.deathReportDetailResponse!.transport != null ? transportDetailTileComponent(controller.deathReportDetailResponse!.transport!) : noDataContainer(),
+                        ]),
+                        sizeFieldMediumPlaceHolder,
+                        CustomExpansionTile(tileText: AppStrings.emergencyDetail, children: [
+                          controller.deathReportDetailResponse!.emergency != null ? emergencyDetailTileComponent(controller.deathReportDetailResponse!.emergency!) : noDataContainer(),
+                        ]),
+                        sizeFieldMediumPlaceHolder,
+                        CustomExpansionTile(tileText: AppStrings.morgueDetail, children: [
+                          controller.deathReportDetailResponse!.morgue != null ? morgueDetailTileComponent(controller.deathReportDetailResponse!.morgue!) : noDataContainer(),
+                        ]),
+                        sizeFieldMediumPlaceHolder,
+                        CustomExpansionTile(tileText: AppStrings.documents, children: [
+                          controller.deathReportDetailResponse!.attachments.isNotEmpty
+                              ? attachmentsDetailTileComponent(controller.deathReportDetailResponse!.alerts!.bandCodeId, controller.deathReportDetailResponse!.attachments)
+                              : noDataContainer(),
+                        ]),
+                      ],
+                    )
+                  : SizedBox(
+                    height:  Get.height,
+                    child: const Center(
+                        child: CustomTextWidget(
+                        text: ApiMessages.dataNotFound,
+                      )),
+                  ),
+            )
+          ]);
         });
   }
 
@@ -206,8 +192,7 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                 ? GestureDetector(
                     onTap: () async {
                       //  openUrl(context,attachment.path);
-                      await showDialog(
-                          context: context, builder: (_) => imageDialog(attachment.type, attachment.path, context));
+                      await showDialog(context: context, builder: (_) => imageDialog(attachment.type, attachment.path, context));
                     },
                     child: CustomTextWidget(
                       text: attachment.path,
@@ -291,10 +276,9 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left:8.0,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
                   child: CustomTextWidget(
                     text: text,
                     fontWeight: FontWeight.w500,
@@ -313,17 +297,14 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
             ],
           ),
           SizedBox(
-
-            child: Image.network('$path', fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
+            child: Image.network(
+              '$path',
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
                   child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                        : null,
+                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
                   ),
                 );
               },

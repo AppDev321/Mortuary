@@ -81,6 +81,7 @@ class PUHomeScreen extends StatelessWidget {
                               deathFormCode: -1,
                               isBodyReceivedFromAmbulance: true,
                               attachmentList: attachmentList,
+                              policeStationList: response['stations'],
                             ));
                       });
                     });

@@ -76,7 +76,7 @@ class CustomScreenWidget extends StatelessWidget {
                   )),
         body:  Container(
           width: double.maxFinite,
-          height: double.maxFinite,
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: AppColors.appBackgroundColor,
           ),

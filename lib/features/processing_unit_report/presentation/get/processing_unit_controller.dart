@@ -184,7 +184,8 @@ class ProcessingUnitController extends GetxController {
 
   postQRCodeToServer(
       String qrCode,int deathReportId,UserRole userRole,
-      void Function(dynamic)? onApiCallBack,bool isMorgueScannedProcessingDepartment ,
+      void Function(dynamic)? onApiCallBack,
+      bool isMorgueScannedProcessingDepartment ,
       bool isEmergencyReceivedABody)
 
   {
@@ -198,7 +199,9 @@ class ProcessingUnitController extends GetxController {
       onApiRequestStarted();
 
       deathReportRepo.postQRScanCode(
-          qrCode, userRole, isMorgueScannedProcessingDepartment,isEmergencyReceivedABody).then((value) {
+          qrCode, userRole,
+          isMorgueScannedProcessingDepartment,
+          isEmergencyReceivedABody).then((value) {
         //To update scanner Button Ui because it use DeathReportController
         deathReportController.onApiResponseCompleted();
         isScanCodeCompleted = false;
@@ -213,7 +216,8 @@ class ProcessingUnitController extends GetxController {
               PoliceStationScreen(
                   deathBodyBandCode: value['band_code'],
                   deathFormCode: deathReportId,
-                isBodyReceivedFromAmbulance: false,));
+                  isBodyReceivedFromAmbulance: false,
+                  policeStationList: value['stations'] as List<Station>,));
         }
       }).onError<CustomError>((error, stackTrace) async {
         //To update scanner Button Ui because it use DeathReportController
