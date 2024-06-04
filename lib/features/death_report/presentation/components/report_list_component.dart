@@ -151,6 +151,8 @@ class ReportListItem extends StatelessWidget {
           text: body,
           fontWeight: FontWeight.w500,
           size: 14,
+          maxLines: 2,
+
         )
       ],
     );
