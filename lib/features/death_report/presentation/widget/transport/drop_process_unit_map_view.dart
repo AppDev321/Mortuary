@@ -50,7 +50,7 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
           return CustomScreenWidget(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, titleText: AppStrings.processCenterLoc.toUpperCase(), children: [
             sizeFieldMinPlaceHolder,
             Container(
-              height: Get.height * 0.4,
+              height: Get.height * 0.38,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),

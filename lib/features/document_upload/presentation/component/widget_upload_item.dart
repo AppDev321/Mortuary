@@ -141,9 +141,11 @@ class _UploadContainerWidgetState extends State<UploadContainerWidget> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CustomTextWidget(
-                      text: fileName,
-                      colorText: AppColors.secondaryTextColor,
+                    Expanded(
+                      child: CustomTextWidget(
+                        text: fileName,
+                        colorText: AppColors.secondaryTextColor,
+                      ),
                     ),
                     sizeHorizontalFieldSmallPlaceHolder,
                     InkWell(

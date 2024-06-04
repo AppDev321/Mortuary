@@ -64,8 +64,8 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
                       children: [
                         SvgPicture.asset(AppAssets.icLoc),
                         sizeHorizontalMinPlaceHolder,
-                        const CustomTextWidget(
-                          text: "10Km",
+                         CustomTextWidget(
+                          text: widget.listItem.distance,
                           colorText: AppColors.secondaryTextColor,
                           size: 14,
                           fontWeight: FontWeight.w500,
@@ -73,8 +73,8 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
                         sizeHorizontalFieldLargePlaceHolder,
                         SvgPicture.asset(AppAssets.icClock),
                         sizeHorizontalMinPlaceHolder,
-                        const CustomTextWidget(
-                          text: "23 min",
+                         CustomTextWidget(
+                          text: widget.listItem.duration,
                           colorText: AppColors.secondaryTextColor,
                           size: 14,
                           fontWeight: FontWeight.w500,

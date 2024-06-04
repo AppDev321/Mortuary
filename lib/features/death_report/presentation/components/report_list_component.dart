@@ -80,17 +80,17 @@ class ReportListItem extends StatelessWidget {
   Widget containerReportData() {
     return GestureDetector(
       onTap: () {
-        if(userRole != UserRole.transport) {
+        //if(userRole != UserRole.transport) {
           Go.to(() =>
               DeathReportDetailScreen(
                 userRole: userRole,
                 reportId: listItem.id,
               ));
-        }else
-          {
-           final DeathReportController controller = Get.find();
-           controller.getDeathAlertDetailById(deathCaseID: listItem.deathCaseID);
-          }
+        // }else
+        //   {
+        //    final DeathReportController controller = Get.find();
+        //    controller.getDeathAlertDetailById(deathCaseID: listItem.deathCaseID);
+        //   }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -122,10 +122,10 @@ class ReportListItem extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
+             Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
               child: CustomTextWidget(
-                text: AppStrings.onWayToProcess,
+                text: listItem.status.name,
                 textAlign: TextAlign.center,
                 colorText: AppColors.whiteAccent,
                 fontWeight: FontWeight.w500,

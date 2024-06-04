@@ -12,6 +12,8 @@ class ProcessingCenter extends Equatable {
     required this.availableSpace,
     required this.policePoc,
     required this.policePhoneNo,
+    required this.distance,
+    required this.duration,
     this.processingUsers = const [],
   });
 
@@ -24,6 +26,8 @@ class ProcessingCenter extends Equatable {
   final int availableSpace;
   final String policePoc;
   final String policePhoneNo;
+  final String distance;
+  final String duration;
 
    List<ProcessingUser> processingUsers = List.empty();
 
@@ -45,6 +49,8 @@ class ProcessingCenter extends Equatable {
       availableSpace: json["available_space"] ?? 0,
       policePoc: json["police_poc"] ?? "",
       policePhoneNo: json["police_phone_no"] ?? "",
+        duration:json['duration'] ??"",
+        distance:json['distance'] ??"",
         processingUsers: usersList
     );
   }

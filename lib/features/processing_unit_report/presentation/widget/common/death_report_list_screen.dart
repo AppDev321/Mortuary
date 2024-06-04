@@ -67,7 +67,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
+          /*  GestureDetector(
               onTap: () {
                 setState(() {
                   //hasAnyNotificationAlert = false;
@@ -133,7 +133,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                       ),
                     ),
                   )),
-            ),
+            ),*/
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextField(

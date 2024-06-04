@@ -19,14 +19,16 @@ import '../../../../../core/utils/app_config_service.dart';
 import '../../../../../core/widgets/button_widget.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../country_picker/functions.dart';
+import '../../../../splash/domain/entities/splash_model.dart';
 
 class PUDeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
+  final List<Station> policeStationsList;
 
 
   PUDeathReportFormScreen(
-      {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
+      {Key? key, required this.deathBodyBandCode, required this.deathFormCode, required this.policeStationsList})
       : super(key: key);
 
   @override
@@ -232,7 +234,7 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                       controller.postDeathReportFormToServer(
                         widget.deathFormCode,
                           widget.deathBodyBandCode,
-                          selectedGender!,UserRole.emergency);
+                          selectedGender!,UserRole.emergency,widget.policeStationsList);
                     }
                   }
                 },

@@ -12,6 +12,7 @@ import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
+import 'package:mortuary/features/document_upload/init_upload.dart';
 import 'package:mortuary/features/document_upload/presentation/widget/document_upload_screen.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 
@@ -100,13 +101,14 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
               if (policeStationFormKey.currentState!.validate()) {
                 controller.updatePoliceStation(
                     widget.deathBodyBandCode.toString(), controller.selectedPoliceStation!.id, widget.deathFormCode, getCheckedStations(pocItemList),
-                    () {
-                  if (widget.isBodyReceivedFromAmbulance) {
+                    () async {
+                      await initUpload();
+                //  if (widget.isBodyReceivedFromAmbulance) {
                     Get.off(() => DocumentUploadScreen(
                         currentUserRole: UserRole.emergency, bandCodeId: widget.deathBodyBandCode, attachmentsTypes: widget.attachmentList));
-                  } else {
-                    Go.to(() => PUDeathReportFormScreen(deathBodyBandCode: widget.deathBodyBandCode, deathFormCode: widget.deathFormCode));
-                  }
+                //  } else {
+                 //   Go.to(() => PUDeathReportFormScreen(deathBodyBandCode: widget.deathBodyBandCode, deathFormCode: widget.deathFormCode));
+                //  }
                 });
               }
             },

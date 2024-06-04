@@ -109,7 +109,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         if(userRole == UserRole.emergency){
          // result["stations"] = List<Station>.from(json["data"]["stations"].map((x) => Station.fromJson(x)));
           List<Station> stations = [];
-          stations.add(Station.fromJson(json["data"]["stations"]));
+          stations.add(Station.fromJson(json["data"]["station"]));
           result["stations"] = stations;
         }
         if (userRole == UserRole.transport) {

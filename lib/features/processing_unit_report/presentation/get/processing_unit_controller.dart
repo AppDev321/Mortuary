@@ -97,7 +97,7 @@ class ProcessingUnitController extends GetxController {
   /// ********  Emergency Api Section Started ///////////
 
 
-  initiateDeathReport(BuildContext context,UserRole userRole) async {
+  initiateDeathReport(BuildContext context,UserRole userRole , { Function(dynamic)? onApiCallBack}) async {
     onApiRequestStarted();
     googleMapScreenController.getUserCurrentPosition().then((value) async {
       print("Current Location ==> ${value.formattedAddress}");
@@ -105,10 +105,10 @@ class ProcessingUnitController extends GetxController {
       if (value.geometry == null) {
         var loc = await googleMapScreenController.getPositionPoints();
         initiateDeathReportToServer(
-            loc.latitude, loc.longitude, value.formattedAddress ?? "",userRole);
+            loc.latitude, loc.longitude, value.formattedAddress ?? "",userRole,onApiCallBack: onApiCallBack);
       } else {
         initiateDeathReportToServer(value.geometry!.location.lat,
-            value.geometry!.location.lng, value.formattedAddress ?? "",userRole);
+            value.geometry!.location.lng, value.formattedAddress ?? "",userRole,onApiCallBack: onApiCallBack);
       }
     }).onError((error, stackTrace) {
       onApiResponseCompleted();
@@ -117,11 +117,11 @@ class ProcessingUnitController extends GetxController {
       );
       showAppThemedDialog(customError,
           buttonText: AppStrings.shareOnlyLatLng,
-          onPressed: () => sendPositionCoordinates(userRole));
+          onPressed: () => sendPositionCoordinates(userRole,onApiCallBack: onApiCallBack));
     });
   }
 
-  sendPositionCoordinates(UserRole userRole) async {
+  sendPositionCoordinates(UserRole userRole, { Function(dynamic)? onApiCallBack}) async {
     onApiRequestStarted();
     googleMapScreenController.getPositionPoints().then((value) async {
       List<Placemark> placeMarksList =
@@ -133,14 +133,14 @@ class ProcessingUnitController extends GetxController {
 
       print("Force Location ==> ${currentAddress}");
 
-      initiateDeathReportToServer(value.latitude, value.longitude, currentAddress,userRole);
+      initiateDeathReportToServer(value.latitude, value.longitude, currentAddress,userRole,onApiCallBack: onApiCallBack);
     }).onError((error, stackTrace) {
       print(error);
       onErrorShowDialog(error);
     });
   }
 
-  initiateDeathReportToServer(double lat, double lng, String currentAddress,UserRole userRole) {
+  initiateDeathReportToServer(double lat, double lng, String currentAddress,UserRole userRole, { Function(dynamic)? onApiCallBack}) {
     deathReportRepo
         .initiateDeathReport(
             deathBodyCount: 1,//deathNumberCount,
@@ -207,18 +207,22 @@ class ProcessingUnitController extends GetxController {
         isScanCodeCompleted = false;
 
         onApiResponseCompleted();
+
         if (onApiCallBack != null) {
           value['qr_code'] = qrCode;
           onApiCallBack(value);
+        } else if (isEmergencyReceivedABody) {
+          Get.off(() => PoliceStationScreen(
+                deathBodyBandCode: value['band_code'],
+                deathFormCode: deathReportId,
+                isBodyReceivedFromAmbulance: false,
+                policeStationList: value['stations'] as List<Station>,
+              ));
+        } else {
+          Go.to(() => PUDeathReportFormScreen(deathBodyBandCode: value['band_code'], deathFormCode: deathReportId,policeStationsList: value['stations'] as List<Station>,));
         }
-        else {
-          Go.off(() =>
-              PoliceStationScreen(
-                  deathBodyBandCode: value['band_code'],
-                  deathFormCode: deathReportId,
-                  isBodyReceivedFromAmbulance: false,
-                  policeStationList: value['stations'] as List<Station>,));
-        }
+
+
       }).onError<CustomError>((error, stackTrace) async {
         //To update scanner Button Ui because it use DeathReportController
         deathReportController.onApiResponseCompleted();
@@ -262,7 +266,7 @@ class ProcessingUnitController extends GetxController {
   }
 
   postDeathReportFormToServer(
-      int deathReportId, int bandCodeId, Gender gender,UserRole role) {
+      int deathReportId, int bandCodeId, Gender gender,UserRole role,List<Station> policeStationList)  {
     var request = DeathReportFormRequest(
         deathReportId: deathReportId,
         visaTypeId: selectedVisaType?.id ?? 0,
@@ -280,22 +284,19 @@ class ProcessingUnitController extends GetxController {
     deathReportRepo.postDeathReportForm(formRequest: request,userRole: role).then((response) async{
       onApiResponseCompleted();
       deathNumberCount--;
-      // var customError = GeneralError(
-      //   title: response['title'],
-      //   message: response['message'],
-      // );
 
-      // showAppThemedDialog(customError,
-      //     showErrorMessage: false, dissmisableDialog: false, onPressed: () {
-      //   int remainingDeathCount = response['remainingCount'];
-      //   if (remainingDeathCount > 0) {
-      //     Get.back();
-      //     showQRCodeScannerScreen(role,deathReportId);
-      //   }
-      // });
 
       var attachmentList = response['attachmentType'] as List<AttachmentType>;
-      if(attachmentList.isNotEmpty) {
+
+      Get.off(() => PoliceStationScreen(
+        deathBodyBandCode:bandCodeId,
+        deathFormCode: deathReportId,
+        isBodyReceivedFromAmbulance: false,
+        policeStationList: policeStationList,
+        attachmentList: attachmentList,
+      ));
+
+      /*if(attachmentList.isNotEmpty) {
         await initUpload();
         Get.to(() =>
             DocumentUploadScreen(
@@ -311,7 +312,7 @@ class ProcessingUnitController extends GetxController {
                 currentUserRole: role,
               ));
         });
-      }
+      }*/
 
     }).onError<CustomError>((error, stackTrace) async {
       onErrorShowDialog(error);

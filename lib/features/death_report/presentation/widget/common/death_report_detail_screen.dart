@@ -291,15 +291,16 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.close_rounded),
-                color: Colors.redAccent,
+                icon: const Icon(Icons.close_rounded),
+                color: Colors.white,
               ),
             ],
           ),
           SizedBox(
+            height: Get.height*0.7,
             child: Image.network(
               '$path',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
