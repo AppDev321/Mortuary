@@ -50,7 +50,7 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
           return CustomScreenWidget(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, titleText: AppStrings.processCenterLoc.toUpperCase(), children: [
             sizeFieldMinPlaceHolder,
             Container(
-              height: Get.height * 0.38,
+              height: Get.height * 0.4,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -74,6 +74,7 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       createInfoRow(AppAssets.icProcessingUnitLoc, widget.dataModel.centreName, ""),
+                      sizeFieldMinPlaceHolder,
                       createInfoRow(AppAssets.icLocation, AppStrings.address, widget.dataModel.address),
                     ],
                   ),

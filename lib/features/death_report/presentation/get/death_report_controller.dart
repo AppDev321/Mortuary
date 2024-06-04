@@ -90,7 +90,7 @@ class DeathReportController extends GetxController {
   initiateVolunteerDeathReport(BuildContext context,UserRole userRole) async {
     onApiRequestStarted();
     googleMapScreenController.getUserCurrentPosition().then((value) async {
-      print("Current Location ==> ${value.formattedAddress}");
+      debugPrint("Current Location ==> ${value.formattedAddress}");
 
       if (value.geometry == null) {
         var loc = await googleMapScreenController.getPositionPoints();
@@ -122,11 +122,10 @@ class DeathReportController extends GetxController {
       var currentAddress =
           "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
-      print("Force Location ==> ${currentAddress}");
+      debugPrint("Force Location ==> ${currentAddress}");
 
       initiateDeathReportToServer(value.latitude, value.longitude, currentAddress,userRole);
     }).onError((error, stackTrace) {
-      print(error);
       onErrorShowDialog(error);
     });
   }
@@ -199,8 +198,6 @@ class DeathReportController extends GetxController {
 
   postDeathReportFormToServer(
       int deathReportId, int bandCodeId, Gender gender,UserRole userRole) {
-    print(bandCodeId);
-    print(deathReportId);
     var request = DeathReportFormRequest(
         deathReportId: deathReportId,
         visaTypeId: selectedVisaType?.id ?? 0,
@@ -255,7 +252,7 @@ class DeathReportController extends GetxController {
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
-      print(error);
+
         onErrorShowDialog(error);
     });
     return deathReportList;
@@ -341,7 +338,7 @@ class DeathReportController extends GetxController {
       if (error is CustomError) {
         onErrorShowDialog(error);
       } else {
-        print('Unexpected error: $error');
+        debugPrint('Unexpected error: $error');
       }
       return null;
     }
@@ -383,11 +380,11 @@ class DeathReportController extends GetxController {
 
   startLocationService(String ambulanceID) async{
     if(locationStreamSubscription == null) {
-      print("locationConsumer ==> started");
+      debugPrint("locationConsumer ==> started");
       await Geolocator.requestPermission();
       locationStreamSubscription = StreamLocationService.onLocationChanged?.listen(
             (position) async {
-              print(position);
+              debugPrint("$position");
           await FireStoreService.updateUserLocation(
             ambulanceID,
             LatLng(position.latitude, position.longitude),
@@ -395,7 +392,7 @@ class DeathReportController extends GetxController {
         },
       );
     }
-    print("locationConsumer ==> $locationStreamSubscription");
+    debugPrint("locationConsumer ==> $locationStreamSubscription");
   }
 
   onErrorShowDialog(error) {

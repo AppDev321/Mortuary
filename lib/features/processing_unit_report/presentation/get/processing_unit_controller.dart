@@ -100,7 +100,7 @@ class ProcessingUnitController extends GetxController {
   initiateDeathReport(BuildContext context,UserRole userRole , { Function(dynamic)? onApiCallBack}) async {
     onApiRequestStarted();
     googleMapScreenController.getUserCurrentPosition().then((value) async {
-      print("Current Location ==> ${value.formattedAddress}");
+      debugPrint("Current Location ==> ${value.formattedAddress}");
 
       if (value.geometry == null) {
         var loc = await googleMapScreenController.getPositionPoints();
@@ -131,11 +131,10 @@ class ProcessingUnitController extends GetxController {
       var currentAddress =
           "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
-      print("Force Location ==> ${currentAddress}");
+      debugPrint("Force Location ==> ${currentAddress}");
 
       initiateDeathReportToServer(value.latitude, value.longitude, currentAddress,userRole,onApiCallBack: onApiCallBack);
     }).onError((error, stackTrace) {
-      print(error);
       onErrorShowDialog(error);
     });
   }
@@ -336,7 +335,6 @@ class ProcessingUnitController extends GetxController {
     deathReportList.clear();
     onApiRequestStarted();
    await deathReportRepo.getDeathReportList(userRole).then((response) {
-     print(response);
      deathReportList = response;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {

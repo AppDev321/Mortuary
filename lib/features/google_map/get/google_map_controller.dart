@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -55,7 +56,7 @@ class GoogleMapScreenController extends GetxController {
 
       update([updateGoogleMapScreen]);
     }).onError<CustomError>((error, stackTrace) {
-      print('error is in locate user position ${error.message}');
+      debugPrint('error is in locate user position ${error.message}');
     });
   }
 
@@ -94,7 +95,7 @@ class GoogleMapScreenController extends GetxController {
 
       update([updateGoogleMapScreen]);
     }).onError<CustomError>((error, stackTrace) {
-      print('coordinate find error --> ${error.message}');
+      debugPrint('coordinate find error --> ${error.message}');
     });
 
 

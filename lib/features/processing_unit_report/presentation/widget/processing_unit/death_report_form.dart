@@ -125,7 +125,6 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                   );
                   if(country != null ){
                     controller.setNationality(country!);
-                    print(controller.selectedNationality);
                     nationalityTextController.text =
                         controller.selectedNationality?.nationality ?? "";
                     controller.update();

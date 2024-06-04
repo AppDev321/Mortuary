@@ -55,7 +55,7 @@ class PushNotifications {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      print('======= On App Open Message =======');
+      debugPrint('======= On App Open Message =======');
       setStreamData(message);
     });
 
@@ -65,17 +65,17 @@ class PushNotifications {
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     //   await Firebase.initializeApp();
-    print('======= On Background Message =======');
+    debugPrint('======= On Background Message =======');
     setStreamData(message, userStream: false);
   }
 
   setStreamData(RemoteMessage message, {bool userStream = true}) {
-    print('Handling a foreground message: ${message.messageId}');
-    print('Message data: ${message.data}');
-    print('Message notification: ${message.notification?.title}');
-    print('Message notification: ${message.notification?.body}');
+    debugPrint('Handling a foreground message: ${message.messageId}');
+    debugPrint('Message data: ${message.data}');
+    debugPrint('Message notification: ${message.notification?.title}');
+    debugPrint('Message notification: ${message.notification?.body}');
 
-    print('===== STREAM NOTIFICATION =====');
+    debugPrint('===== STREAM NOTIFICATION =====');
 
     if (userStream) {
       _notificationStreamController.sink.add(message);
@@ -89,7 +89,7 @@ class PushNotifications {
       //final data = DeathReportAlert.fromJson(jsonDecode(body.toString()));
       notificationBody = jsonEncode(data);
     } catch (e) {
-      print('The provided string is not valid JSON');
+      debugPrint('The provided string is not valid JSON');
     }
 
     NotificationService().newNotification(
