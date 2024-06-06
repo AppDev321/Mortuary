@@ -88,11 +88,8 @@ class ApiManager {
         return ApiResponse(decodedJson, null, true,"");
       }
       else if (response.data != null) {
-
         var error = decodedJson['errors'] as String;
-        print(error);
         error = error.replaceAll("###", "\n");
-        print(error);
         return ApiResponse(
             null,
             GeneralError(message: error,title: decodedJson['message']),

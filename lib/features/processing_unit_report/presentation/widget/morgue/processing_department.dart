@@ -187,7 +187,7 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
               ),
             ),
             Visibility(
-              visible: status != "",
+              visible: status != "" || status != "null",
               child: Positioned(
                   right: 0,
                   top: 20,
