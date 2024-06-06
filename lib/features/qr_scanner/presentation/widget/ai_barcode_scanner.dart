@@ -220,13 +220,13 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
               titleText: AppStrings.scanCode,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomTextWidget(text: AppStrings.scanScreenLabel,
+               const  CustomTextWidget(text: AppStrings.scanScreenLabel,
                   colorText: AppColors.secondaryTextColor,
                   textAlign: TextAlign.center,),
                 sizeFieldLargePlaceHolder,
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Container(
+                  child: SizedBox(
                     height: Get.height * 0.6,
                   
                     child: Stack(
@@ -254,8 +254,10 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                             if ((widget.validator != null &&
                                 !widget.validator!(code))) {
                               setState(() {
-                                if (widget.hapticFeedback) HapticFeedback
+                                if (widget.hapticFeedback) {
+                                  HapticFeedback
                                     .heavyImpact();
+                                }
                                 log('Invalid Barcode => $code');
                                 _isSuccess = false;
                               });
@@ -263,8 +265,10 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
                             }
                             setState(() {
                               _isSuccess = true;
-                              if (widget.hapticFeedback) HapticFeedback
+                              if (widget.hapticFeedback) {
+                                HapticFeedback
                                   .lightImpact();
+                              }
                               log('Barcode rawValue => $code');
                               scannedValue = code;
                               widget.onScan(code);
@@ -318,32 +322,14 @@ class _AiBarcodeScannerState extends State<AiBarcodeScanner> {
 
                   if(widget.userRole != null) {
                     if (widget.userRole! == UserRole.volunteer || widget.userRole! == UserRole.transport) {
-                      deathController.postQRCodeToServer(
-                          scannedValue,widget.deathReportId,widget.userRole!, widget.onApiCallBack);
-                    }
-                    else  if (widget.userRole! == UserRole.emergency || (widget.userRole! == UserRole.morgue)) {
-
-                      final ProcessingUnitController processingController = Get.find();
-                      processingController.postQRCodeToServer(
-                          scannedValue,
-                          widget.deathReportId,
-                          widget.userRole!,
-                          widget.onApiCallBack,
-                          widget.isMorgueScannedProcessingDepartment,
-                           widget.isEmergencyReceivedABody);
-                    }
-
-
-
+                    deathController.postQRCodeToServer(scannedValue, widget.deathReportId, widget.userRole!, widget.onApiCallBack);
+                  } else if (widget.userRole! == UserRole.emergency || (widget.userRole! == UserRole.morgue)) {
+                    final ProcessingUnitController processingController = Get.find();
+                    processingController.postQRCodeToServer(
+                        scannedValue, widget.deathReportId, widget.userRole!, widget.onApiCallBack, widget.isMorgueScannedProcessingDepartment, widget.isEmergencyReceivedABody);
                   }
-                  // if(deathController.isScanCodeCompleted == true) {
-                  //
-                  // }
-                  // else{
-                  //   showSnackBar(context, "Please scan your QR");
-                  // }
-
-                  },
+                }
+              },
                   )
 
 

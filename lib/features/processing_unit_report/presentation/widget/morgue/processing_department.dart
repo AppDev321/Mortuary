@@ -96,48 +96,69 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
             ...departmentList.map((item) {
               return GestureDetector(
                   onTap: () {
-                    controller.showQRCodeScannerScreen(widget.currentUserRole, -111,
-                        isMorgueScannedProcessingDepartment: true,
-                        onApiCallBack: (scannedQRCode) {
-
-                        //After Scanning QR code of Department Unit
-                        controller.postProcessingDepartmentScanCode(
-                            scannedQRCode, widget.bodyScanCode, item.id.toString(),
-                            widget.processingCenterId, widget.currentUserRole, (response) {
-                        setState(() {
-                          response['data'].forEach((data) {
-                            if (data is Map<String, dynamic>) {
-                              int id = int.tryParse(data['id'].toString()) ?? 0;
-                              ProcessDepartment? department = departmentList
-                                  .firstWhereOrNull((dept) => dept.id == id);
-                              if (department != null) {
-                                department.status = data['progress'] ?? "";
-                              }
-                            }
-                          });
-                        });
-
-                        var dataDialog = GeneralError(title:AppStrings.scanSuccess,message:AppStrings.scanSuccessMsg);
-                              showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
-                                Get.back();
+                    if(item.id <11) {
+                      controller.showQRCodeScannerScreen(widget.currentUserRole, -111,
+                          isMorgueScannedProcessingDepartment: true,
+                          onApiCallBack: (scannedQRCode) {
+                            controller.postProcessingDepartmentScanCode(
+                                scannedQRCode, widget.bodyScanCode, item.id.toString(),
+                                widget.processingCenterId, widget.currentUserRole, (response) {
+                              setState(() {
+                                response['data'].forEach((data) {
+                                  if (data is Map<String, dynamic>) {
+                                    int id = int.tryParse(data['id'].toString()) ?? 0;
+                                    ProcessDepartment? department = departmentList
+                                        .firstWhereOrNull((dept) => dept.id == id);
+                                    if (department != null) {
+                                      department.status = data['progress'] ?? "";
+                                    }
+                                  }
+                                });
                               });
 
-
+                              var dataDialog = GeneralError(title: AppStrings.scanSuccess, message: AppStrings.scanSuccessMsg);
+                              showAppThemedDialog(dataDialog, showErrorMessage: false, onPressed: () {
+                                Get.back();
+                              });
+                            });
+                          });
+                    }
+                    else
+                      {
+                        controller.postProcessingDepartmentScanCode(
+                            "", widget.bodyScanCode, item.id.toString(),
+                            widget.processingCenterId, widget.currentUserRole, (response) {
+                          setState(() {
+                            response['data'].forEach((data) {
+                              if (data is Map<String, dynamic>) {
+                                int id = int.tryParse(data['id'].toString()) ?? 0;
+                                ProcessDepartment? department = departmentList
+                                    .firstWhereOrNull((dept) => dept.id == id);
+                                if (department != null) {
+                                  department.status = data['progress'] ?? "";
+                                }
+                              }
+                            });
+                          });
+                          var dataDialog = GeneralError(title:AppStrings.scanSuccess,message:AppStrings.scanSuccessMsg);
+                          showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
+                            Get.back();
+                          });
                         });
-                    });
+                      }
                   },
-                  child: createContainerView(item.id, item.image, item.name,
+                  child: createContainerView(controller,item.id, item.image, item.name,
                       status: item.status,
-                      color: item.status == "Completed"
-                          ? Colors.green
-                          : Colors.amber));
+                      color: item.status.toLowerCase() == "inprogress"
+                          ? Colors.amber
+                          : Colors.green));
             }).toList(),
             sizeFieldMediumPlaceHolder,
           ]);
     });
   }
 
-  Widget createContainerView(int departmentCodeId, String image, String title,
+  Widget createContainerView(ProcessingUnitController controller,int departmentCodeId, String image, String title,
       {String status = "", Color color = Colors.amber}) {
     return Container(
         width: Get.width,
@@ -187,6 +208,6 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
                   )),
             )
           ],
-        ));
+        )).wrapWithListViewSkeleton(controller.isApiResponseLoaded);
   }
 }
