@@ -43,235 +43,131 @@ class PickupMapScreen extends StatelessWidget {
             centerTitle: true,
             title:  CustomTextWidget(text:AppStrings.pickupMapLoc.toUpperCase(),size: 24,fontWeight: FontWeight.bold,),
           ),
-          body: Column(
-            children: [
-              const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
-              sizeFieldMinPlaceHolder,
-              Container(
-                height: Get.height * 0.3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: AppColors.appBackgroundColor
+            ),
+            child: Column(
+              children: [
+                sizeFieldMinPlaceHolder,
+                const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
+                sizeFieldMinPlaceHolder,
+                Container(
+                  height: Get.height * 0.3,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: GoogleMapViewWidget(didShowDirectionButton: true,showDestinationPolyLines: true,
+                      destinationPoints: LatLng(dataModel.latitude,dataModel.longitude),),
+                  ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: GoogleMapViewWidget(didShowDirectionButton: true,showDestinationPolyLines: true,
-                    destinationPoints: LatLng(dataModel.latitude,dataModel.longitude),),
-                ),
-              ),
-              sizeFieldMinPlaceHolder,
+                sizeFieldMinPlaceHolder,
 
-              Row(
-                children: [
-                  SvgPicture.asset(AppAssets.icVolunteerLoc),
-                  sizeHorizontalFieldMediumPlaceHolder,
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        createInfoRow(AppAssets.icPerson,"${AppStrings.noOfDeath}:", dataModel.noOfDeaths),
-                        sizeHorizontalMinPlaceHolder,
-                        createInfoRow(AppAssets.icCalender,AppStrings.date, dataModel.reportDate),
-                        sizeHorizontalMinPlaceHolder,
-                        createInfoRow(AppAssets.icTime,AppStrings.time, dataModel.reportTime),
-                        sizeHorizontalMinPlaceHolder,
-                        createInfoRow(AppAssets.icLocation,AppStrings.generalLocation,dataModel.generalLocation),
-                        sizeHorizontalMinPlaceHolder,
-                        createInfoRow(AppAssets.icCalender,AppStrings.address, dataModel.address ??"N/A"),
-                        sizeHorizontalMinPlaceHolder,
-
-                      ],),
-                  )
-                ],
-              ),
-              sizeFieldMediumPlaceHolder,
-              GetBuilder<GoogleMapScreenController>(
-                id:updateGoogleMapScreen,
-                builder: (googleController) {
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(AppAssets.icLoc),
-                        sizeHorizontalMinPlaceHolder,
-                         CustomTextWidget(
-                          text: googleController.distance,
-                          colorText: AppColors.secondaryTextColor,
-                          size: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        sizeHorizontalFieldLargePlaceHolder,
-                        SvgPicture.asset(AppAssets.icClock),
-                        sizeHorizontalMinPlaceHolder,
-                         CustomTextWidget(
-                          text: googleController.travelTime,
-                          colorText: AppColors.secondaryTextColor,
-                          size: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              ),
-              sizeFieldMediumPlaceHolder,
-              GestureDetector(
-                onTap: (){
-                  openDialPad(context,dataModel.volunteerContactNumber);
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                Row(
                   children: [
-                    SvgPicture.asset(AppAssets.icPhoneCall),
-                    sizeHorizontalMinPlaceHolder,
-                    const CustomTextWidget(text: AppStrings.callVolunteer,fontWeight: FontWeight.bold,),
+                    SvgPicture.asset(AppAssets.icVolunteerLoc),
+                    sizeHorizontalFieldMediumPlaceHolder,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          createInfoRow(AppAssets.icPerson,"${AppStrings.noOfDeath}:", dataModel.noOfDeaths),
+                          sizeHorizontalMinPlaceHolder,
+                          createInfoRow(AppAssets.icCalender,AppStrings.date, dataModel.reportDate),
+                          sizeHorizontalMinPlaceHolder,
+                          createInfoRow(AppAssets.icTime,AppStrings.time, dataModel.reportTime),
+                          sizeHorizontalMinPlaceHolder,
+                          createInfoRow(AppAssets.icLocation,AppStrings.generalLocation,dataModel.generalLocation),
+                          sizeHorizontalMinPlaceHolder,
+                          createInfoRow(AppAssets.icCalender,AppStrings.address, dataModel.address ??"N/A"),
+                          sizeHorizontalMinPlaceHolder,
+
+                        ],),
+                    )
                   ],
                 ),
-              ),
-              sizeFieldMinPlaceHolder,
-              ButtonWidget(text: AppStrings.arrived, buttonType: ButtonType.gradient,
-                icon: SvgPicture.asset(AppAssets.icTick),
-                onPressed: (){
-                  controller.showQRCodeScannerScreen(
-                      dataModel.deathReportId,
-                      onApiCallBack: (data){
-                        if(controller.transportScannedBodyCount > 1) {
-                          controller.transportScannedBodyCount--;
-                          var dataDialog = GeneralError(
-                              message: AppStrings.scanNextBody,
-                              title: AppStrings.scanSuccess
-                          );
-                          showAppThemedDialog(dataDialog,showErrorMessage: false);
-                        }
-                        else
-                        {
-                          var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
-                          Go.to(() => ProcessingUnitListScreen(
-                            processingCenters: list,
-                            deathReportId: dataModel.deathReportId,
-                            deathCaseId: dataModel.deathCaseId,
-                          ));
-                        }
-                      });
-                },
-              ),
-              sizeFieldLargePlaceHolder,
-            ],
+                sizeFieldMediumPlaceHolder,
+                GetBuilder<GoogleMapScreenController>(
+                  id:updateGoogleMapScreen,
+                  builder: (googleController) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(AppAssets.icLoc),
+                          sizeHorizontalMinPlaceHolder,
+                           CustomTextWidget(
+                            text: googleController.distance,
+                            colorText: AppColors.secondaryTextColor,
+                            size: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          sizeHorizontalFieldLargePlaceHolder,
+                          SvgPicture.asset(AppAssets.icClock),
+                          sizeHorizontalMinPlaceHolder,
+                           CustomTextWidget(
+                            text: googleController.travelTime,
+                            colorText: AppColors.secondaryTextColor,
+                            size: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                ),
+                sizeFieldMediumPlaceHolder,
+                GestureDetector(
+                  onTap: (){
+                    openDialPad(context,dataModel.volunteerContactNumber);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(AppAssets.icPhoneCall),
+                      sizeHorizontalMinPlaceHolder,
+                      const CustomTextWidget(text: AppStrings.callVolunteer,fontWeight: FontWeight.bold,),
+                    ],
+                  ),
+                ),
+                sizeFieldMinPlaceHolder,
+                ButtonWidget(text: AppStrings.arrived, buttonType: ButtonType.gradient,
+                  icon: SvgPicture.asset(AppAssets.icTick),
+                  onPressed: (){
+                    controller.showQRCodeScannerScreen(
+                        dataModel.deathReportId,
+                        onApiCallBack: (data){
+                          if(controller.transportScannedBodyCount > 1) {
+                            controller.transportScannedBodyCount--;
+                            var dataDialog = GeneralError(
+                                message: AppStrings.scanNextBody,
+                                title: AppStrings.scanSuccess
+                            );
+                            showAppThemedDialog(dataDialog,showErrorMessage: false);
+                          }
+                          else
+                          {
+                            var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
+                            Go.to(() => ProcessingUnitListScreen(
+                              processingCenters: list,
+                              deathReportId: dataModel.deathReportId,
+                              deathCaseId: dataModel.deathCaseId,
+                            ));
+                          }
+                        });
+                  },
+                ),
+                sizeFieldLargePlaceHolder,
+              ],
+            ),
           ),
         );
 
 
-
-
-          CustomScreenWidget(
-          crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            titleText: AppStrings.pickupMapLoc.toUpperCase(),
-            children: [
-              const CustomTextWidget(text: AppStrings.pickupMapLabel,colorText: AppColors.secondaryTextColor,textAlign: TextAlign.center,),
-              sizeFieldMinPlaceHolder,
-              Container(
-                height: Get.height * 0.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: GoogleMapViewWidget(didShowDirectionButton: true,showDestinationPolyLines: true,
-                  destinationPoints: LatLng(dataModel.latitude,dataModel.longitude),),
-                ),
-              ),
-            sizeFieldLargePlaceHolder,
-
-            Row(
-              children: [
-                SvgPicture.asset(AppAssets.icVolunteerLoc),
-                sizeHorizontalFieldMediumPlaceHolder,
-               Flexible(
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   mainAxisAlignment: MainAxisAlignment.start,
-                   children: [
-                   createInfoRow(AppAssets.icPerson,"${AppStrings.noOfDeath}:", dataModel.noOfDeaths),
-                     createInfoRow(AppAssets.icCalender,AppStrings.date, dataModel.reportDate),
-                     createInfoRow(AppAssets.icTime,AppStrings.time, dataModel.reportTime),
-                     createInfoRow(AppAssets.icLocation,AppStrings.generalLocation,dataModel.generalLocation),
-                     createInfoRow(AppAssets.icCalender,AppStrings.address, dataModel.address ??"N/A")
-                 ],),
-               )
-              ],
-            ),
-        sizeFieldMediumPlaceHolder,
-              Align(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(AppAssets.icLoc),
-                    sizeHorizontalMinPlaceHolder,
-                    const CustomTextWidget(
-                      text: "10Km",
-                      colorText: AppColors.secondaryTextColor,
-                      size: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    sizeHorizontalFieldLargePlaceHolder,
-                    SvgPicture.asset(AppAssets.icClock),
-                    sizeHorizontalMinPlaceHolder,
-                    const CustomTextWidget(
-                      text: "23 min",
-                      colorText: AppColors.secondaryTextColor,
-                      size: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ],
-                ),
-              ),
-              sizeFieldMediumPlaceHolder,
-              GestureDetector(
-                onTap: (){
-                  openDialPad(context,dataModel.volunteerContactNumber);
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(AppAssets.icPhoneCall),
-                    sizeHorizontalMinPlaceHolder,
-                    const CustomTextWidget(text: AppStrings.callVolunteer,fontWeight: FontWeight.bold,),
-                  ],
-                ),
-              ),
-              sizeFieldMinPlaceHolder,
-              ButtonWidget(text: AppStrings.arrived, buttonType: ButtonType.gradient,
-               icon: SvgPicture.asset(AppAssets.icTick),
-              onPressed: (){
-                controller.showQRCodeScannerScreen(
-                  dataModel.deathReportId,
-                  onApiCallBack: (data){
-                  if(controller.transportScannedBodyCount > 1) {
-                    controller.transportScannedBodyCount--;
-                    var dataDialog = GeneralError(
-                        message: AppStrings.scanNextBody,
-                        title: AppStrings.scanSuccess
-                    );
-                    showAppThemedDialog(dataDialog,showErrorMessage: false);
-                  }
-                  else
-                    {
-                     var list = List<ProcessingCenter>.from(data.map((x) => ProcessingCenter.fromJson(x,null)));
-                    Go.to(() => ProcessingUnitListScreen(
-                          processingCenters: list,
-                          deathReportId: dataModel.deathReportId,
-                          deathCaseId: dataModel.deathCaseId,
-                        ));
-                  }
-                });
-              },
-              ),
-              sizeFieldLargePlaceHolder,
-
-            ]);
       }
     );
   }

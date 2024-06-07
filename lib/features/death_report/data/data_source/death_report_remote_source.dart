@@ -24,7 +24,7 @@ abstract class DeathReportRemoteSource {
   Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest, required UserRole userRole});
 
-  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
+  Future<Map<String,dynamic>> getDeathReportList(UserRole userRole);
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
   Future<DeathReportAlert> getDeathAlertDetail({required int deathCaseID});
@@ -147,7 +147,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
   }
 
   @override
-  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) async {
+  Future<Map<String,dynamic>> getDeathReportList(UserRole userRole) async {
     var appUrl = userRole == UserRole.volunteer
         ? AppUrls.volunteerDeathReportListUrl
         : userRole == UserRole.transport
@@ -156,11 +156,12 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
                 ? AppUrls.emergencyDeathReportListUrl
                 : AppUrls.morgueDeathReportListUrl;
 
-    return await apiManager.makeApiRequest<List<DeathReportListResponse>>(
+    return await apiManager.makeApiRequest<Map<String,dynamic>>(
         url: appUrl,
         method: RequestMethod.GET,
-        fromJson: (json) {
-          return List.from(json["data"]["reports"].map((x) => DeathReportListResponse.fromJson(x)));
+        fromJson: (json) => {
+          "reports": List<DeathReportListResponse>.from(json["data"]["reports"].map((x) => DeathReportListResponse.fromJson(x))) ,
+          "last_response_model" : json["data"]["last_response"] != null ?json["data"]["last_response"]["data"] : null
         });
   }
 
@@ -236,7 +237,6 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
 
     };
 
-    print(jsonMap.toString());
     return await apiManager.makeApiRequest<Map<String, dynamic>>(
       url: AppUrls.dropBodyToProcessUnitUrl,
       method: RequestMethod.POST,
@@ -255,7 +255,7 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         url: AppUrls.processUnitDetailUrl,
         method: RequestMethod.POST,
         data: jsonMap,
-        fromJson: (json) => ProcessingCenter.fromJson(json["data"]["processingCenters"], json["extra"]));
+        fromJson: (json) => ProcessingCenter.fromJson(json["data"]["processingCenters"], json["data"]));
   }
 
   @override

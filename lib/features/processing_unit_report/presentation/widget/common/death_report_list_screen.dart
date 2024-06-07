@@ -179,7 +179,7 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                             var listItem = paginatedList[index];
                             return SizedBox(
                                 height: Get.height * 0.42,
-                                child: ReportListItem(listItem: listItem,userRole:widget.userRole,));
+                                child: ReportListItem(listItem: listItem,userRole:widget.userRole, lastResponseModel: null,));
                           },
                         ),
                       ).wrapWithListViewSkeleton(

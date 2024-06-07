@@ -115,7 +115,10 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
             GestureDetector(
               onTap: () {
                 if (widget.dataModel.processingUsers.isNotEmpty) {
-                  showRadioOptionDialog(context, AppStrings.generalLocation, widget.dataModel.processingUsers, processingUser, (onChanged) => processingUser, (onConfirmed) {
+                  showRadioOptionDialog(context, AppStrings.generalLocation,
+                      widget.dataModel.processingUsers,
+                      processingUser,
+                          (onChanged) => processingUser, (onConfirmed) {
                     setState(() {
                       processingUser = onConfirmed!;
                       openDialPad(context, processingUser.phoneNo);
@@ -159,12 +162,14 @@ class _DropProcessUnitMapScreenState extends State<DropProcessUnitMapScreen> {
       mainAxisSize: MainAxisSize.max,
       children: [
         SvgPicture.asset(assets),
-        sizeHorizontalMinPlaceHolder,
-        CustomTextWidget(
-          text: title,
-          colorText: AppColors.hexToColor("#667085"),
-          fontWeight: FontWeight.w500,
-          size: 14,
+        sizeHorizontalFieldMediumPlaceHolder,
+        Expanded(
+          child: CustomTextWidget(
+            text: title,
+            colorText: AppColors.hexToColor("#667085"),
+            fontWeight: FontWeight.w500,
+            size: 14,
+          ),
         ),
         sizeHorizontalMinPlaceHolder,
         Flexible(

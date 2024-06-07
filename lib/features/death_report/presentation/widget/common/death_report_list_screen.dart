@@ -13,6 +13,7 @@ import 'package:mortuary/features/death_report/domain/enities/death_report_alert
 import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
 import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
+
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
@@ -23,8 +24,7 @@ import '../../../domain/enities/death_report_list_reponse.dart';
 class DeathReportListScreen extends StatefulWidget {
   final UserRole userRole;
 
-  const DeathReportListScreen({Key? key, required this.userRole})
-      : super(key: key);
+  const DeathReportListScreen({Key? key, required this.userRole}) : super(key: key);
 
   @override
   State<DeathReportListScreen> createState() => _DeathReportListScreenState();
@@ -44,175 +44,182 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   void initState() {
     super.initState();
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var controller = Get.find<DeathReportController>();
-      controller.getDeathReportList(widget.userRole).then((value) {
-        allReportsList = value;
-        getPaginatedList();
-      });
+      refreshData();
+    });
+  }
 
-      if (widget.userRole == UserRole.transport) {
-        final AuthController authController = Get.find();
-        var driverID = authController.session!.loggedUserID;
-        controller.startLocationService("$driverID");
-        controller.checkAnyAlerts().then((value) {
-          setState(() {
-            if (value.isNotEmpty) {
-              deathReportAlert = value.first;
-              hasAnyNotificationAlert = true;
-            }
-          });
-        });
-      }
+  void refreshData() {
+    var controller = Get.find<DeathReportController>();
+    controller.getDeathReportList(widget.userRole).then((value) {
+      allReportsList = value;
+      getPaginatedList();
     });
 
+    if (widget.userRole == UserRole.transport) {
+      final AuthController authController = Get.find();
+      var driverID = authController.session!.loggedUserID;
+      controller.startLocationService("$driverID");
+      controller.checkAnyAlerts().then((value) {
+        setState(() {
+          if (value.isNotEmpty) {
+            deathReportAlert = value.first;
+            hasAnyNotificationAlert = true;
+          }
+        });
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DeathReportController>(
-        initState:
-        Get.find<DeathReportController>().setUserRole(widget.userRole),
+        initState: Get.find<DeathReportController>().setUserRole(widget.userRole),
         builder: (controller) {
-      return CustomScreenWidget(
-          titleText: AppStrings.deathReportList.toUpperCase(),
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          actions: widget.userRole == UserRole.transport ?[
-            GestureDetector(
-              onTap: (){
-                controller.getDeathReportList(widget.userRole);
-                controller.checkAnyAlerts();
-
-                },
-              child: Padding(padding: const EdgeInsets.all(8),
-              child:
-              SvgPicture.asset(AppAssets.icRefresh,width: 30,height: 30,)),
-            )
-          ]:null,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  //hasAnyNotificationAlert = false;
-                });
-                Go.to(() => AcceptDeathAlertScreen(
-                      dataModel: deathReportAlert!,
-                      userRole: widget.userRole,
-                      onReportHistoryButton: () {
-                        controller.getDeathReportList(widget.userRole);
-                      },
-                    ));
-              },
-              child: Visibility(
-                  visible: hasAnyNotificationAlert,
-                  child: Card(
-                    elevation: 5,
-                    semanticContainer: false,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(13),
-                        child: Row(
-                          children: [
-                            sizeHorizontalFieldMediumPlaceHolder,
-                            SvgPicture.asset(AppAssets.icDeathAlert),
-                            sizeHorizontalFieldMediumPlaceHolder,
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  CustomTextWidget(
-                                    text:
-                                        "${AppStrings.deathAlertAt}${deathReportAlert?.address}",
-                                    colorText: Colors.black,
-                                    size: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  sizeFieldMinPlaceHolder,
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(AppAssets.icLoc),
-                                      const CustomTextWidget(
-                                        text: "10Km",
-                                        colorText: AppColors.secondaryTextColor,
-                                        size: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      sizeHorizontalFieldLargePlaceHolder,
-                                      SvgPicture.asset(AppAssets.icClock),
-                                      const CustomTextWidget(
-                                        text: "23 min",
-                                        colorText: AppColors.secondaryTextColor,
-                                        size: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomTextField(
-                suffixIcon: const Icon(Icons.search),
-                borderEnable: true,
-                text: AppStrings.search,
-                fontWeight: FontWeight.normal,
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    filterSearchResults(value);
-                  } else {
-                    setState(() {
-                      paginatedList = filteredList;
-                    });
-                  }
-                },
-              ),
-            ),
-            sizeFieldMinPlaceHolder,
-            SizedBox(
-              height: Get.height * 0.85,
-              child: RefreshIndicator(
-                onRefresh: () => controller.getDeathReportList(widget.userRole),
-                child: controller.deathReportList.isEmpty &&
-                        controller.isApiResponseLoaded == false
-                    ? const Center(
-                        child: CustomTextWidget(
-                          text: ApiMessages.dataNotFound,
-                          size: 18,
-                        ),
+          return CustomScreenWidget(
+              titleText: AppStrings.deathReportList.toUpperCase(),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              actions: widget.userRole == UserRole.transport
+                  ? [
+                      GestureDetector(
+                        onTap: () {
+                          refreshData();
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: SvgPicture.asset(
+                              AppAssets.icRefresh,
+                              width: 30,
+                              height: 30,
+                            )),
                       )
-                    : LoadMore(
-                        whenEmptyLoad: false,
-                        delegate: const DefaultLoadMoreDelegate(),
-                        isFinish: paginatedList.length ==
-                            controller.deathReportList.length,
-                        onLoadMore: getPaginationData,
-                        child: ListView.builder(
-                          physics: const ScrollPhysics(),
-                          shrinkWrap: false,
-                          itemCount: paginatedList.length,
-                          itemBuilder: (context, index) {
-                            var listItem = paginatedList[index];
-                            return SizedBox(
-                                height: Get.height * 0.45,
-                                child: ReportListItem(listItem: listItem,userRole: widget.userRole,));
-                          },
-                        ),
-                      ).wrapWithListViewSkeleton(
-                        controller.isApiResponseLoaded),
-              ),
-            )
-          ]);
-    });
+                    ]
+                  : null,
+              children: [
+                deathReportAlert != null
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            //hasAnyNotificationAlert = false;
+                          });
+                          Go.to(() => AcceptDeathAlertScreen(
+                                dataModel: deathReportAlert!,
+                                userRole: widget.userRole,
+                                onReportHistoryButton: () {
+                                  refreshData();
+                                },
+                              ));
+                        },
+                        child: Visibility(
+                            visible: false, //hasAnyNotificationAlert,
+                            child: Card(
+                              elevation: 5,
+                              semanticContainer: false,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Container(
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(13),
+                                  child: Row(
+                                    children: [
+                                      sizeHorizontalFieldMediumPlaceHolder,
+                                      SvgPicture.asset(AppAssets.icDeathAlert),
+                                      sizeHorizontalFieldMediumPlaceHolder,
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            CustomTextWidget(
+                                              text: "${AppStrings.deathAlertAt}${deathReportAlert?.address}",
+                                              colorText: Colors.black,
+                                              size: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            sizeFieldMinPlaceHolder,
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(AppAssets.icLoc),
+                                                CustomTextWidget(
+                                                  text: deathReportAlert?.distance,
+                                                  colorText: AppColors.secondaryTextColor,
+                                                  size: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                sizeHorizontalFieldLargePlaceHolder,
+                                                SvgPicture.asset(AppAssets.icClock),
+                                                CustomTextWidget(
+                                                  text: deathReportAlert?.duration,
+                                                  colorText: AppColors.secondaryTextColor,
+                                                  size: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )),
+                      )
+                    : const SizedBox(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextField(
+                    suffixIcon: const Icon(Icons.search),
+                    borderEnable: true,
+                    text: AppStrings.search,
+                    fontWeight: FontWeight.normal,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        filterSearchResults(value);
+                      } else {
+                        setState(() {
+                          paginatedList = filteredList;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                sizeFieldMinPlaceHolder,
+                SizedBox(
+                  height: Get.height * 0.85,
+                  child: RefreshIndicator(
+                    onRefresh: () => controller.getDeathReportList(widget.userRole),
+                    child: controller.deathReportList.isEmpty && controller.isApiResponseLoaded == false
+                        ? const Center(
+                            child: CustomTextWidget(
+                              text: ApiMessages.dataNotFound,
+                              size: 18,
+                            ),
+                          )
+                        : LoadMore(
+                            whenEmptyLoad: false,
+                            delegate: const DefaultLoadMoreDelegate(),
+                            isFinish: paginatedList.length == controller.deathReportList.length,
+                            onLoadMore: getPaginationData,
+                            child: ListView.builder(
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: false,
+                              itemCount: paginatedList.length,
+                              itemBuilder: (context, index) {
+                                var listItem = paginatedList[index];
+                                return SizedBox(
+                                    height: Get.height * 0.45,
+                                    child: ReportListItem(
+                                      listItem: listItem,
+                                      userRole: widget.userRole,
+                                      lastResponseModel: controller.lastResponseDataModel,
+                                    ));
+                              },
+                            ),
+                          ).wrapWithListViewSkeleton(controller.isApiResponseLoaded),
+                  ),
+                )
+              ]);
+        });
   }
 
   Future<bool> getPaginationData() async {
@@ -235,15 +242,11 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   }
 
   void filterSearchResults(String query) {
-    List<DeathReportListResponse> searchResult = allReportsList
-        .where((item) =>
-    item.idNumber.toLowerCase().contains(query.toLowerCase()) ||
-        item.bandCode.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    List<DeathReportListResponse> searchResult =
+        allReportsList.where((item) => item.idNumber.toLowerCase().contains(query.toLowerCase()) || item.bandCode.toLowerCase().contains(query.toLowerCase())).toList();
 
     setState(() {
       paginatedList = searchResult;
     });
   }
-
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
@@ -15,8 +13,9 @@ import '../widget/common/death_report_detail_screen.dart';
 class ReportListItem extends StatelessWidget {
   final DeathReportListResponse listItem;
   final UserRole userRole;
+  final dynamic lastResponseModel;
 
-  const ReportListItem({Key? key, required this.listItem, required this.userRole}) : super(key: key);
+  const ReportListItem({Key? key, required this.listItem, required this.userRole,required this.lastResponseModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +60,7 @@ class ReportListItem extends StatelessWidget {
           child: Container(
             height: 20.0,
             width: 20.0,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.hexToColor(listItem.status.color), width: 2)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.hexToColor(listItem.status.color), width: 2)),
           )),
       Positioned(
         right: 0,
@@ -80,17 +76,15 @@ class ReportListItem extends StatelessWidget {
   Widget containerReportData() {
     return GestureDetector(
       onTap: () {
-        //if(userRole != UserRole.transport) {
-          Go.to(() =>
-              DeathReportDetailScreen(
+        if (userRole != UserRole.transport) {
+          Go.to(() => DeathReportDetailScreen(
                 userRole: userRole,
                 reportId: listItem.id,
               ));
-        // }else
-        //   {
-        //    final DeathReportController controller = Get.find();
-        //    controller.getDeathAlertDetailById(deathCaseID: listItem.deathCaseID);
-        //   }
+        } else {
+          final DeathReportController controller = Get.find();
+          controller.performResumeActionOnStatusBase(-111,listItem.deathCaseID,listItem.status.statusId, lastResponseModel);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -122,7 +116,7 @@ class ReportListItem extends StatelessWidget {
                 ),
               ),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
               child: CustomTextWidget(
                 text: listItem.status.name,
@@ -152,7 +146,6 @@ class ReportListItem extends StatelessWidget {
           fontWeight: FontWeight.w500,
           size: 14,
           maxLines: 2,
-
         )
       ],
     );

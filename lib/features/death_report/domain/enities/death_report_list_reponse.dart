@@ -1,6 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:mortuary/core/utils/utils.dart';
 
+
+//To handle data in it
+class DeathReportListResult {
+  final List<DeathReportListResponse> deathReports;
+  final dynamic dataModel;
+  DeathReportListResult(this.deathReports, this.dataModel);
+}
+
+
+
 class DeathReportListResponse extends Equatable {
   DeathReportListResponse({
     required this.id,
@@ -57,15 +67,17 @@ class DeathReportListResponse extends Equatable {
 
 class Status extends Equatable {
   Status({
+    required this.statusId,
     required this.name,
     required this.color,
   });
-
+  final int statusId;
   final String name;
   final String color;
 
   factory Status.fromJson(Map<String, dynamic> json){
     return Status(
+      statusId:json['status_id'] ??0,
       name: json["name"] ?? "",
       color: json["color"] ?? "",
     );
@@ -73,5 +85,5 @@ class Status extends Equatable {
 
   @override
   List<Object?> get props => [
-    name, color, ];
+    statusId, name, color, ];
 }

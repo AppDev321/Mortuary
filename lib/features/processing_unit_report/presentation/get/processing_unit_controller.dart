@@ -335,7 +335,7 @@ class ProcessingUnitController extends GetxController {
     deathReportList.clear();
     onApiRequestStarted();
    await deathReportRepo.getDeathReportList(userRole).then((response) {
-     deathReportList = response;
+     deathReportList = response.deathReports;
       onApiResponseCompleted();
     }).onError<CustomError>((error, stackTrace) async {
         onErrorShowDialog(error);

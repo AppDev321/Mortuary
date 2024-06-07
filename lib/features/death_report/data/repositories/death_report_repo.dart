@@ -24,7 +24,7 @@ abstract class DeathReportRepo {
   Future<Map<String, dynamic>> postDeathReportForm(
       {required DeathReportFormRequest formRequest, required UserRole userRole});
 
-  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole);
+  Future<DeathReportListResult> getDeathReportList(UserRole userRole);
   Future<DeathReportDetailResponse> getDeathReportDetailsById({required int deathReportId,required UserRole userRole});
 
   Future<List<DeathReportAlert>> checkAnyAlertExits();
@@ -88,9 +88,12 @@ class DeathReportRepoImpl extends DeathReportRepo {
   }
 
   @override
-  Future<List<DeathReportListResponse>> getDeathReportList(UserRole userRole) {
+  Future<DeathReportListResult> getDeathReportList(UserRole userRole) {
     return apiManager.handleRequest(() async {
-      return await remoteDataSource.getDeathReportList(userRole);
+      var response =  await remoteDataSource.getDeathReportList(userRole);
+      var data = DeathReportListResult(response['reports'],
+          response['last_response_model']);
+      return data;
     });
   }
 
