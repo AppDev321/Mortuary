@@ -66,9 +66,9 @@ class AppStrings {
 
   static const String processingDepartment = "Processing Departments";
   static const String cleaningStation = "Cleaning Station";
-  static const String autopsyPostMartam = "Autopsy / Post Martam";
+  static const String autopsyPostMartam = "Autopsy / Post Mortem";
   static const String refrigerator = "Refrigerator";
-  static const String cementry = "Cemetry (Local Burial)";
+  static const String cementry = "Cemetery (Local Burial)";
   static const String shipToLocal = "Ship to local country";
 
 
