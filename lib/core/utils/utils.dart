@@ -3,14 +3,21 @@ import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
+import 'package:mortuary/core/constants/app_assets.dart';
+import 'package:mortuary/core/constants/place_holders.dart';
+import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../constants/app_strings.dart';
 import '../error/errors.dart';
 import '../services/network_service.dart';
 import 'package:flutter/services.dart';
+
+import '../styles/colors.dart';
 
 DateTime get lastBirthDate =>
     DateTime(2050);
@@ -360,6 +367,21 @@ openUrl(BuildContext context,String url) async {
   } else {
     showSnackBar(context, "Unable to open ");
   }
+}
+
+logoutWidget({VoidCallback?  onTap})
+{
+  return GestureDetector(
+    onTap:onTap,
+    child: Row(
+      children: [
+        SvgPicture.asset(AppAssets.icLogout),
+        const SizedBox(width: 5,),
+      //  const CustomTextWidget(text: AppStrings.logout,colorText: AppColors.secondaryTextColor,),
+       // sizeHorizontalFieldSmallPlaceHolder,
+      ],
+    ),
+  );
 }
 
 class Go {

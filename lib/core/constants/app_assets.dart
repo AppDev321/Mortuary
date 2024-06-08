@@ -48,6 +48,7 @@ class AppAssets {
   static const String icNationality = 'assets/icons/ic_nationality.svg';
   static const String icQR = 'assets/icons/ic_qr.svg';
   static const String icGender = 'assets/icons/ic_gender.svg';
+  static const String icLogout = 'assets/icons/ic_logout.svg';
 
 
 

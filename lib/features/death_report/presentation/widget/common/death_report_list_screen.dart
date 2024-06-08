@@ -19,6 +19,7 @@ import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/load_more_listview.dart';
+import '../../../../authentication/presentation/pages/login_screen.dart';
 import '../../../domain/enities/death_report_list_reponse.dart';
 
 class DeathReportListScreen extends StatefulWidget {
@@ -93,7 +94,10 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                               width: 30,
                               height: 30,
                             )),
-                      )
+                      ),
+                      logoutWidget(onTap: () {
+                        Get.offAll(() => LoginScreen());
+                      })
                     ]
                   : null,
               children: [
@@ -242,8 +246,9 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   }
 
   void filterSearchResults(String query) {
-    List<DeathReportListResponse> searchResult =
-        allReportsList.where((item) => item.idNumber.toLowerCase().contains(query.toLowerCase()) || item.bandCode.toLowerCase().contains(query.toLowerCase())).toList();
+    List<DeathReportListResponse> searchResult = allReportsList
+        .where((item) => item.idNumber.toLowerCase().contains(query.toLowerCase()) || item.bandCode.toLowerCase().contains(query.toLowerCase()))
+        .toList();
 
     setState(() {
       paginatedList = searchResult;

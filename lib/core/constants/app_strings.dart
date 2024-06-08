@@ -141,6 +141,8 @@ class AppStrings {
   // Empty String
   static const String emptyString = '';
 
+  static const String logout = "Logout";
+
   static RegExp get emailRegExp => RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static RegExp get priceRegExp => RegExp(r'^\d+\.?\d*');

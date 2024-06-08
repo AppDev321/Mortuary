@@ -6,6 +6,7 @@ import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/death_report/presentation/widget/authorized_person/reporter_map_view.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
@@ -24,6 +25,12 @@ class ReportDeathScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScreenWidget(
         crossAxisAlignment: CrossAxisAlignment.center,
+        actions: [
+          logoutWidget(
+            onTap: (){
+              Get.offAll(()=>LoginScreen());
+            }
+        )],
         children: [
           CustomTextWidget(
             text: AppStrings.reportDeath.toUpperCase(),

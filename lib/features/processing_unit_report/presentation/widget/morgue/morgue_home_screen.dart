@@ -18,6 +18,7 @@ import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/button_widget.dart';
+import '../../../../authentication/presentation/pages/login_screen.dart';
 import '../common/death_report_list_screen.dart';
 
 
@@ -38,6 +39,11 @@ class MorgueHomeScreen extends StatelessWidget {
       builder: (controller) {
         return CustomScreenWidget(
             crossAxisAlignment: CrossAxisAlignment.center,
+            actions: [
+              logoutWidget(onTap: () {
+                Get.offAll(() => LoginScreen());
+              })
+            ],
             children: [
 
               CustomTextWidget(

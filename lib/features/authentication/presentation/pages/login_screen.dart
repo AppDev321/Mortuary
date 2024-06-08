@@ -47,9 +47,9 @@ class LoginScreen extends StatelessWidget {
                         sizeFieldLargePlaceHolder,
                         CustomTextField(
                           prefixIcon: const Icon(Icons.email),
-                          headText: AppStrings.email,
+                          headText: "${AppStrings.email}/${AppStrings.phoneNumber}",
                           borderEnable: true,
-                          text: AppStrings.email,
+                          text:  "${AppStrings.email}/${AppStrings.phoneNumber}",
                           validator: EmailValidator.validator,
                           fontWeight: FontWeight.normal,
                           onChanged: authController.setEmail,
