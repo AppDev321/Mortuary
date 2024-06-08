@@ -96,7 +96,7 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
             ...departmentList.map((item) {
               return GestureDetector(
                   onTap: () {
-                    if(item.id <11) {
+                    if(item.id < 11) {
                       controller.showQRCodeScannerScreen(widget.currentUserRole, -111,
                           isMorgueScannedProcessingDepartment: true,
                           onApiCallBack: (scannedQRCode) {
@@ -140,7 +140,7 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
                               }
                             });
                           });
-                          var dataDialog = GeneralError(title:AppStrings.scanSuccess,message:AppStrings.scanSuccessMsg);
+                          var dataDialog = GeneralError(title:AppStrings.success,message:response['message']);
                           showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
                             Get.back();
                           });
@@ -151,7 +151,7 @@ class _ProcessingDepartmentScreenState extends State<ProcessingDepartmentScreen>
                       status: item.status,
                       color: item.status.toLowerCase() == "inprogress"
                           ? Colors.amber
-                          : Colors.green));
+                          :item.status.isEmpty?Colors.transparent: Colors.green));
             }).toList(),
             sizeFieldMediumPlaceHolder,
           ]);

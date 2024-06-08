@@ -8,9 +8,9 @@ class AttachmentType extends Equatable {
     this.type = ""
   });
 
-   int id;
-   String name;
-   String type;
+  int id;
+  String name;
+  String type;
   String path; // Change to mutable
 
   factory AttachmentType.fromJson(Map<String, dynamic> json){

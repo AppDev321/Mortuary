@@ -103,6 +103,8 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
       data: jsonMap,
       fromJson: (json) {
         Map<String, dynamic> result = {"data": json['data']};
+        result["message"] = json['message'];
+
         if (userRole == UserRole.volunteer || userRole == UserRole.emergency) {
           result["band_code"] = json['data']['band_code_id'];
         }
@@ -282,7 +284,10 @@ class DeathReportRemoteSourceImpl implements DeathReportRemoteSource {
         url: AppUrls.morgueScannedProcessDepartment,
         method: RequestMethod.POST,
         data: jsonMap,
-        fromJson: (json) => {"data": json['data']});
+        fromJson: (json) => {
+          "data": json['data'],
+          "message":json['message']
+        });
   }
 
   @override

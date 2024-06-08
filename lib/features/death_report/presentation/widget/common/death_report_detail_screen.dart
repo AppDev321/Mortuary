@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,6 @@ import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/enums/enums.dart';
-import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_expansion_tile.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
@@ -15,6 +16,7 @@ import 'package:mortuary/features/death_report/presentation/get/death_report_con
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/styles/colors.dart';
 import '../../../../../core/utils/utils.dart';
+import '../../../../../event_bus.dart';
 import '../../../../document_upload/domain/entity/attachment_type.dart';
 import '../../../../document_upload/init_upload.dart';
 import '../../../../document_upload/presentation/widget/document_upload_screen.dart';
@@ -31,14 +33,22 @@ class DeathReportDetailScreen extends StatefulWidget {
 }
 
 class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
+  late StreamSubscription streamSubscription;
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
       var controller = Get.find<DeathReportController>();
       controller.getDetailOfReport(widget.userRole, widget.reportId);
+
+      streamSubscription = eventBus.on<RefreshDetailReportScreen>().listen((event) {
+        if (mounted) {
+          controller.getDetailOfReport(widget.userRole, widget.reportId);
+        }
+      });
     });
+
   }
 
   @override
@@ -195,7 +205,7 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                       await showDialog(context: context, builder: (_) => imageDialog(attachment.type, attachment.path, context));
                     },
                     child: CustomTextWidget(
-                      text: attachment.path,
+                      text: AppStrings.download,
                       colorText: AppColors.hexToColor("#72AB66"),
                       textDecoration: TextDecoration.underline,
                     ))

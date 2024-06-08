@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -20,12 +22,10 @@ import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/load_more_listview.dart';
 import '../../../../death_report/domain/enities/death_report_list_reponse.dart';
 
-
 class DeathReportListScreen extends StatefulWidget {
   final UserRole userRole;
 
-  const DeathReportListScreen({Key? key, required this.userRole})
-      : super(key: key);
+  const DeathReportListScreen({Key? key, required this.userRole}) : super(key: key);
 
   @override
   State<DeathReportListScreen> createState() => _DeathReportListScreenState();
@@ -38,9 +38,9 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
   List<DeathReportListResponse> allReportsList = [];
   List<DeathReportListResponse> filteredList = [];
 
-
   bool hasAnyNotificationAlert = false;
   DeathReportAlert? deathReportAlert;
+
 
   @override
   void initState() {
@@ -53,21 +53,19 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
         getPaginatedList();
       });
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProcessingUnitController>(
-        initState:
-        Get.find<ProcessingUnitController>().setUserRole(widget.userRole),
+        initState: Get.find<ProcessingUnitController>().setUserRole(widget.userRole),
         builder: (controller) {
-      return CustomScreenWidget(
-          titleText: AppStrings.deathReportList.toUpperCase(),
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          /*  GestureDetector(
+          return CustomScreenWidget(
+              titleText: AppStrings.deathReportList.toUpperCase(),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /*  GestureDetector(
               onTap: () {
                 setState(() {
                   //hasAnyNotificationAlert = false;
@@ -153,41 +151,42 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
                   ),
                 ),
                 sizeFieldMinPlaceHolder,
-            SizedBox(
-              height: Get.height * 0.8,
-              child: RefreshIndicator(
-                onRefresh: () => controller.getDeathReportList(widget.userRole),
-                child: controller.deathReportList.isEmpty &&
-                        controller.isApiResponseLoaded == false
-                    ? const Center(
-                        child: CustomTextWidget(
-                          text: ApiMessages.dataNotFound,
-                          size: 18,
-                        ),
-                      )
-                    : LoadMore(
-                        whenEmptyLoad: false,
-                        delegate: const DefaultLoadMoreDelegate(),
-                        isFinish: paginatedList.length ==
-                            controller.deathReportList.length,
-                        onLoadMore: getPaginationData,
-                        child: ListView.builder(
-                          physics: const ScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: paginatedList.length,
-                          itemBuilder: (context, index) {
-                            var listItem = paginatedList[index];
-                            return SizedBox(
-                                height: Get.height * 0.42,
-                                child: ReportListItem(listItem: listItem,userRole:widget.userRole, lastResponseModel: null,));
-                          },
-                        ),
-                      ).wrapWithListViewSkeleton(
-                        controller.isApiResponseLoaded),
-              ),
-            )
-          ]);
-    });
+                SizedBox(
+                  height: Get.height * 0.8,
+                  child: RefreshIndicator(
+                    onRefresh: () => controller.getDeathReportList(widget.userRole),
+                    child: controller.deathReportList.isEmpty && controller.isApiResponseLoaded == false
+                        ? const Center(
+                            child: CustomTextWidget(
+                              text: ApiMessages.dataNotFound,
+                              size: 18,
+                            ),
+                          )
+                        : LoadMore(
+                            whenEmptyLoad: false,
+                            delegate: const DefaultLoadMoreDelegate(),
+                            isFinish: paginatedList.length == controller.deathReportList.length,
+                            onLoadMore: getPaginationData,
+                            child: ListView.builder(
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: paginatedList.length,
+                              itemBuilder: (context, index) {
+                                var listItem = paginatedList[index];
+                                return SizedBox(
+                                    height: Get.height * 0.42,
+                                    child: ReportListItem(
+                                      listItem: listItem,
+                                      userRole: widget.userRole,
+                                      lastResponseModel: null,
+                                    ));
+                              },
+                            ),
+                          ).wrapWithListViewSkeleton(controller.isApiResponseLoaded),
+                  ),
+                )
+              ]);
+        });
   }
 
   Future<bool> getPaginationData() async {
@@ -209,12 +208,9 @@ class _DeathReportListScreenState extends State<DeathReportListScreen> {
     });
   }
 
-
   void filterSearchResults(String query) {
     List<DeathReportListResponse> searchResult = allReportsList
-        .where((item) =>
-    item.idNumber.toLowerCase().contains(query.toLowerCase()) ||
-        item.bandCode.toLowerCase().contains(query.toLowerCase()))
+        .where((item) => item.idNumber.toLowerCase().contains(query.toLowerCase()) || item.bandCode.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     setState(() {

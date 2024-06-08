@@ -58,6 +58,9 @@ class AppStrings {
   static const String scanSuccessMsg = "QR code Scanned successfully";
   static const String select = "Select";
   static const String handOverBody='Hand Over Dead Body';
+  static const String success = "Success";
+
+
 
   static const String processingCenter = "Processing centre";
   static const String processingCenterLabel = "Please select a processing centre to drop body";
@@ -132,11 +135,12 @@ class AppStrings {
   static const String selectType = "Select Type";
   static const String uploadPic = "Upload Picture";
   static const String uploadPicMsgLabel = "Please upload the captured picture in order to confirm handing over the dead body to Burial Company / Courier.";
-
+  static const String download = "Download";
 
 
   // Empty String
   static const String emptyString = '';
+
   static RegExp get emailRegExp => RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static RegExp get priceRegExp => RegExp(r'^\d+\.?\d*');

@@ -68,11 +68,14 @@ class PUHomeScreen extends StatelessWidget {
               height: Get.height * 0.18,
               child: GestureDetector(
                   onTap: () {
-                    controller.showQRCodeScannerScreen(currentUserRole, -111, isEmergencyReceivedABody: true, onApiCallBack: (response) {
+                    controller.showQRCodeScannerScreen(currentUserRole, -111,
+                        isEmergencyReceivedABody: true, onApiCallBack: (response) {
                       var dataDialog = GeneralError(title: AppStrings.scanSuccess, message: AppStrings.scanSuccessMsg);
                       showAppThemedDialog(dataDialog, showErrorMessage: false, dissmisableDialog: false, onPressed: () {
-                     var attachmentList = response['attachmentType'] as List<AttachmentType>;
+
+                       var attachmentList = response['attachmentType'] as List<AttachmentType>;
                         var bandCodeID = response['band_code'];
+                        var message = response['message'];
                         //
                         // Get.offAll(
                         //     PUHomeScreen(currentUserRole: currentUserRole));
@@ -82,6 +85,8 @@ class PUHomeScreen extends StatelessWidget {
                               isBodyReceivedFromAmbulance: true,
                               attachmentList: attachmentList,
                               policeStationList: response['stations'],
+                             apiResponseMessage: message,
+
                             ));
                       });
                     });

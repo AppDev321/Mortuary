@@ -29,8 +29,8 @@ class UploadContainerWidget extends StatefulWidget {
       required this.currentUserRole,
       required this.bandCodeId,
       required this.headTitle,
-        required this.onFileSelected,
-        required  this.onFileCanceled,
+      required this.onFileSelected,
+      required  this.onFileCanceled,
         required this. containerId
 
       })

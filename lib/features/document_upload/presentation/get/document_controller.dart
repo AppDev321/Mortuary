@@ -7,6 +7,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/error/errors.dart';
 import '../../../../core/popups/show_popups.dart';
+import '../../../../event_bus.dart';
 import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../../builder_ids.dart';
 import '../../data/data_source/upload_remote_source.dart';
@@ -51,6 +52,7 @@ class DocumentController extends GetxController {
       onApiResponseCompleted();
       var dataDialog = GeneralError(title:AppStrings.upload,message: value['message']);
       showAppThemedDialog(dataDialog,showErrorMessage: false,onPressed: (){
+        eventBus.fire(RefreshDetailReportScreen());
         // if(userRole == UserRole.morgue){
         //   Get.back();
         // }else {

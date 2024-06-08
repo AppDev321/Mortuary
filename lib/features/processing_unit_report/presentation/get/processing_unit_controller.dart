@@ -216,6 +216,7 @@ class ProcessingUnitController extends GetxController {
                 deathFormCode: deathReportId,
                 isBodyReceivedFromAmbulance: false,
                 policeStationList: value['stations'] as List<Station>,
+                apiResponseMessage: value['message'] ,
               ));
         } else {
           Go.to(() => PUDeathReportFormScreen(deathBodyBandCode: value['band_code'], deathFormCode: deathReportId,policeStationsList: value['stations'] as List<Station>,));
@@ -293,6 +294,7 @@ class ProcessingUnitController extends GetxController {
         isBodyReceivedFromAmbulance: false,
         policeStationList: policeStationList,
         attachmentList: attachmentList,
+        apiResponseMessage: response['message'] ,
       ));
 
       /*if(attachmentList.isNotEmpty) {

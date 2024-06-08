@@ -15,10 +15,12 @@ import 'package:mortuary/features/authentication/presentation/component/gender_o
 import 'package:mortuary/features/document_upload/init_upload.dart';
 import 'package:mortuary/features/document_upload/presentation/widget/document_upload_screen.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
+import 'package:mortuary/features/processing_unit_report/presentation/widget/common/death_report_list_screen.dart';
 
 import '../../../../../core/constants/api_messages.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
+import '../../../../../core/error/errors.dart';
 import '../../../../../core/utils/app_config_service.dart';
 import '../../../../../core/widgets/button_widget.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
@@ -34,13 +36,14 @@ class PoliceStationScreen extends StatefulWidget {
   final bool isBodyReceivedFromAmbulance;
   final List<AttachmentType> attachmentList;
   final List<Station> policeStationList;
+  final String apiResponseMessage;
 
   PoliceStationScreen({
     Key? key,
     required this.deathBodyBandCode,
     required this.deathFormCode,
     required this.isBodyReceivedFromAmbulance,
-    List<AttachmentType>? attachmentList, required this.policeStationList,
+    List<AttachmentType>? attachmentList, required this.policeStationList, required this.apiResponseMessage,
   })  : this.attachmentList = attachmentList ?? [],
         // Assign default value here
         super(key: key);
@@ -104,11 +107,25 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
                     () async {
                       await initUpload();
                 //  if (widget.isBodyReceivedFromAmbulance) {
-                    Get.off(() => DocumentUploadScreen(
-                        currentUserRole: UserRole.emergency, bandCodeId: widget.deathBodyBandCode, attachmentsTypes: widget.attachmentList));
+                 //   Get.off(() => DocumentUploadScreen(
+                   //     currentUserRole: UserRole.emergency, bandCodeId: widget.deathBodyBandCode, attachmentsTypes: widget.attachmentList));
                 //  } else {
                  //   Go.to(() => PUDeathReportFormScreen(deathBodyBandCode: widget.deathBodyBandCode, deathFormCode: widget.deathFormCode));
                 //  }
+                      if (widget.attachmentList.isNotEmpty) {
+                        await initUpload();
+                          Get.off(() => DocumentUploadScreen(
+                            currentUserRole: UserRole.emergency, bandCodeId: widget.deathBodyBandCode, attachmentsTypes: widget.attachmentList));
+
+                      }
+                      else {
+                        var dialog = GeneralError(title: AppStrings.success, message: widget.apiResponseMessage);
+                        showAppThemedDialog(dialog, showErrorMessage: false, dissmisableDialog: false, onPressed: () {
+                           Get.offAll(() => const DeathReportListScreen(userRole: UserRole.emergency));
+                        });
+                      }
+
+
                 });
               }
             },
