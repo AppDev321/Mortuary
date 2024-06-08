@@ -59,9 +59,9 @@ class OTPRequestScreen extends StatelessWidget {
                           headText: AppStrings.email,
                           borderEnable: true,
                           text: AppStrings.email,
-                          validator: EmailValidator.validator,
+                          //validator: EmailValidator.validator,
                           fontWeight: FontWeight.normal,
-                          onChanged: authController.setPhone,
+                          onChanged: authController.setEmail,
                         ),
                         sizeFieldMediumPlaceHolder,
                         CustomTextField(
@@ -72,7 +72,7 @@ class OTPRequestScreen extends StatelessWidget {
                           validator: PhoneValidator.validator,
                           fontWeight: FontWeight.normal,
                           onChanged: authController.setPhone,
-                          inputFormatters: [ FilteringTextInputFormatter.digitsOnly,],
+                         // inputFormatters: [ FilteringTextInputFormatter.digitsOnly,],
                         ),
                         sizeFieldLargePlaceHolder,
                         ButtonWidget(
