@@ -2,6 +2,8 @@ import UIKit
 import Flutter
 import GoogleMaps
 import Firebase
+import AppTrackingTransparency
+
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -18,4 +20,13 @@ import Firebase
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+
+   override func applicationDidBecomeActive(_ application: UIApplication) {
+          if #available(iOS 14, *) {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+          ATTrackingManager.requestTrackingAuthorization { status in
+                  }
+              }
+          }
+      }
 }

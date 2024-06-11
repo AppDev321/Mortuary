@@ -72,18 +72,17 @@ class OTPRequestScreen extends StatelessWidget {
                           validator: PhoneValidator.validator,
                           fontWeight: FontWeight.normal,
                           onChanged: authController.setPhone,
-                         // inputFormatters: [ FilteringTextInputFormatter.digitsOnly,],
+                          // inputFormatters: [ FilteringTextInputFormatter.digitsOnly,],
                         ),
                         sizeFieldLargePlaceHolder,
                         ButtonWidget(
                           isLoading: authController.isAuthenticating,
                           text: AppStrings.requestCode,
                           buttonType: ButtonType.gradient,
-                          textStyle: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                           onPressed: () {
                             if (otpRequestFormKey.currentState!.validate()) {
-                                authController.forgotPassword(context);
+                              authController.forgotPassword(context);
                             }
                           },
                         )

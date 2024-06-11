@@ -20,7 +20,7 @@ import 'features/processing_unit_report/presentation/widget/morgue/processing_de
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // await Firebase.initializeApp();
-  print("background notification");
+  debugPrint("background notification");
   PushNotifications().firebaseMessagingBackgroundHandler(message);
 }
 
