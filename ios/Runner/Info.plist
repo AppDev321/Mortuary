@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.mortuaryapp.mortuary.backgroundtask</string>
+		<string>com.mortuary.mortuaryapp.backgroundtask</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
@@ -31,13 +31,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes</string>
+	<string>This app needs Camera access to scan QR codes and upload picture as document</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This application requires location services to get location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This application requires location services to get location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>It will help us get the more accurate location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs Photo access to upload picture as document</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>This application requires location services to get location</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
