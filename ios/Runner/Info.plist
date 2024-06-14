@@ -31,17 +31,17 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs Camera access to scan QR codes and upload picture as document</string>
+	<string>Scan and Capture Medical Document of Deceased Body</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This application requires location services to get location</string>
+	<string>Application requires location service to get realtime location of dead body</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This application requires location services to get location</string>
+	<string>Application requires location service to get realtime location of dead body</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>It will help us get the more accurate location</string>
+	<string>Application requires location service to get realtime location of dead body</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs Photo access to upload picture as document</string>
+	<string>To Upload Medical Document of Deceased Body</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>This application requires location services to get location</string>
+	<string>Application requires location services to get realtime location of dead body</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
