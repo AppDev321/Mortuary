@@ -33,15 +33,15 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Scan and Capture Medical Document of Deceased Body</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Application requires location service to get realtime location of dead body</string>
+	<string>Application requires location service to get realtime location of Deceased Body</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Application requires location service to get realtime location of dead body</string>
+	<string>Application requires location service to get realtime location of Deceased Body</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Application requires location service to get realtime location of dead body</string>
+	<string>Application requires location service to get realtime location of Deceased Body</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To Upload Medical Document of Deceased Body</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Application requires location services to get realtime location of dead body</string>
+	<string>Application requires location services to get realtime location of Deceased Body</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

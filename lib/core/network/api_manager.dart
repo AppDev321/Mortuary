@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' as GETX;
+import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/network/dio_client.dart';
 import 'package:mortuary/core/network/dio_exception.dart';
 import 'package:mortuary/core/network/request_interceptor.dart';
@@ -19,6 +20,7 @@ class ApiResponse {
   final bool status;
   final String message;
   Map<String, dynamic>? data;
+
   ApiResponse(this.data, this.error, this.status, this.message);
 }
 
@@ -29,7 +31,6 @@ class ApiManager {
 
   ApiManager(this._dio, this.secureStorage, this.networkInfo);
 
-
   String? get token {
     try {
       return GETX.Get.find<AuthController>().session?.sessionId;
@@ -38,7 +39,6 @@ class ApiManager {
     }
   }
 
-
   Future<ApiResponse> callNetworkApiRequest<T>({
     required String url,
     required RequestMethod method,
@@ -46,7 +46,6 @@ class ApiManager {
     bool sendJSONFormatRequest = false,
     dynamic files,
   }) async {
-
     Response? response;
     try {
       var options = Options(
@@ -54,9 +53,11 @@ class ApiManager {
         validateStatus: (status) {
           return true;
         },
-        headers: token != null ? {
-          "Authorization": "Bearer $token",
-        } : {},
+        headers: token != null
+            ? {
+                "Authorization": "Bearer $token",
+              }
+            : {},
       );
       switch (method) {
         case RequestMethod.GET:
@@ -65,13 +66,10 @@ class ApiManager {
         case RequestMethod.POST:
           if (files != null) {
             response = await _dio.post(url, options: options, data: files);
-          }
-          else if(sendJSONFormatRequest)
-            {
-              response = await _dio.post(url,
-                  options: options, data: jsonEncode(data ?? {}));
-            }
-          else {
+          } else if (sendJSONFormatRequest) {
+            response = await _dio.post(url,
+                options: options, data: jsonEncode(data ?? {}));
+          } else {
             response = await _dio.post(url,
                 options: options, data: FormData.fromMap(data ?? {}));
           }
@@ -84,39 +82,38 @@ class ApiManager {
       final Map<String, dynamic> decodedJson = response.data;
 
       if (response.statusCode == 200) {
-       // return ApiResponse(decodedJson, null, true, decodedJson['message']);
-        return ApiResponse(decodedJson, null, true,"");
-      }
-      else if (response.data != null) {
+        // return ApiResponse(decodedJson, null, true, decodedJson['message']);
+        return ApiResponse(decodedJson, null, true, "");
+      } else if (response.data != null) {
         var error = decodedJson['errors'] as String;
         error = error.replaceAll("###", "\n");
         return ApiResponse(
             null,
-            GeneralError(message: error,title: decodedJson['message']),
+            GeneralError(message: error, title: decodedJson['message']),
             false,
             "Failed to get data");
       } else {
-
         throw DioExceptions.fromDioError(DioError(
           response: response,
           requestOptions: RequestOptions(path: url),
         ));
       }
     } catch (e) {
-      if(response!=null)
-        {
-        throw  DioExceptions.fromDioError(DioError(
-            response: response,
-            requestOptions: RequestOptions(path: url),
-          ));
-        }
-     else {
+      if (response != null) {
+        throw DioExceptions.fromDioError(DioError(
+          response: response,
+          requestOptions: RequestOptions(path: url),
+        ));
+      } else if (e.toString().contains("connectiontimeout") ||
+          e.toString().contains("Failed host lookup")) {
+        return ApiResponse(null, GeneralError(message: ApiMessages.serverNotAvailable),
+            false, "Failed to get data");
+      } else {
         return ApiResponse(null, GeneralError(message: e.toString()), false,
-          "Failed to get data");
+            "Failed to get data");
       }
     }
   }
-
 
   Future<T> handleRequest<T>(Future<T> Function() request) async {
     await checkNetwork(networkInfo);
@@ -131,8 +128,8 @@ class ApiManager {
         message: exception is DioError
             ? exception.message
             : exception is GeneralError
-            ? exception.message
-            : exception.toString(),
+                ? exception.message
+                : exception.toString(),
         stackTrace: stackTrace.toString(),
       ));
     }
@@ -144,11 +141,12 @@ class ApiManager {
     Map<String, dynamic>? data,
     required T Function(Map<String, dynamic>) fromJson,
     bool sendJSONFormatRequest = false,
-
   }) async {
     final response = await callNetworkApiRequest<ApiResponse>(
         sendJSONFormatRequest: sendJSONFormatRequest,
-        url: url, method: method, data: data);
+        url: url,
+        method: method,
+        data: data);
 
     if (response.error != null) {
       return Future.error(response.error!);
@@ -164,7 +162,10 @@ class ApiManager {
     required T Function(Map<String, dynamic>) fromJson,
   }) async {
     final response = await callNetworkApiRequest<ApiResponse>(
-        url: url, method: method, files: data,);
+      url: url,
+      method: method,
+      files: data,
+    );
 
     if (response.error != null) {
       return Future.error(response.error!);
@@ -172,6 +173,4 @@ class ApiManager {
       return fromJson(response.data!);
     }
   }
-
-
 }

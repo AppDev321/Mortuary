@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                         CustomTextWidget(
                           text: AppStrings.login.toUpperCase(),
                           colorText: AppColors.themeTextColor,
-                          size: 24,
+                          size: 28,
                           fontWeight: FontWeight.w800,
                         ),
                         sizeFieldLargePlaceHolder,
