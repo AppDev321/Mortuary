@@ -104,7 +104,7 @@ class ApiManager {
           response: response,
           requestOptions: RequestOptions(path: url),
         ));
-      } else if (e.toString().contains("connectiontimeout") ||
+      } else if (e.toString().contains("timed out") ||
           e.toString().contains("Failed host lookup")) {
         return ApiResponse(null, GeneralError(message: ApiMessages.serverNotAvailable),
             false, "Failed to get data");

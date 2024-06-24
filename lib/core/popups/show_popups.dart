@@ -219,6 +219,7 @@ showAppThemedDialog(CustomError? error,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Material(
+                color: Colors.white,
                 child: Column(
                   children: [
                     SvgPicture.asset(showErrorMessage?AppAssets.icErrorAlert:AppAssets.icSuccessAlert),
