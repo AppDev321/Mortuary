@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:mortuary/core/network/request_interceptor.dart';
+import 'package:mortuary/core/network/log_debugger_style.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 import '../enums/socket_enum.dart';
 

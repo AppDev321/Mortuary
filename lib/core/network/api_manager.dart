@@ -6,7 +6,7 @@ import 'package:get/get.dart' as GETX;
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/network/dio_client.dart';
 import 'package:mortuary/core/network/dio_exception.dart';
-import 'package:mortuary/core/network/request_interceptor.dart';
+import 'package:mortuary/core/network/log_debugger_style.dart';
 
 import '../../features/authentication/presentation/get/auth_controller.dart';
 import '../error/errors.dart';
@@ -93,14 +93,14 @@ class ApiManager {
             false,
             "Failed to get data");
       } else {
-        throw DioExceptions.fromDioError(DioError(
+        throw DioExceptions.fromDioError(DioException(
           response: response,
           requestOptions: RequestOptions(path: url),
         ));
       }
     } catch (e) {
       if (response != null) {
-        throw DioExceptions.fromDioError(DioError(
+        throw DioExceptions.fromDioError(DioException(
           response: response,
           requestOptions: RequestOptions(path: url),
         ));
