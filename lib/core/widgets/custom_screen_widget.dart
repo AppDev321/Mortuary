@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 
-import '../constants/app_assets.dart';
 import '../styles/colors.dart';
 import 'custom_text_widget.dart';
 
@@ -40,7 +37,7 @@ class CustomScreenWidget extends StatelessWidget {
             backgroundColor:Colors.white,
             actions: actions,
             leadingWidth: 0,
-            leading: SizedBox(),
+            leading: const SizedBox(),
             //leading:
                 // isDrawerEnabled
                 //     ? IconButton(

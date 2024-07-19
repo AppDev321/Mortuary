@@ -96,10 +96,10 @@ class ReportListItem extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(width: 1, color: Color(0xFFE1E5F0)),
+                border: Border.all(width: 1, color: const Color(0xFFE1E5F0)),
                 color: Colors.white,
               ),
-              margin: EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.only(bottom: 10),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Table(

@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/place_holders.dart';
 import '../../../../core/styles/colors.dart';
-import '../../../../core/utils/utils.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/button_widget.dart';
-import '../../../../core/widgets/custom_password_field.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
 import '../../builder_ids.dart';
 import '../get/auth_controller.dart';
-import 'otp_verification_screen.dart';
 
 class OTPRequestScreen extends StatelessWidget {
   OTPRequestScreen({super.key});

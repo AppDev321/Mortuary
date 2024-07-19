@@ -14,7 +14,6 @@ import '../../../../../core/enums/enums.dart';
 import '../../../../../core/widgets/custom_screen_widget.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/custom_text_widget.dart';
-import '../../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 
 class DeathCountScreen extends StatelessWidget {
   final UserRole currentUserRole;

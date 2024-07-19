@@ -33,7 +33,7 @@ extension WidgetsExtensions on Widget {
           shrinkWrap: true, // Add this line
           primary: false,   // Add this line
           itemBuilder: (context, index) {
-            return CustomShimmer(height: 100);
+            return const CustomShimmer(height: 100);
           },
           itemCount: 10,
         ),

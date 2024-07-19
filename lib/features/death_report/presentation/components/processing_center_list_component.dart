@@ -11,7 +11,6 @@ import 'package:mortuary/features/death_report/presentation/get/death_report_con
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
-import '../../domain/enities/death_report_list_reponse.dart';
 import '../widget/transport/drop_process_unit_map_view.dart';
 
 class ProcessingCenterRowItemWidget extends StatefulWidget {
@@ -37,7 +36,7 @@ class _ProcessingCenterRowItemWidgetState extends State<ProcessingCenterRowItemW
     return GetBuilder<DeathReportController>(
       builder: (controller) {
         return Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: AppColors.secondaryTextColor, width: 1)),

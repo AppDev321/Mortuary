@@ -1,6 +1,3 @@
-import 'package:flutter_launcher_icons/config/config.dart';
-import 'package:mortuary/core/utils/app_config_service.dart';
-import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/document_upload/domain/entity/attachment_type.dart';
 import 'package:mortuary/features/splash/domain/entities/splash_model.dart';

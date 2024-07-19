@@ -4,9 +4,9 @@ import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 
 class CustomGenderRadio extends StatelessWidget {
-  Gender _gender;
+  final Gender _gender;
 
-  CustomGenderRadio(this._gender);
+  const CustomGenderRadio(this._gender, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CustomGenderRadio extends StatelessWidget {
         border: Border.all(width: 2,color: _gender.isSelected ?Theme.of(context).primaryColor:Colors.grey.withOpacity(0.5))
       ),
       alignment: Alignment.center,
-      margin:  EdgeInsets.all(5.0),
+      margin:  const EdgeInsets.all(5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

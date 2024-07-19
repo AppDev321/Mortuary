@@ -132,8 +132,8 @@ class _UploadContainerWidgetState extends State<UploadContainerWidget> {
           Visibility(
               visible: isContainerVisible,
               child: Container(
-                padding: EdgeInsets.all(10.0),
-                margin: EdgeInsets.only(left: 16, top: 10),
+                padding: const EdgeInsets.all(10.0),
+                margin: const EdgeInsets.only(left: 16, top: 10),
                 decoration: BoxDecoration(
                   color: AppColors.hexToColor("#E1E5F0"),
                   borderRadius: BorderRadius.circular(30.0),

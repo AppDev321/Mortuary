@@ -6,7 +6,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/utils/scoped_function.dart';
-import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -97,7 +96,7 @@ class NotificationService {
     try {
       await plugin.show(notificationID++, title, msg, notificationDetails, payload: payload);
     } catch (ex) {
-      print("notificaiton exception ==>" + ex.toString());
+      print("notificaiton exception ==>$ex");
     }
   }
 
@@ -111,7 +110,7 @@ class NotificationService {
 
     AndroidNotificationDetails androidNotificationDetails;
 
-    final channelName = 'Text messages';
+    const channelName = 'Text messages';
 
     androidNotificationDetails = AndroidNotificationDetails(channelName, channelName,
         importance: Importance.max,
@@ -131,7 +130,7 @@ class NotificationService {
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.dateAndTime);
     } catch (ex) {
-      print("notificaiton exception ==>" + ex.toString());
+      print("notificaiton exception ==>$ex");
     }
   }
 
@@ -145,7 +144,7 @@ class NotificationService {
 
     AndroidNotificationDetails androidNotificationDetails;
 
-    final channelName = 'Text messages';
+    const channelName = 'Text messages';
 
     androidNotificationDetails = AndroidNotificationDetails(channelName, channelName,
         importance: Importance.max,
@@ -169,7 +168,7 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       );
     } catch (ex) {
-      print("notificaiton exception ==>" + ex.toString());
+      print("notificaiton exception ==>$ex");
     }
   }
 
@@ -184,7 +183,7 @@ class NotificationService {
 
     AndroidNotificationDetails androidNotificationDetails;
 
-    final channelName = 'Text messages';
+    const channelName = 'Text messages';
 
     androidNotificationDetails = AndroidNotificationDetails(channelName, channelName,
         importance: Importance.max,
@@ -198,12 +197,12 @@ class NotificationService {
 
     var notificationDetails = NotificationDetails(android: androidNotificationDetails, iOS: iosNotificationDetails);
 
-    final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
+    final String timeZoneName = await FlutterTimezone.getLocalTimezone();
     debugPrint("timeZoneName=$timeZoneName");
-    tz.setLocalLocation(tz.getLocation(timeZoneName!));
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     int? hour = int.tryParse(hourAndMinute!.substring(0, 2));
-    int? minute = int.tryParse(hourAndMinute!.substring(3, 5));
+    int? minute = int.tryParse(hourAndMinute.substring(3, 5));
     if (hour == null || minute == null) {
       debugPrint("Cannot parse $hourAndMinute. Not sch");
       return;

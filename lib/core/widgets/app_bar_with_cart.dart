@@ -4,7 +4,7 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback onCartPressed;
 
-  CartAppBar({
+  const CartAppBar({super.key, 
     required this.title,
     required this.onCartPressed,
   });
@@ -15,7 +15,7 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       actions: [
         IconButton(
-          icon: Icon(Icons.shopping_cart_outlined),
+          icon: const Icon(Icons.shopping_cart_outlined),
           onPressed: onCartPressed,
         ),
       ],
@@ -23,5 +23,5 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

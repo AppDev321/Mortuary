@@ -20,7 +20,7 @@ class UploadPictureScreen extends StatefulWidget {
   final UserRole currentUserRole;
   final int deathCaseID;
 
-  UploadPictureScreen(
+  const UploadPictureScreen(
       {Key? key, required this.currentUserRole, required this.deathCaseID})
       : super(key: key);
 

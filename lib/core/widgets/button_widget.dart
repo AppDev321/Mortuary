@@ -124,7 +124,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         : (widget.color ?? AppColors.primaryColor);
   }
 
-  var buttonGradientColor = LinearGradient(
+  var buttonGradientColor = const LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     colors: [

@@ -9,7 +9,7 @@ enum AnimationType {
 }
 
 class CustomAnimatedWidget extends StatefulWidget {
-  CustomAnimatedWidget({
+  const CustomAnimatedWidget({
     Key? key,
 
     /// The Widget to be animated
@@ -63,8 +63,9 @@ class _CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(widget.delayDuration);
-      if (widget.enabled && !isAnimationControllerDisposed)
+      if (widget.enabled && !isAnimationControllerDisposed) {
         animationController.forward();
+      }
     });
   }
 
@@ -105,6 +106,7 @@ class _CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
     }
   }
 
+  @override
   dispose() {
     animationController.dispose();
     isAnimationControllerDisposed = true;

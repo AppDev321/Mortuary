@@ -122,7 +122,7 @@ class DeathReportController extends GetxController {
       Placemark place = placeMarksList[0];
       var currentAddress = "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
-      debugPrint("Force Location ==> ${currentAddress}");
+      debugPrint("Force Location ==> $currentAddress");
 
       initiateDeathReportToServer(value.latitude, value.longitude, currentAddress, userRole);
     }).onError((error, stackTrace) {

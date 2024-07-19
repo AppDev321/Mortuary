@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ReportDeathResponse extends Equatable {
-  ReportDeathResponse(
+  const ReportDeathResponse(
       {required this.deathReportId,
       required this.volunteerId,
       required this.generalLocationId,

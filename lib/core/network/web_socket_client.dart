@@ -67,7 +67,7 @@ class WebSocketService {
   }
 
   void sendMessage(dynamic message) {
-    logDebug('Sending Message to Socket: ${message}');
+    logDebug('Sending Message to Socket: $message');
     channel.send(message);
   }
 

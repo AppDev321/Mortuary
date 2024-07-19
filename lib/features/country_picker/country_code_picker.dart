@@ -65,8 +65,8 @@ class CountryPickerWidget extends StatefulWidget {
 class _CountryPickerWidgetState extends State<CountryPickerWidget> {
   List<dynamic> _list = [];
   List<dynamic> _filteredList = [];
-  TextEditingController _controller = new TextEditingController();
-  ScrollController _scrollController = new ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   dynamic _currentCountry;
 
@@ -136,7 +136,7 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
                   (element) => element.callingCode == country.callingCode);
           _list.insert(0, country);
         }
-      } catch (e) {} finally {
+      } finally {
         setState(() {
           _filteredList = _list.map((e) => e).toList();
           _isLoading = false;
@@ -167,7 +167,7 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
                   suffixIcon: Visibility(
                     visible: _controller.text.isNotEmpty,
                     child: InkWell(
-                      child: Icon(Icons.clear),
+                      child: const Icon(Icons.clear),
                       onTap: () => setState(() {
                         _controller.clear();
                         _filteredList.clear();
@@ -176,11 +176,11 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
                     ),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(),
+                    borderSide: const BorderSide(),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   contentPadding:
-                      EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                      const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
                   hintText: widget.searchHintText,
                 ),
             textInputAction: TextInputAction.done,
@@ -191,13 +191,13 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
         sizeFieldMinPlaceHolder,
         Expanded(
           child: _isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : ListView.separated(
-                  padding: EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   controller: _scrollController,
                   itemCount: _filteredList.length,
                   separatorBuilder: (_, index) =>
-                      widget.showSeparator ? Divider() : Container(),
+                      widget.showSeparator ? const Divider() : Container(),
                   itemBuilder: (_, index) {
                     return InkWell(
                       onTap: () {

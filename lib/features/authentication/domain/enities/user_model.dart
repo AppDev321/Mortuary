@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -17,7 +16,7 @@ class User extends Equatable {
   final String? emailVerified;
   final String? idVerified; // Added field
 
-  User({
+  const User({
     required this.name,
     required this.email,
     required this.walletBalance,

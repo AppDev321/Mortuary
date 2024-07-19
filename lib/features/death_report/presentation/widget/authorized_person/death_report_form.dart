@@ -19,13 +19,12 @@ import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/utils/app_config_service.dart';
 import '../../../../../core/widgets/button_widget.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
-import '../../../../splash/domain/entities/splash_model.dart';
 
 class DeathReportFormScreen extends StatefulWidget {
   final int deathBodyBandCode;
   final int deathFormCode;
 
-  DeathReportFormScreen(
+  const DeathReportFormScreen(
       {Key? key, required this.deathBodyBandCode, required this.deathFormCode})
       : super(key: key);
 
@@ -147,8 +146,9 @@ class _DeathReportFormScreenState extends State<DeathReportFormScreen> {
                         splashColor: Colors.pinkAccent,
                         onTap: () {
                           setState(() {
-                            genders
-                                .forEach((gender) => gender.isSelected = false);
+                            for (var gender in genders) {
+                              gender.isSelected = false;
+                            }
                             e.isSelected = true;
 
                             selectedGender = e;

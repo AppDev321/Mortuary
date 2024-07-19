@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/app_config_service.dart';
 
 class AppConfig extends Equatable {
-  AppConfig({
+  const AppConfig({
     required this.ageGroup,
     required this.genders,
     required this.languages,
@@ -100,7 +99,7 @@ class AppConfig extends Equatable {
 }
 
 class RadioOption extends Equatable {
-  RadioOption({
+  const RadioOption({
     required this.id,
     required this.name,
     required this.nationality
@@ -128,7 +127,7 @@ class RadioOption extends Equatable {
 }
 
 class Station extends Equatable {
-  Station({
+  const Station({
     required this.id,
     required this.name,
     required this.latitude,
@@ -161,7 +160,7 @@ class Station extends Equatable {
 }
 
 class StationPoc extends Equatable {
-  StationPoc({
+  const StationPoc({
     required this.id,
     required this.name,
     required this.contactNo,

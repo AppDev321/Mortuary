@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/utils/utils.dart';
 
 class DeathReportAlert extends Equatable {
-  DeathReportAlert({
+  const DeathReportAlert({
     required this.deathReportId,
     required this.volunteerId,
     required this.generalLocation,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static final int primaryColorHex = 0xFFF1FFEA;
+  static const int primaryColorHex = 0xFFF1FFEA;
   static final Color primaryColor = hexToColor("#F1FFEA");
 
   static const Color blackColor = Colors.black;

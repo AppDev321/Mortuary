@@ -27,7 +27,7 @@ class PUDeathReportFormScreen extends StatefulWidget {
   final List<Station> policeStationsList;
 
 
-  PUDeathReportFormScreen(
+  const PUDeathReportFormScreen(
       {Key? key, required this.deathBodyBandCode, required this.deathFormCode, required this.policeStationsList})
       : super(key: key);
 
@@ -147,8 +147,9 @@ class _PUDeathReportFormScreenState extends State<PUDeathReportFormScreen> {
                         splashColor: Colors.pinkAccent,
                         onTap: () {
                           setState(() {
-                            genders
-                                .forEach((gender) => gender.isSelected = false);
+                            for (var gender in genders) {
+                              gender.isSelected = false;
+                            }
                             e.isSelected = true;
 
                             selectedGender = e;

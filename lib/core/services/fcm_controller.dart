@@ -8,7 +8,7 @@ import 'package:mortuary/core/services/push_notification_sevice.dart';
 class FCMController extends GetxController {
 
   var fcmToken = "".obs;
-  var notification = RemoteMessage().obs;
+  var notification = const RemoteMessage().obs;
 
 
   @override

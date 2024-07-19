@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -13,13 +11,10 @@ import 'package:mortuary/core/utils/widget_extensions.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/authentication/presentation/get/auth_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/authorized_person/reporter_map_view.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/utils.dart';
-import '../../../../../core/widgets/button_widget.dart';
-import '../common/death_report_list_screen.dart';
 import 'morgue_upload_picture.dart';
 
 class ProcessDepartment {

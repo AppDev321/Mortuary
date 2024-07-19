@@ -3,7 +3,7 @@ import 'package:mortuary/features/document_upload/domain/entity/attachment_type.
 
 
 class DeathReportDetailResponse extends Equatable {
-  DeathReportDetailResponse({
+  const DeathReportDetailResponse({
     required this.alerts,
     required this.emergency,
     required this.morgue,
@@ -33,7 +33,7 @@ class DeathReportDetailResponse extends Equatable {
 }
 
 class DeathAlertDetail extends Equatable {
-  DeathAlertDetail({
+  const DeathAlertDetail({
     required this.bandCode,
     required this.visaType,
     required this.idNumber,
@@ -88,7 +88,7 @@ class DeathAlertDetail extends Equatable {
 
 
 class EmergencyDetail extends Equatable {
-  EmergencyDetail({
+  const EmergencyDetail({
     required this.processingCenter,
     required this.pocName,
     required this.pocPhone,
@@ -125,7 +125,7 @@ class EmergencyDetail extends Equatable {
 
 
 class MorgueDetail extends Equatable {
-  MorgueDetail({
+  const MorgueDetail({
     required this.processingCenter,
     required this.pocName,
     required this.pocPhone,
@@ -161,7 +161,7 @@ class MorgueDetail extends Equatable {
 }
 
 class TransportDetail extends Equatable {
-  TransportDetail({
+  const TransportDetail({
     required this.driverName,
     required this.contactNo,
     required this.email,

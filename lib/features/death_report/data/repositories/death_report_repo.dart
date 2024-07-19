@@ -1,4 +1,3 @@
-import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 
 import '../../../../core/enums/enums.dart';
 import '../../../../core/network/api_manager.dart';

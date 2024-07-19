@@ -1,34 +1,26 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
 import 'package:mortuary/core/enums/enums.dart';
-import 'package:mortuary/core/services/notification_service.dart';
 import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_form_params.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_list_reponse.dart';
-import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
 import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/common/death_report_list_screen.dart';
 
 import '../../../../../core/error/errors.dart';
 import '../../../../../core/popups/show_popups.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../death_report/data/repositories/death_report_repo.dart';
-import '../../../death_report/domain/enities/death_report_alert.dart';
 import '../../../document_upload/domain/entity/attachment_type.dart';
-import '../../../document_upload/init_upload.dart';
-import '../../../document_upload/presentation/widget/document_upload_screen.dart';
 import '../../../google_map/get/google_map_controller.dart';
 import '../../../qr_scanner/presentation/widget/ai_barcode_scanner.dart';
 import '../../../splash/domain/entities/splash_model.dart';
 import '../../builder_ids.dart';
 
 import '../widget/processing_unit/death_report_form.dart';
-import '../widget/processing_unit/home_screen.dart';
 import '../widget/processing_unit/police_station_screen.dart';
 
 class ProcessingUnitController extends GetxController {
@@ -130,7 +122,7 @@ class ProcessingUnitController extends GetxController {
       Placemark place = placeMarksList[0];
       var currentAddress = "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
-      debugPrint("Force Location ==> ${currentAddress}");
+      debugPrint("Force Location ==> $currentAddress");
 
       initiateDeathReportToServer(value.latitude, value.longitude, currentAddress, userRole, onApiCallBack: onApiCallBack);
     }).onError((error, stackTrace) {

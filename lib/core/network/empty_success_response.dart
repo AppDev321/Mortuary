@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class EmptyResponse extends Equatable {
-  EmptyResponse({
+  const EmptyResponse({
     required this.status,
     required this.message,
     required this.data,

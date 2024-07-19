@@ -63,7 +63,7 @@ class ProcessingCenter extends Equatable {
 
 
 class ProcessingUser extends Equatable {
-  ProcessingUser({
+  const ProcessingUser({
     required this.name,
     required this.phoneNo,
   });

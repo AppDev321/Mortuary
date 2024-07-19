@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
 
 class AppIcons {
   static const IconData iconEdit = Icons.edit_outlined;

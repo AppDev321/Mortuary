@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/api_messages.dart';
-import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/utils/widget_extensions.dart';
@@ -13,12 +11,8 @@ import 'package:mortuary/core/widgets/custom_text_field.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/presentation/components/report_list_component.dart';
-import 'package:mortuary/features/death_report/presentation/get/death_report_controller.dart';
-import 'package:mortuary/features/death_report/presentation/widget/transport/accept_report_death_screen.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
 import '../../../../../core/constants/app_strings.dart';
-import '../../../../../core/styles/colors.dart';
-import '../../../../../core/utils/utils.dart';
 import '../../../../../core/widgets/load_more_listview.dart';
 import '../../../../death_report/domain/enities/death_report_list_reponse.dart';
 

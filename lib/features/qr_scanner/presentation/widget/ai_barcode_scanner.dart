@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/enums/enums.dart';
-import 'package:mortuary/core/utils/utils.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';

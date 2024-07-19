@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/death_report/domain/enities/death_report_alert.dart';
 import 'notification_service.dart';
 
 
@@ -18,13 +17,13 @@ class PushNotifications {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  bool _isConfigured = false;
+  final bool _isConfigured = false;
 
-  var _tokenStreamController = StreamController<String>.broadcast();
+  final _tokenStreamController = StreamController<String>.broadcast();
 
   Stream<String> get token => _tokenStreamController.stream;
 
-  var _notificationStreamController = StreamController<dynamic>.broadcast();
+  final _notificationStreamController = StreamController<dynamic>.broadcast();
 
   Stream<dynamic> get notification => _notificationStreamController.stream;
 
@@ -106,8 +105,8 @@ class PushNotifications {
   }*/
 
   dispose() {
-    _notificationStreamController?.close();
-    _tokenStreamController?.close();
+    _notificationStreamController.close();
+    _tokenStreamController.close();
   }
 }
 

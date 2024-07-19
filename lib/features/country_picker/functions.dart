@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mortuary/core/constants/app_strings.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/splash/domain/entities/splash_model.dart';
 
-import '../../core/styles/colors.dart';
 import './country.dart';
 import 'country_code_picker.dart';
 

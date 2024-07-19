@@ -99,7 +99,7 @@ class ProfileImageWidget extends StatelessWidget {
                           progressType: ImageProgressType.circular,
                           headers: {
                             'Cookie':
-                                'session_id=${Get.find<AuthController>().session!.sessionId!}',
+                                'session_id=${Get.find<AuthController>().session!.sessionId}',
                           },
                         )
                       : const Icon(

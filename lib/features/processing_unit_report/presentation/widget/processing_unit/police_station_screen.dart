@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ import 'package:mortuary/core/utils/utils.dart';
 import 'package:mortuary/core/utils/validators.dart';
 import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
-import 'package:mortuary/features/authentication/presentation/component/gender_option_widget.dart';
 import 'package:mortuary/features/document_upload/init_upload.dart';
 import 'package:mortuary/features/document_upload/presentation/widget/document_upload_screen.dart';
 import 'package:mortuary/features/processing_unit_report/presentation/get/processing_unit_controller.dart';
@@ -21,14 +19,11 @@ import '../../../../../core/constants/api_messages.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/error/errors.dart';
-import '../../../../../core/utils/app_config_service.dart';
 import '../../../../../core/widgets/button_widget.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 import '../../../../../core/widgets/dashed_line.dart';
-import '../../../../country_picker/functions.dart';
 import '../../../../document_upload/domain/entity/attachment_type.dart';
 import '../../../../splash/domain/entities/splash_model.dart';
-import 'death_report_form.dart';
 
 class PoliceStationScreen extends StatefulWidget {
   final int deathBodyBandCode;
@@ -44,7 +39,7 @@ class PoliceStationScreen extends StatefulWidget {
     required this.deathFormCode,
     required this.isBodyReceivedFromAmbulance,
     List<AttachmentType>? attachmentList, required this.policeStationList, required this.apiResponseMessage,
-  })  : this.attachmentList = attachmentList ?? [],
+  })  : attachmentList = attachmentList ?? [],
         // Assign default value here
         super(key: key);
 
@@ -142,7 +137,7 @@ class _PoliceStationScreenState extends State<PoliceStationScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         sizeFieldMediumPlaceHolder,
-        Align(
+        const Align(
           alignment: Alignment.centerLeft,
           child: CustomTextWidget(
             text: AppStrings.policeRepresentative,

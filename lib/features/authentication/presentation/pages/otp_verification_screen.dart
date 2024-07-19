@@ -6,15 +6,11 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/place_holders.dart';
 import '../../../../core/styles/colors.dart';
 import '../../../../core/utils/utils.dart';
-import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/custom_otp_fields.dart';
-import '../../../../core/widgets/custom_password_field.dart';
-import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_text_widget.dart';
 import '../../builder_ids.dart';
 import '../get/auth_controller.dart';
-import 'reset_password_screen.dart';
 
 class OTPVerificationScreen extends StatelessWidget {
   const OTPVerificationScreen({super.key});

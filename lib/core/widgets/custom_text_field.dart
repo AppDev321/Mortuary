@@ -63,7 +63,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String)? onChanged; // New onChanged property
   final String? initialValue;
 
-  CustomTextFormField({
+  const CustomTextFormField({super.key, 
     Key? key,
     this.labelText,
     this.hintText,
@@ -194,7 +194,7 @@ class CustomTextField extends StatelessWidget {
       //   borderSide: const BorderSide(width: 1, color: Colors.red),
       //   borderRadius: BorderRadius.circular(15),
       // ),
-      contentPadding: EdgeInsets.all(15),
+      contentPadding: const EdgeInsets.all(15),
       labelText: label,
       prefixIcon: prefixIcon,
       floatingLabelBehavior: FloatingLabelBehavior.auto,

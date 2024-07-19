@@ -12,7 +12,7 @@ class DeathReportListResult {
 
 
 class DeathReportListResponse extends Equatable {
-  DeathReportListResponse({
+  const DeathReportListResponse({
     required this.id,
     required this.bandCode,
     required this.visaType,
@@ -66,7 +66,7 @@ class DeathReportListResponse extends Equatable {
 }
 
 class Status extends Equatable {
-  Status({
+  const Status({
     required this.statusId,
     required this.name,
     required this.color,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
-import 'package:mortuary/core/styles/colors.dart';
 
 import '../../constants/app_strings.dart';
 

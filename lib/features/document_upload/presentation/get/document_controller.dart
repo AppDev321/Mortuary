@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 import 'package:mortuary/features/document_upload/data/repository/upload_file_repo.dart';
 import 'package:mortuary/features/document_upload/domain/entity/attachment_type.dart';
 
@@ -10,7 +9,6 @@ import '../../../../core/popups/show_popups.dart';
 import '../../../../event_bus.dart';
 import '../../../processing_unit_report/presentation/widget/processing_unit/home_screen.dart';
 import '../../builder_ids.dart';
-import '../../data/data_source/upload_remote_source.dart';
 
 class DocumentController extends GetxController {
   final UploadFileRepo uploadFileRepo;

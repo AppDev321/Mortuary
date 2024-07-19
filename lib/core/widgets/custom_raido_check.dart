@@ -33,7 +33,7 @@ class LabeledRadio<T> extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).colorScheme.surface,
         ),
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -43,7 +43,7 @@ class LabeledRadio<T> extends StatelessWidget {
               size: 16,
               fontWeight: FontWeight.w500,
             ),
-            CustomTextWidget(
+            const CustomTextWidget(
               text: 'S \$200',
               size: 14,
               fontWeight: FontWeight.w500,

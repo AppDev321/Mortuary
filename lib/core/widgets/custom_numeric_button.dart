@@ -39,7 +39,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       width: width * .6,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,8 +61,8 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             },
             child: subtractButtonLoadingState == LoadingState.loaded
                 ? Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
                         color: Colors.yellow,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(8),
@@ -108,12 +108,12 @@ class _NumericStepButtonState extends State<NumericStepButton> {
             },
             child: addButtonLoadingState == LoadingState.loaded
                 ? Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Colors.yellow,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(8),
                             bottomRight: Radius.circular(8))),
-                    padding: EdgeInsets.all(3),
+                    padding: const EdgeInsets.all(3),
                     child: const Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.black87,
@@ -126,6 +126,5 @@ class _NumericStepButtonState extends State<NumericStepButton> {
         ],
       ),
     );
-    ;
   }
 }

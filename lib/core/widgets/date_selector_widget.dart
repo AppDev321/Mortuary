@@ -170,13 +170,13 @@ class _DateSelectorWidgetState extends State<DateSelectorWidget> {
             fillColor: Theme.of(context).colorScheme.outline.withOpacity(.3),
             hintText: 'Select date time',
             filled: true,
-            contentPadding: EdgeInsets.all(10),
+            contentPadding: const EdgeInsets.all(10),
             // labelText: labelText,
             prefixIcon: Container(
-                margin: EdgeInsets.only(right: 5),
-                decoration: BoxDecoration(
-                  color: Color(0xFFEEEEEEE),
-                  borderRadius: const BorderRadius.all(Radius.circular(9.00)),
+                margin: const EdgeInsets.only(right: 5),
+                decoration: const BoxDecoration(
+                  color: Color(0xffeeeeeee),
+                  borderRadius: BorderRadius.all(Radius.circular(9.00)),
                 ),
                 child: const Icon(
                   Icons.calendar_month,

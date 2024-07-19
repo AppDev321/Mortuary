@@ -6,7 +6,6 @@ import 'package:mortuary/core/enums/enums.dart';
 import 'package:mortuary/core/services/fcm_controller.dart';
 import 'package:mortuary/features/authentication/builder_ids.dart';
 import 'package:mortuary/features/authentication/domain/enities/session.dart';
-import 'package:mortuary/features/authentication/domain/enities/user_model.dart';
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/otp_verification_screen.dart';
 import 'package:mortuary/features/authentication/presentation/pages/reset_password_screen.dart';

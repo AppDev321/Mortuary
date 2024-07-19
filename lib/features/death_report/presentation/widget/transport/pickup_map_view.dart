@@ -9,7 +9,6 @@ import 'package:mortuary/core/popups/show_popups.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/utils/utils.dart';
 import 'package:mortuary/core/widgets/button_widget.dart';
-import 'package:mortuary/core/widgets/custom_screen_widget.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
 import 'package:mortuary/features/death_report/domain/enities/death_report_alert.dart';
 import 'package:mortuary/features/death_report/domain/enities/processing_center.dart';
@@ -17,7 +16,6 @@ import 'package:mortuary/features/death_report/presentation/get/death_report_con
 import 'package:mortuary/features/death_report/presentation/widget/transport/processing_centers_list.dart';
 import 'package:mortuary/features/google_map/get/google_map_controller.dart';
 import 'package:mortuary/features/google_map/google_map_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../google_map/builder_ids.dart';
