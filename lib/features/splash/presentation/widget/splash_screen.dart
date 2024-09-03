@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -5,9 +7,11 @@ import 'package:mortuary/core/constants/app_assets.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/styles/colors.dart';
 import 'package:mortuary/core/widgets/custom_text_widget.dart';
+import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
 import 'package:mortuary/features/splash/presentation/get/splash_controller.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/animated_widget.dart';
 import '../../builder_ids.dart';
 class SplashScreen extends StatefulWidget {
@@ -17,15 +21,40 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+
+  late AnimationController scaleController;
+  late Animation<double> scaleAnimation;
+
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SplashScreenController controller = Get.find();
-    controller.startAnimation();
+    scaleController =
+    AnimationController(vsync: this, duration: const Duration(milliseconds: 500))
+      ..addStatusListener(
+            (status) {
+          if (status == AnimationStatus.completed) {
+            Get.off(LoginScreen());
+          }
+        },
+      );
+
+    scaleAnimation =
+        Tween<double>(begin: 0.0, end: Get.height).animate(scaleController);
+
+    controller.startAnimation(scaleController);
   }
+
+
+  @override
+  void dispose() {
+    scaleController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -67,6 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ],
                 ),
               ),
+
               Positioned( // Position the Expanded widget
                 bottom: 80,
                 left: 0,
@@ -85,10 +115,33 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     ),
                     sizeFieldMediumPlaceHolder,
-                    controller.isApiLoading?const Center(child: CircularProgressIndicator(),):Container()
-                  ],
+                    controller.isApiLoading
+                          ? const Center(
+                             child: CircularProgressIndicator(),
+                           )
+                          : Container()
+                    ],
                 ),
               ),
+              Positioned(
+                top: Get.height/2,
+                left: Get.width/2,
+                child: AnimatedBuilder(
+                  animation: scaleAnimation,
+                  builder: (c, child) => Transform.scale(
+                    scale: scaleAnimation.value,
+                    child: Container(
+                      height: 1,
+                      width: 1,
+                      decoration:  BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green.shade50,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
             ],
           ),
         );

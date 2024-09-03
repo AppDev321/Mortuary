@@ -63,8 +63,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String)? onChanged; // New onChanged property
   final String? initialValue;
 
-  const CustomTextFormField({super.key, 
-    Key? key,
+  const CustomTextFormField({super.key,
     this.labelText,
     this.hintText,
     this.validator,

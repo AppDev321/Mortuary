@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:mortuary/core/utils/app_config_service.dart';
 import 'package:mortuary/features/authentication/presentation/pages/login_screen.dart';
@@ -13,8 +14,10 @@ class SplashScreenController extends GetxController {
   SplashScreenController({required this.splashRepo});
 
   var isApiLoading = false;
+  late AnimationController scaleController;
 
-   startAnimation() async {
+   startAnimation(AnimationController scaleController) async {
+     this.scaleController = scaleController;
     await Future.delayed(const Duration(milliseconds: 500));
 
     await Future.delayed(const Duration(milliseconds: 5000));
@@ -34,7 +37,8 @@ class SplashScreenController extends GetxController {
     await splashRepo.getAppConfigurations().then((value) async {
       //set data in configuration class
       ConfigService().setConfigData(value);
-       Get.off(() => LoginScreen());
+      // Get.off(() => LoginScreen());
+      scaleController.forward();
     }).onError<CustomError>((error, stackTrace) async {
 
       // print(error.message);

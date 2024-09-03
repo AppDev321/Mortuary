@@ -76,6 +76,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         sizeFieldLargePlaceHolder,
+
                         ButtonWidget(
                           text: AppStrings.login,
                           buttonType: ButtonType.gradient,

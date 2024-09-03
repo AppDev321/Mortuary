@@ -68,10 +68,11 @@ class _ButtonWidgetState extends State<ButtonWidget> {
       )),
     );
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       height: widget.height,
       margin: widget.margin,
-      width: widget.width,
+      width: widget.isLoading ? 70.0 : widget.width, // Adjust width for loading
       decoration: widget.buttonType == ButtonType.gradient
           ? BoxDecoration(gradient: buttonGradientColor,borderRadius:BorderRadius.circular(widget.radius) )
           : null,
@@ -87,9 +88,10 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         },
         label: widget.isLoading
             ? SizedBox(
-          height: 30.0,
-          width: 30.0,
+          height: 25.0,
+          width: 70.0,
           child: CircularProgressIndicator(
+            strokeWidth: 2.5,
             color: getProgressIndicatorColor(),
           ),
         )
