@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mortuary/core/constants/app_assets.dart';
+import 'package:mortuary/core/constants/app_lottie.dart';
 import 'package:mortuary/core/constants/place_holders.dart';
 import 'package:mortuary/core/popups/show_snackbar.dart';
 import 'package:mortuary/core/popups/widgets/choice_dialog.dart';
@@ -16,8 +18,7 @@ import '../constants/app_strings.dart';
 import '../error/errors.dart';
 import '../widgets/radio_option_dialog_view.dart';
 
-Future<void> showInfoDialog(BuildContext context, String title, String message,
-    {Function()? onPressed}) {
+Future<void> showInfoDialog(BuildContext context, String title, String message, {Function()? onPressed}) {
   return showDialog(
       context: context,
       barrierDismissible: false,
@@ -35,15 +36,12 @@ Future<void> showInfoDialog(BuildContext context, String title, String message,
           }));
 }
 
-Future<void> getErrorDialog(CustomError? error,
-    {String buttonText = AppStrings.okButtonText, Function()? onPressed}) {
+Future<void> getErrorDialog(CustomError? error, {String buttonText = AppStrings.okButtonText, Function()? onPressed}) {
   removeAllGetSnackBars();
   return Get.dialog(
       ChoiceDialog(
           title: error!.title,
-          message: error.message is List<String>
-              ? error.message.join("\n")
-              : '${error.message}',
+          message: error.message is List<String> ? error.message.join("\n") : '${error.message}',
           firstChoice: buttonText,
           firstOnPressed: () {
             if (onPressed != null) {
@@ -56,8 +54,7 @@ Future<void> getErrorDialog(CustomError? error,
       useSafeArea: true);
 }
 
-Future<void> getMessageDialog(
-    {required String title, required String message, Function()? onPressed}) {
+Future<void> getMessageDialog({required String title, required String message, Function()? onPressed}) {
   removeAllGetSnackBars();
   return Get.dialog(
       ChoiceDialog(
@@ -106,38 +103,14 @@ Future<void> getMessageDialog(
 /// The ! operator will convert result to its corresponding boolean value and negate it. If result is true,
 /// !result will be false, and if result is false, !result will be true. If the second condition is true,
 /// the return statement will be executed, and the function will exit.
-Future<bool?> getChoiceDialog(
-    String title,
-    String message,
-    IconData positiveIcon,
-    String positiveChoice,
-    IconData negativeIcon,
-    String negativeChoice) {
+Future<bool?> getChoiceDialog(String title, String message, IconData positiveIcon, String positiveChoice, IconData negativeIcon, String negativeChoice) {
   removeAllGetSnackBars();
   return Get.dialog(ChoiceDialog(
-      firstChoice: positiveChoice,
-      secondChoice: negativeChoice,
-      message: message,
-      title: title,
-      firstOnPressed: () => Get.back(result: true),
-      secondOnPressed: () => Get.back(result: false)));
+      firstChoice: positiveChoice, secondChoice: negativeChoice, message: message, title: title, firstOnPressed: () => Get.back(result: true), secondOnPressed: () => Get.back(result: false)));
 }
 
-Future<bool?> loginAsGuestDialog(
-    String title,
-    String message,
-    IconData positiveIcon,
-    String positiveChoice,
-    IconData negativeIcon,
-    String negativeChoice,
-    Function() callBack) {
-  return Get.dialog(ChoiceDialog(
-      firstChoice: positiveChoice,
-      secondChoice: negativeChoice,
-      message: message,
-      title: title,
-      firstOnPressed: callBack,
-      secondOnPressed: () => Get.back(result: false)));
+Future<bool?> loginAsGuestDialog(String title, String message, IconData positiveIcon, String positiveChoice, IconData negativeIcon, String negativeChoice, Function() callBack) {
+  return Get.dialog(ChoiceDialog(firstChoice: positiveChoice, secondChoice: negativeChoice, message: message, title: title, firstOnPressed: callBack, secondOnPressed: () => Get.back(result: false)));
 }
 
 Future<void> getImageDialog(String imageUrl) {
@@ -165,23 +138,10 @@ Future<ImageSource?> getImageChoiceDialog() {
 // }
 
 Future<bool?> discountTypeWarning() async {
-  return await getChoiceDialog(
-      'Switch Discount',
-      'If you change discount type, the total amount will be recalculated',
-      Icons.done,
-      'Confirm Change',
-      Icons.change_circle_outlined,
-      'Revert');
+  return await getChoiceDialog('Switch Discount', 'If you change discount type, the total amount will be recalculated', Icons.done, 'Confirm Change', Icons.change_circle_outlined, 'Revert');
 }
 
-showRadioOptionDialog<T>(
-    BuildContext context,
-    String title,
-    List<T> options,
-    T selectedOption,
-    Function(T?) onChanged,
-    Function(T?) onConfirmed,
-    String Function(T) itemToString) {
+showRadioOptionDialog<T>(BuildContext context, String title, List<T> options, T selectedOption, Function(T?) onChanged, Function(T?) onConfirmed, String Function(T) itemToString) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -197,58 +157,65 @@ showRadioOptionDialog<T>(
   );
 }
 
-showAppThemedDialog(CustomError? error,
-    {bool showErrorMessage = true,
-      String buttonText = AppStrings.okButtonText,
-      Function()? onPressed,
-    bool dissmisableDialog = true}) {
+showAppThemedDialog(CustomError? error, {bool showErrorMessage = true, String buttonText = AppStrings.okButtonText, Function()? onPressed, bool dissmisableDialog = true}) {
   return Get.dialog(
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Material(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Container(
+              decoration: const BoxDecoration(
                 color: Colors.white,
-                child: Column(
-                  children: [
-                    SvgPicture.asset(showErrorMessage?AppAssets.icErrorAlert:AppAssets.icSuccessAlert),
-                    (error?.title ?? "").isNotEmpty
-                        ? Column(children: [
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Material(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      //SvgPicture.asset(showErrorMessage?AppAssets.icErrorAlert:AppAssets.icSuccessAlert),
+                      Lottie.asset(showErrorMessage ? AppLottie.alert : AppLottie.success, repeat: true, width: 80, height: 80),
+                      (error?.title ?? "").isNotEmpty
+                          ? Column(
+                              children: [
+                                sizeFieldMediumPlaceHolder,
+                                CustomTextWidget(
+                                  text: error?.title.toUpperCase(),
+                                  size: 16,
+                                  fontWeight: FontWeight.bold,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            )
+                          : minPlaceHolder,
                       sizeFieldMediumPlaceHolder,
-                      CustomTextWidget(text: error?.title.toUpperCase(),size: 16,fontWeight: FontWeight.bold,textAlign: TextAlign.center,),
-                    ],)
-                        : minPlaceHolder,
-                    sizeFieldMediumPlaceHolder,
-                    CustomTextWidget(text: error?.message,size: 12,textAlign: TextAlign.center,colorText: AppColors.secondaryTextColor,),
-                    sizeFieldMediumPlaceHolder,
-                    ButtonWidget(
-                      text:buttonText,
-                      buttonType: ButtonType.gradient,
-                      onPressed: (){
-                        Get.back();
-                        if(onPressed != null) {
-                          onPressed();
-                        }
-                      }
-                    ),
-                  ],
+                      CustomTextWidget(
+                        text: error?.message,
+                        size: 12,
+                        textAlign: TextAlign.center,
+                        colorText: AppColors.secondaryTextColor,
+                      ),
+                      sizeFieldMediumPlaceHolder,
+                      ButtonWidget(
+                          text: buttonText,
+                          buttonType: ButtonType.gradient,
+                          onPressed: () {
+                            Get.back();
+                            if (onPressed != null) {
+                              onPressed();
+                            }
+                          }),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
-    ),
-    barrierDismissible: dissmisableDialog
-  );
+        ],
+      ),
+      barrierDismissible: dissmisableDialog);
 }

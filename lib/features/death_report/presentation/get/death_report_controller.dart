@@ -324,6 +324,7 @@ class DeathReportController extends GetxController {
   //Location Service Pushed
 
   performResumeActionOnStatusBase(int deathReportId, int deathCaseId,int statusId, dynamic lastResponseModel) {
+
     switch (statusId) {
       case 2:
        Get.to(() => PickupMapScreen(dataModel: DeathReportAlert.fromJson(lastResponseModel)));

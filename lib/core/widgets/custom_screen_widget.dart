@@ -78,7 +78,6 @@ class CustomScreenWidget extends StatelessWidget {
             gradient: AppColors.appBackgroundColor,
           ),
           child: SingleChildScrollView(
-
             physics: const ScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.only(

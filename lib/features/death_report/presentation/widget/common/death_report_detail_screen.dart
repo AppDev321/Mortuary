@@ -20,6 +20,7 @@ import '../../../../../event_bus.dart';
 import '../../../../document_upload/domain/entity/attachment_type.dart';
 import '../../../../document_upload/init_upload.dart';
 import '../../../../document_upload/presentation/widget/document_upload_screen.dart';
+import '../../../../extras/no_data_found_widget.dart';
 import '../../../../processing_unit_report/builder_ids.dart';
 
 class DeathReportDetailScreen extends StatefulWidget {
@@ -88,10 +89,7 @@ class _DeathReportDetailScreenState extends State<DeathReportDetailScreen> {
                     )
                   : SizedBox(
                     height:  Get.height,
-                    child: const Center(
-                        child: CustomTextWidget(
-                        text: ApiMessages.dataNotFound,
-                      )),
+                    child:  const NoDataFoundWidget(),
                   ),
             )
           ]);

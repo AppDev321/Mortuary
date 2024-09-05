@@ -32,7 +32,7 @@ class ReportListItem extends StatelessWidget {
                 text: convertAppStyleDate(listItem.reportDate),
                 colorText: AppColors.secondaryTextColor,
                 fontWeight: FontWeight.w700,
-                size: 14,
+                size: 12,
                 textAlign: TextAlign.right,
               ),
               CustomTextWidget(
@@ -60,7 +60,12 @@ class ReportListItem extends StatelessWidget {
           child: Container(
             height: 20.0,
             width: 20.0,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.hexToColor(listItem.status.color), width: 2)),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                    color: AppColors.hexToColor(listItem.status.color),
+                    width: 2)),
           )),
       Positioned(
         right: 0,
