@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mortuary/core/constants/app_lottie.dart';
 
-import '../../core/constants/api_messages.dart';
-import '../../core/widgets/custom_text_widget.dart';
-
 class NoDataFoundWidget extends StatelessWidget {
   const NoDataFoundWidget({
     super.key,
@@ -31,3 +28,5 @@ class NoDataFoundWidget extends StatelessWidget {
     );
   }
 }
+
+
